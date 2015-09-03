@@ -35,23 +35,37 @@ do_twice(print_twice, "spam")
 do_four(print_twice, "spam")
 
 #Exercise 3.5
-def print_line(char1, char2):
-    print char1,
-    for i in range(1, 5):
-        print char2,
-    print char1,
-    for i in range(1, 5):
-        print char2,
+def print_line(char1, char2, col_num):
+    for i in range(1, col_num+1):
+        print char1,
+        for j in range(1, 5):
+            print char2,
     print char1
 
-def print_grid(f, char1, char2, char3, char4):
-    f(char1, char2)
-    for i in range(1, 5):
-        f(char3, char4)
-    f(char1, char2)
-    for i in range(1, 5):
-        f(char3, char4)
-    f(char1, char2)
+def print_grid(**kvargs):
+    row_num = kvargs.get('row_num')
+    col_num = kvargs.get('col_num')
+    f = kvargs.get('func')
+    for i in range(1, row_num+1):
+        f(kvargs.get('symbol1'), kvargs.get('symbol2'), col_num)
+        for j in range(1, 5):
+            f(kvargs.get('symbol3'), kvargs.get('symbol4'), col_num)
+    f(kvargs.get('symbol1'), kvargs.get('symbol2'), col_num)
 
+print "\n" + "Two Column Grid" + "\n"
+print_grid(func=print_line,
+           symbol1='+',
+           symbol2='-',
+           symbol3='|',
+           symbol4=' ',
+           row_num=2,
+           col_num=2)
 
-print_grid(print_line, '+', '-', '|', ' ')
+print "\n" + "Four Column Grid" + "\n"
+print_grid(func=print_line,
+           symbol1='+',
+           symbol2='-',
+           symbol3='|',
+           symbol4=' ',
+           row_num=4,
+           col_num=4)
