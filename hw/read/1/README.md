@@ -37,7 +37,8 @@ The data required for experimentation and validation was obtained from the bug r
 * The recall rate of Suleka and Jarote at 10 was 21%, 20 was 25% and at 2000 was 68 percent. Where as for Sun et al., recall rate at 1 is 37% and at 20 is 71%.
 
 * The REP has also improved the running time of the experiment when compared to SVM used for retrieval.
-(https://github.com/Lost-In-MASE/x9115AAP/tree/master/hw/read/1/images/Running_time.png)
+
+![Run-Time](https://github.com/Lost-In-MASE/x9115AAP/tree/master/hw/read/1/images/Running_time.png)
 
 ### iv. Improvements  
 * iv1. The logging these days is so advanced that traces can actually point to the exact location of the error. Parsing just the error logs / messages (not the entire log) can improve the accuracy of duplicate bug detection, significantly. 
