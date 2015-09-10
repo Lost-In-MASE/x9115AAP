@@ -55,3 +55,11 @@ docs/_build/
 
 # PyBuilder
 target/
+
+*.xml
+
+.idea/.name
+
+hw/code/1/.idea/.name
+
+*.iml
