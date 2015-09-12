@@ -57,4 +57,11 @@ docs/_build/
 target/
 
 # PyCharm
-.idea/
+*.xml
+
+.idea/.name
+.idea/*
+hw/code/1/.idea/.name
+
+*.iml
+*.DS_Store
