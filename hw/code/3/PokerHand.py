@@ -127,5 +127,6 @@ if __name__ == '__main__':
             outcome = hand.classify()
             count_outcomes[outcome] = count_outcomes.get(outcome, 0) + 1
 
+    print("%-20s | %-20s" % ("Hand", "Probability"))
     for i in count_outcomes.keys():
-        print("%s : %f" % (i, count_outcomes[i]/float(700)))
+        print("%-20s | %f " % (i, count_outcomes[i]/float(70000)))
