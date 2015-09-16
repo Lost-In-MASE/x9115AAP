@@ -112,6 +112,8 @@ class PokerHand(Hand):
 
         if self.has_pair():
             return "Pair"
+            
+        return "High Card"
 
 if __name__ == '__main__':
     count_outcomes = {}
@@ -127,6 +129,6 @@ if __name__ == '__main__':
             outcome = hand.classify()
             count_outcomes[outcome] = count_outcomes.get(outcome, 0) + 1
 
-    print("%-20s | %-20s" % ("Hand", "Probability"))
-    for i in count_outcomes.keys():
+    print("%-20s | %-20s" % ("Hand", "Probability \n"))
+    for i in sorted(count_outcomes.keys()):
         print("%-20s | %f " % (i, count_outcomes[i]/float(70000)))

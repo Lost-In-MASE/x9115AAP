@@ -30,3 +30,6 @@ def calculate_probability():
             count += 1
 
     return count/float(1000)
+    
+if __name__ == "__main__":
+    print("Probabilit that two people will share their birthday : %f" %calculate_probability())
