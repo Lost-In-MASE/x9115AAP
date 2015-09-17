@@ -32,4 +32,5 @@ def calculate_probability():
     return count/float(1000)
     
 if __name__ == "__main__":
-    print("Probabilit that two people will share their birthday : %f" %calculate_probability())
+    print("After 1000 tries")
+    print("Probability that two people will share their birthday : %f" %calculate_probability())
