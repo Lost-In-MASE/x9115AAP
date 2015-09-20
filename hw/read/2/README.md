@@ -34,12 +34,15 @@ Data for the project has been taken from the bug repositories of 3 large open so
 #####iii4. Important Visualizations:
 
 * **Figure-1** depicts the overall framework built to retrieve duplicate bug reports.
+
 ![Figure-1](https://github.com/Lost-In-MASE/x9115AAP/blob/master/hw/read/2/images/fig1.png)
 
 * **Figure-2** shows the bucket data structure used to store the bug reports. Every bucket contains a master bug report and its duplicate bug reports associated with it. If a new bug report is a duplicate of existing master bug report, it is added to the respective bucket but if a new bug report is not a duplicate, a new bucket is created.
+
 ![Figure-2](https://github.com/Lost-In-MASE/x9115AAP/blob/master/hw/read/2/images/fig2.png)
 
 * **Figure-3** is a visual depiction of the process followed for training the discriminative model to classify duplicate bug reports.
+
 ![Figure-3](https://github.com/Lost-In-MASE/x9115AAP/blob/master/hw/read/2/images/fig3.png)
 
 ### iv. Improvements  
