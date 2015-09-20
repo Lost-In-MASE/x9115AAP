@@ -54,4 +54,7 @@ Data for the project has been taken from the bug repositories of 3 large open so
 
 
 ### v. Connection to the Initial Paper
-The previously reviewed paper [2], is written by the same authors of the current paper. The previous paper discusses an approach that is an improvement over the approach of the current paper. There, BM25F is used for textual similarity (instead of discriminative model / SVM) and REP is used for retrieval. The results of the previously reviewed paper are more accurate than the current one and the run time is significantly lesser.
+The previously reviewed paper [1], is written by the same authors of the current paper. The previous paper discusses an approach that is an improvement over the approach of the current paper. There, BM25F is used for textual similarity (instead of discriminative model / SVM) and REP is used for retrieval. The results of the previously reviewed paper are more accurate than the current one and the run time is significantly lesser.
+
+### v. References
+* [1] C. Sun, D. Lo, S.-C. Khoo, and J. Jiang, “Towards more accurate retrieval of duplicate bug reports,” in Proceedings of the IEEE/ACM International Conference on Automated Software Engineering, 2011.
