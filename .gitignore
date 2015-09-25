@@ -55,3 +55,13 @@ docs/_build/
 
 # PyBuilder
 target/
+
+# PyCharm
+*.xml
+
+.idea/.name
+.idea/*
+hw/code/1/.idea/.name
+
+*.iml
+*.DS_Store
