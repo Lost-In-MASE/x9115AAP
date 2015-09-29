@@ -25,6 +25,19 @@ All works prior to this literature performed bug duplicate detection using word-
 #####iii3. Data
 Data for the project has been taken from the bug repositories of eclipse which is available as XML for experiments and research purposes. 213,000 bug for the eclipse project were downloaded from the publicly available of the Mining Software Repositories Mining Challenge website. The speciality of this dataset is that they were pre-annotated, that is bugs were tagged as duplicates by the triager who worked on them.
 
+### iii4. Visualizations
+
+* **Figure-1** Overall system architecture for similarity detection
+
+![Figure-1](https://github.com/Lost-In-MASE/x9115AAP/blob/master/hw/read/3/images/hlsa.png)
+
+* **Figure-2** Graph showing the percentage of reports that had a score greater than 50 based on title similarity, title similarity was the main metric in finding duplicate reports in this study.
+
+![Figure-2](https://github.com/Lost-In-MASE/x9115AAP/blob/master/hw/read/3/images/tts.png)
+
+* **Figure-3** Histogram showing the top-N results for bug reports based on Title-Title, Title-Description and Description-Title similarity metric.
+
+![Figure-3](https://github.com/Lost-In-MASE/x9115AAP/blob/master/hw/read/3/images/recra.png)
 
 ### iv. Improvements  
 * iv1. The study uses only the title of bug reports and performs character level n-grams between reports, there are times when completely different titles can have similar description.
