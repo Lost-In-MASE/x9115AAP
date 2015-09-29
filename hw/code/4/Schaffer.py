@@ -15,7 +15,7 @@ def get_shaffer_objective_value(value):
 def get_base_schaffer_values(min_bound, max_bound):
     low_val = get_shaffer_objective_value(max_bound)
     high_val = -low_val
-    for _ in range(10000):
+    for _ in range(10**6):
         cur_val = get_shaffer_objective_value(random.randrange(min_bound, max_bound))
         if cur_val < low_val:
             low_val = cur_val
@@ -31,7 +31,7 @@ def get_probability(curEnergy, neighborEnergy, count):
 
 
 def start_shaffer():
-    max_bound = 10**2
+    max_bound = 10**6
     min_bound = -max_bound
     base_min, base_max = get_base_schaffer_values(min_bound, max_bound)
 
