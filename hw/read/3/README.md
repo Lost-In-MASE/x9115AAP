@@ -29,15 +29,15 @@ Data for the project has been taken from the bug repositories of eclipse which i
 
 * **Figure-1** Overall system architecture for similarity detection
 
-![Figure-1](https://github.com/Lost-In-MASE/x9115AAP/blob/master/hw/read/3/images/hlsa.png)
+![Figure-1](https://github.com/Lost-In-MASE/x9115AAP/blob/master/hw/read/3/images/hlsa.PNG)
 
 * **Figure-2** Graph showing the percentage of reports that had a score greater than 50 based on title similarity, title similarity was the main metric in finding duplicate reports in this study.
 
-![Figure-2](https://github.com/Lost-In-MASE/x9115AAP/blob/master/hw/read/3/images/tts.png)
+![Figure-2](https://github.com/Lost-In-MASE/x9115AAP/blob/master/hw/read/3/images/tts.PNG)
 
 * **Figure-3** Histogram showing the top-N results for bug reports based on Title-Title, Title-Description and Description-Title similarity metric.
 
-![Figure-3](https://github.com/Lost-In-MASE/x9115AAP/blob/master/hw/read/3/images/recra.png)
+![Figure-3](https://github.com/Lost-In-MASE/x9115AAP/blob/master/hw/read/3/images/recra.PNG)
 
 ### iv. Improvements  
 * iv1. The study uses only the title of bug reports and performs character level n-grams between reports, there are times when completely different titles can have similar description.
