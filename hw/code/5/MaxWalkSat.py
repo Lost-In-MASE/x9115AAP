@@ -3,6 +3,7 @@ from random import randrange
 from random import randint
 from random import random
 
+import sys
 
 var_bound_top = [10, 10, 5, 6, 5, 10]
 var_bound_bottom = [0, 0, 1, 0, 1, 0]
@@ -53,7 +54,11 @@ def change_to_maximize(soln, index):
     return best, evals
 
 
-def max_walk_sat():
+def normalize(energy, low, high):
+    return (energy - low)/(high - low)
+
+
+def max_walk_sat(baseline_low, baseline_high):
     max_tries = 100
     max_changes = 50
     p = 0.5
@@ -93,12 +98,30 @@ def max_walk_sat():
             if osyczka(new_soln) > osyczka(init_soln):
                 init_soln = list(new_soln)
 
-        print "Evals : " + str(evals) + " Current Best Energy : " + str(osyczka(init_soln)) + " " + output
+        print "Evals : " + str(evals) + " Current Best Energy : " + \
+              str(normalize(osyczka(init_soln), baseline_low, baseline_high)) + " " + output
     return init_soln
 
 
+def get_baselines():
+    lo = sys.maxint
+    hi = -lo
+
+    for _ in xrange(0, 10000):
+        soln = get_random_assignments()
+        energy = osyczka(soln)
+
+        if soln > hi:
+            hi = energy
+
+        if soln < lo:
+            lo = energy
+
+    return lo, hi
+
 if __name__ == '__main__':
-    best_solution = max_walk_sat()
+    baseline_low, baseline_high = get_baselines()
+    best_solution = max_walk_sat(baseline_low, baseline_high)
     best_energy = osyczka(best_solution)
     print("\nBest Solution : " + str(best_solution))
-    print("Best Energy : " + str(best_energy))
+    print("Best Energy : " + str(normalize(best_energy, baseline_low, baseline_high)))
