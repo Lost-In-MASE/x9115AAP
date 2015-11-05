@@ -71,6 +71,7 @@ class Osyczka(BaseModel):
     
     def __init__(self):
         BaseModel.__init__(self)
+        self.number_vars = 6
         self.obj_fns = [self.f1, self.f2]
         self.constraints = list()
         self.constraints.append(lambda x : x[0] + x[1] - 2)
@@ -183,14 +184,74 @@ def SimulatedAnnealing(model):
 
     print(": e %f" %curEnergy)
 
+def MaxWalkSat(model):
+    
+    def change_to_maximize(soln, index):
+        evals = 0
+        best = soln
+        solution = soln
+        low, high = model.var_bounds[index]
+        delta = (high - low)/steps
+        for i in xrange(0, steps):
+            evals += 1
+            solution[index] = low + delta*i
+            if model.okay(solution) and model.eval(solution) > model.eval(best):
+                best = list(solution)
+        return best, evals
+    
+    max_tries = 100
+    max_changes = 50
+    p = 0.5
+    threshold = 200
+    steps = 10
+
+    evals = 0
+    init_soln = model.get_neighbor()
+
+    for i in range(0, max_tries):
+        output = str()
+        new_soln = model.get_neighbor()
+        while model.okay(new_soln) is False:
+            new_soln = model.get_neighbor()
+
+        for j in range(0, max_changes):
+            result = str()
+            if model.eval(new_soln) > threshold:
+                return new_soln
+
+            c = random.randint(1, model.number_vars) - 1
+            if p < random.random():
+                copy_list = list(new_soln)
+                i, j = model.var_bounds[c]
+                copy_list[c] = random.randrange(i, j)
+
+                if model.okay(copy_list):
+                    new_soln = copy_list
+                    result = "?"
+                else:
+                    result = "."
+            else:
+                copy_list, t_evals = change_to_maximize(new_soln, c)
+                evals += t_evals
+                if copy_list == new_soln:
+                    result = "+"
+                    new_soln = copy_list
+                else:
+                    result = "."
+            output += result
+            if model.eval(new_soln) > model.eval(init_soln):
+                init_soln = list(new_soln)
+
+        print "Evals : " + str(evals) + " Current Best Energy : " + \
+              str(model.normalize_val(model.eval(init_soln))) + " " + output
 
 if __name__ == '__main__':
-    a = datetime.datetime.now()
-    SimulatedAnnealing(Schaffer())
-    b = datetime.datetime.now()
-    print("# Runtime: %f"  %((b - a).microseconds/1000000))
+    # a = datetime.datetime.now()
+    # SimulatedAnnealing(Schaffer())
+    # b = datetime.datetime.now()
+    # print("# Runtime: %f"  %((b - a).microseconds/1000000))
     
     a = datetime.datetime.now()
-    SimulatedAnnealing(Osyczka())
+    MaxWalkSat(Osyczka())
     b = datetime.datetime.now()
     print("# Runtime: %f"  %((b - a).microseconds/1000000))
