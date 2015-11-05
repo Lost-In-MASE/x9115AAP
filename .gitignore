@@ -61,6 +61,7 @@ target/
 
 .idea/.name
 .idea/*
+.idea/workspace.xml
 hw/code/1/.idea/.name
 
 *.iml
