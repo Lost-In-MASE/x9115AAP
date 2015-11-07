@@ -52,7 +52,7 @@ The picture below shows the workflow of the methodology followed by the authors.
 * iv3. The critical aspect of the study is the list of topic words that help define the context of a bug. For the Android repository, there have been several studies that have tried to extract such topic words. Hence, for this experiment, a word list of contextual features was available and used. The authors could have discussed a little more in detail regarding the approaches that could be used to extract topic words from bugs(and not popular terms).
 
 ### v. Connection to the Initial Paper
-This entire study was based on the the first paper. Sun et al. in [1] discuss about an accurate approach for retrieving duplicate bug reports. Anahita et al. use these findings as the baseline and show that contextual information can improve the accuracy of the detection. The approaches used for information retrieval, classification and extraction are all inspired by paper 1.
+This entire study was based on the first paper. Sun et al. in [1] discuss about an accurate approach for retrieving duplicate bug reports. Anahita et al. use these findings as the baseline and show that contextual information can improve the accuracy of the detection. The approaches used for information retrieval, classification and extraction are all inspired by paper 1.
 
 ### vi. References
 
