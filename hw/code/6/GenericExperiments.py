@@ -13,16 +13,20 @@ class BaseModel:
         self.max_bound = -self.min_bound
         self.lo = sys.maxint
         self.hi = -self.lo
-        self.obj_fns = []
         self.constraints = None
         self.number_vars = 0
         self.var_bounds = []
+        self.baseline_count = 10**4
 
     def okay(self, _):
         return True
-        
+
     def get_neighbor(self):
-        return None
+        x = list()
+        for i, j in self.var_bounds:
+            x.append(random.randrange(i, j))
+
+        return x
 
     def baselines(self):
         self.lo = sys.maxint
@@ -51,19 +55,29 @@ class BaseModel:
         for obj in self.get_objectives():
             energy += obj(x)
 
+        return energy
+
     def get_objectives(self):
         return self.obj_fns
 
     def baselines(self):
-        self.lo = self.eval([self.max_bound])
+        self.lo = sys.maxint
         self.hi = -self.lo
-        for _ in xrange(self.max_bound):
-            cur_val = self.eval(self.get_neighbor())
-            if cur_val < self.lo:
-                self.lo = cur_val
 
-            if cur_val > self.hi:
-                self.hi = cur_val
+        for _ in xrange(0, 10000):
+
+            while True:
+                soln = self.get_neighbor()
+                if self.okay(soln):
+                    break
+
+            energy = self.eval(soln)
+
+            if energy > self.hi:
+                self.hi = energy
+
+            if energy < self.lo:
+                self.lo = energy
 
     def get_baselines(self):
         return self.lo, self.hi
@@ -73,27 +87,21 @@ class Schaffer(BaseModel):
 
     def __init__(self):
         BaseModel.__init__(self)
+        self.baseline_count = 10**6
+        self.number_vars = 1
         self.max_bound = 10**6
         self.min_bound = -self.max_bound
         self.var_bounds = [(self.min_bound, self.max_bound)]
         self.baselines()
-        self.number_vars = 1
-        self.obj_fns = [self.f1, self.f2]
-
-    def eval(self, x):
-        return self.f1(x) + self.f2(x)
 
     def get_objectives(self):
         return [self.f1, self.f2]
-        
+
     def f1(self, x):
         return x[0]**2
-        
+
     def f2(self, x):
         return (x[0] - 2)**2
-                
-    def get_neighbor(self):
-        return [random.randrange(self.min_bound, self.max_bound)]
 
 
 class Osyczka(BaseModel):
@@ -101,7 +109,6 @@ class Osyczka(BaseModel):
     def __init__(self):
         BaseModel.__init__(self)
         self.number_vars = 6
-        self.obj_fns = [self.f1, self.f2]
         self.constraints = list()
         self.constraints.append(lambda x: x[0] + x[1] - 2)
         self.constraints.append(lambda x: 6 - x[0] - x[1])
@@ -111,13 +118,6 @@ class Osyczka(BaseModel):
         self.constraints.append(lambda x: (x[4] - 3)**3 + x[5] - 4)
         self.var_bounds = [(0, 10), (0, 10), (1, 5), (0, 6), (1, 5), (0, 10)]
         self.baselines()
-        
-    def get_neighbor(self):
-        x = list()
-        for i, j in self.var_bounds:
-            x.append(random.randrange(i, j))
-            
-        return x
 
     def get_objectives(self):
         return [self.f1, self.f2]
@@ -128,21 +128,19 @@ class Osyczka(BaseModel):
                 return False
             
         return True
-        
+
     def f1(self, x):
         return -(25 * (x[0] - 2)**2 + (x[1] - 2)**2 + (x[2] - 1)**2 * (x[3] - 4)**2 + (x[4] - 1)**2)
-        
+
     def f2(self, x):
         return sum([i**2 for i in x])
-        
-        
+
+
 def simulated_annealing(model):
     
     def get_probability(cur_energy, neighbor_energy, count):
         return math.exp((cur_energy - neighbor_energy)/count)
     
-    max_bound = 10**6
-
     # Base variables
     kMax = 1000
     eMax = -.1
@@ -258,6 +256,6 @@ if __name__ == '__main__':
     print("# Runtime: %f" % ((b - a).microseconds/1000000))
 
     # a = datetime.datetime.now()
-    # max_walk_sat(Schaffer())
+    # max_walk_sat(Osyczka())
     # b = datetime.datetime.now()
     # print("# Runtime: %f" % ((b - a).microseconds/1000000))
