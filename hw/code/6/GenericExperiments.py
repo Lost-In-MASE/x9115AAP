@@ -23,10 +23,50 @@ class BaseModel:
         
     def get_neighbor(self):
         return None
+
+    def baselines(self):
+        self.lo = sys.maxint
+        self.hi = -self.lo
+
+        for _ in xrange(0, 10000):
+
+            while True:
+                soln = self.get_neighbor()
+                if self.okay(soln):
+                    break
+
+            energy = self.eval(soln)
+
+            if energy > self.hi:
+                self.hi = energy
+
+            if energy < self.lo:
+                self.lo = energy
         
     def normalize_val(self, value):
         return (value - self.lo)/(self.hi - self.lo)
-        
+
+    def eval(self, x):
+        energy = 0
+        for obj in self.get_objectives():
+            energy += obj(x)
+
+    def get_objectives(self):
+        return self.obj_fns
+
+    def baselines(self):
+        self.lo = self.eval([self.max_bound])
+        self.hi = -self.lo
+        for _ in xrange(self.max_bound):
+            cur_val = self.eval(self.get_neighbor())
+            if cur_val < self.lo:
+                self.lo = cur_val
+
+            if cur_val > self.hi:
+                self.hi = cur_val
+
+    def get_baselines(self):
+        return self.lo, self.hi
 
 
 class Schaffer(BaseModel):
@@ -39,32 +79,21 @@ class Schaffer(BaseModel):
         self.baselines()
         self.number_vars = 1
         self.obj_fns = [self.f1, self.f2]
-        
+
     def eval(self, x):
         return self.f1(x) + self.f2(x)
+
+    def get_objectives(self):
+        return [self.f1, self.f2]
         
     def f1(self, x):
-        return x**2
+        return x[0]**2
         
     def f2(self, x):
-        return (x - 2)**2
-        
-    def get_baselines(self):
-        return self.lo, self.hi
-
-    def baselines(self):
-        self.lo = self.eval(self.max_bound)
-        self.hi = -self.lo
-        for _ in range(10**6):
-            cur_val = self.eval(self.get_neighbor())
-            if cur_val < self.lo:
-                self.lo = cur_val
-
-            if cur_val > self.hi:
-                self.hi = cur_val
+        return (x[0] - 2)**2
                 
     def get_neighbor(self):
-        return random.randrange(self.min_bound, self.max_bound)
+        return [random.randrange(self.min_bound, self.max_bound)]
 
 
 class Osyczka(BaseModel):
@@ -83,15 +112,15 @@ class Osyczka(BaseModel):
         self.var_bounds = [(0, 10), (0, 10), (1, 5), (0, 6), (1, 5), (0, 10)]
         self.baselines()
         
-    def eval(self, x):
-        return self.f1(x) + self.f2(x)
-        
     def get_neighbor(self):
         x = list()
         for i, j in self.var_bounds:
             x.append(random.randrange(i, j))
             
         return x
+
+    def get_objectives(self):
+        return [self.f1, self.f2]
     
     def okay(self, x):
         for constraint in self.constraints:
@@ -106,33 +135,11 @@ class Osyczka(BaseModel):
     def f2(self, x):
         return sum([i**2 for i in x])
         
-    def baselines(self):
-        self.lo = sys.maxint
-        self.hi = -self.lo
-        
-        for _ in xrange(0, 10000):
-
-            while True:
-                soln = self.get_neighbor()
-                if self.okay(soln):
-                    break
-
-            energy = self.eval(soln)
-
-            if energy > self.hi:
-                self.hi = energy
-
-            if energy < self.lo:
-                self.lo = energy
-
-    def get_baselines(self):
-        return self.lo, self.hi
-        
         
 def simulated_annealing(model):
     
-    def get_probability(curEnergy, neighborEnergy, count):
-        return math.exp((curEnergy - neighborEnergy)/count)
+    def get_probability(cur_energy, neighbor_energy, count):
+        return math.exp((cur_energy - neighbor_energy)/count)
     
     max_bound = 10**6
 
@@ -201,7 +208,7 @@ def max_walk_sat(model):
     max_tries = 100
     max_changes = 50
     p = 0.5
-    threshold = 200
+    threshold = 1
     steps = 10
 
     evals = 0
@@ -215,8 +222,8 @@ def max_walk_sat(model):
 
         for j in xrange(0, max_changes):
             result = str()
-            if model.eval(new_soln) > threshold:
-                return new_soln
+            if model.normalize_val(model.eval(new_soln)) > threshold:
+                return
 
             c = random.randint(1, model.number_vars) - 1
             if p < random.random():
@@ -245,12 +252,12 @@ def max_walk_sat(model):
               str(model.normalize_val(model.eval(init_soln))) + " " + output
 
 if __name__ == '__main__':
-    # a = datetime.datetime.now()
-    # simulated_annealing(Schaffer())
-    # b = datetime.datetime.now()
-    # print("# Runtime: %f" % ((b - a).microseconds/1000000))
-
     a = datetime.datetime.now()
-    max_walk_sat(Schaffer())
+    simulated_annealing(Schaffer())
     b = datetime.datetime.now()
     print("# Runtime: %f" % ((b - a).microseconds/1000000))
+
+    # a = datetime.datetime.now()
+    # max_walk_sat(Schaffer())
+    # b = datetime.datetime.now()
+    # print("# Runtime: %f" % ((b - a).microseconds/1000000))
