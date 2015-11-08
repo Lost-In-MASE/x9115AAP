@@ -95,13 +95,7 @@ class Schaffer(BaseModel):
         self.baselines()
 
     def get_objectives(self):
-        return [self.f1, self.f2]
-
-    def f1(self, x):
-        return x[0]**2
-
-    def f2(self, x):
-        return (x[0] - 2)**2
+        return [lambda x: x[0]**2, lambda x: (x[0] - 2)**2]
 
 
 class Osyczka(BaseModel):
@@ -120,7 +114,9 @@ class Osyczka(BaseModel):
         self.baselines()
 
     def get_objectives(self):
-        return [self.f1, self.f2]
+        return [
+            lambda x: -(25 * (x[0] - 2)**2 + (x[1] - 2)**2 + (x[2] - 1)**2 * (x[3] - 4)**2 + (x[4] - 1)**2),
+            lambda x: sum([i**2 for i in x])]
     
     def okay(self, x):
         for constraint in self.constraints:
@@ -128,12 +124,6 @@ class Osyczka(BaseModel):
                 return False
             
         return True
-
-    def f1(self, x):
-        return -(25 * (x[0] - 2)**2 + (x[1] - 2)**2 + (x[2] - 1)**2 * (x[3] - 4)**2 + (x[4] - 1)**2)
-
-    def f2(self, x):
-        return sum([i**2 for i in x])
 
 
 def simulated_annealing(model):
@@ -251,11 +241,11 @@ def max_walk_sat(model):
 
 if __name__ == '__main__':
     a = datetime.datetime.now()
-    simulated_annealing(Schaffer())
+    simulated_annealing(Osyczka())
     b = datetime.datetime.now()
     print("# Runtime: %f" % ((b - a).microseconds/1000000))
 
     # a = datetime.datetime.now()
-    # max_walk_sat(Osyczka())
+    # max_walk_sat(Schaffer())
     # b = datetime.datetime.now()
     # print("# Runtime: %f" % ((b - a).microseconds/1000000))
