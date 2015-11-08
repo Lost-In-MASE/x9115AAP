@@ -5,9 +5,11 @@ import math
 import datetime
 import sys
 
+
 class BaseModel:
 
     def __init__(self):
+        self.model_name = None
         self.min_bound = sys.maxint
         self.max_bound = -self.min_bound
         self.lo = sys.maxint
@@ -86,9 +88,10 @@ class Schaffer(BaseModel):
 
     def __init__(self):
         BaseModel.__init__(self)
+        self.model_name = "Schaffer"
         self.baseline_count = 10**6
         self.number_vars = 1
-        self.max_bound = 10**6
+        self.max_bound = 10**4
         self.min_bound = -self.max_bound
         self.var_bounds = [(self.min_bound, self.max_bound)]
         self.baselines()
@@ -101,6 +104,7 @@ class Osyczka(BaseModel):
 
     def __init__(self):
         BaseModel.__init__(self)
+        self.model_name = "Osyczka"
         self.number_vars = 6
         self.constraints = list()
         self.constraints.append(lambda x: x[0] + x[1] - 2)
@@ -129,22 +133,26 @@ class Kursawe(BaseModel):
 
     def __init__(self):
         BaseModel.__init__(self)
+        self.model_name = "Kursawe"
         self.number_vars = 3
         self.max_bound = 5
         self.min_bound = -self.max_bound
-        self.var_bounds = [(self.min_bound, self.max_bound) for _ in xrange(0, 3)]
+        self.var_bounds = [(self.min_bound, self.max_bound) for _ in xrange(self.number_vars)]
         self.baselines()
 
     def get_objectives(self):
         return [
-            lambda x: (-10 * math.exp(-0.2 * math.sqrt(x[0] ** 2 + x[1] ** 2)) + -10 * math.exp(-0.2 * math.sqrt(x[1] ** 2 + x[2] ** 2))),
-            lambda x: sum([(abs(i) ** 0.8 + 5 * math.sin(i ** 3)) for i in x])]
+            lambda x: (-10 * math.exp(-0.2 * math.sqrt(x[0] ** 2 + x[1] ** 2)) +
+                       (-10 * math.exp(-0.2 * math.sqrt(x[1] ** 2 + x[2] ** 2)))),
+            lambda x: sum([(abs(i) ** 0.8 + 5 * math.sin(i)) for i in x])]
 
 
 def simulated_annealing(model):
     
     def get_probability(cur_energy, neighbor_energy, count):
         return math.exp((cur_energy - neighbor_energy)/count)
+
+    print "Model Name : " + model.model_name + ", Optimizer : simulated annealing"
     
     # Base variables
     kMax = 1000
@@ -194,19 +202,21 @@ def simulated_annealing(model):
 
 
 def max_walk_sat(model):
-    
+
     def change_to_maximize(soln, index):
-        evals = 0
+        evaluations = 0
         best = soln
         solution = soln
         low, high = model.var_bounds[index]
         delta = (high - low)/steps
-        for j in xrange(0, steps):
-            evals += 1
-            solution[index] = low + delta*j
+        for k in xrange(0, steps):
+            evaluations += 1
+            solution[index] = low + delta*k
             if model.okay(solution) and model.eval(solution) > model.eval(best):
                 best = list(solution)
-        return best, evals
+        return best, evaluations
+
+    print "Model Name : " + model.model_name + ", Optimizer : max walk sat"
     
     max_tries = 100
     max_changes = 50
@@ -216,6 +226,8 @@ def max_walk_sat(model):
 
     evals = 0
     init_soln = model.get_neighbor()
+    while model.okay(init_soln) is False:
+        init_soln = model.get_neighbor()
 
     for i in xrange(0, max_tries):
         output = str()
@@ -226,7 +238,7 @@ def max_walk_sat(model):
         for j in xrange(0, max_changes):
             result = str()
             if model.normalize_val(model.eval(new_soln)) > threshold:
-                return
+                return init_soln
 
             c = random.randint(1, model.number_vars) - 1
             if p < random.random():
@@ -240,13 +252,13 @@ def max_walk_sat(model):
                 else:
                     result = "."
             else:
-                copy_list, t_evals = change_to_maximize(new_soln, c)
+                copy_list, t_evals = change_to_maximize(list(new_soln), c)
                 evals += t_evals
                 if copy_list == new_soln:
-                    result = "+"
-                    new_soln = copy_list
-                else:
                     result = "."
+                else:
+                    new_soln = copy_list
+                    result = "+"
             output += result
             if model.eval(new_soln) > model.eval(init_soln):
                 init_soln = list(new_soln)
@@ -256,11 +268,15 @@ def max_walk_sat(model):
 
 if __name__ == '__main__':
     # a = datetime.datetime.now()
-    # simulated_annealing(Osyczka())
+    # simulated_annealing(Kursawe())
     # b = datetime.datetime.now()
     # print("# Runtime: %f" % ((b - a).microseconds/1000000))
 
-    a = datetime.datetime.now()
-    max_walk_sat(Schaffer())
-    b = datetime.datetime.now()
-    print("# Runtime: %f" % ((b - a).microseconds/1000000))
+    # a = datetime.datetime.now()
+    # max_walk_sat(Kursawe())
+    # b = datetime.datetime.now()
+    # print("# Runtime: %f" % ((b - a).microseconds/1000000))
+
+    for software_model in [Schaffer, Osyczka, Kursawe]:
+        for optimizer in [max_walk_sat]:
+            optimizer(software_model())
