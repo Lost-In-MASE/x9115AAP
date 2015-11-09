@@ -45,6 +45,7 @@ The picture below shows the workflow of the methodology followed by the authors.
 The authors follow the procedures for proposed by Sun et al.[5], the first paper reviewed, for measuring textual similarity between duplicate bug reports. They also adopted the concept of "buckets" introduced in [5]. The current paper is an improvement on [4].
 
 ### vi. References
+
 * [1]Hu, Diane J. "Latent dirichlet allocation for text, images, and music." University of California, San Diego. Retrieved April 26 (2009): 2013.
 * [2]R. S. Pressman and W. S. Jawadekar, “Software engineering,” New York 1992, 1987.
 * [3]M. L. Murphy, The Busy Coder’s Guide to Advanced Android Development. CommonsWare, LLC, 2009.
