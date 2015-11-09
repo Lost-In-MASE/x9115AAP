@@ -198,7 +198,8 @@ def simulated_annealing(model):
 
         i += 1
 
-    print(": e %f" % best_energy)
+    print("Best Value : " + str(best_val))
+    print("Best Energy : %f" % best_energy)
 
 
 def max_walk_sat(model):
@@ -226,7 +227,7 @@ def max_walk_sat(model):
 
     evals = 0
     init_soln = model.get_neighbor()
-    while model.okay(init_soln) is False:
+    while model.okay(init_soln) is False and model.normalize_val(model.eval(init_soln)) > threshold:
         init_soln = model.get_neighbor()
 
     for i in xrange(0, max_tries):
@@ -248,7 +249,7 @@ def max_walk_sat(model):
                 i, j = model.var_bounds[c]
                 copy_list[c] = random.randrange(i, j)
 
-                if model.okay(copy_list):
+                if model.okay(copy_list) and model.normalize_val(model.eval(new_soln)) <= threshold:
                     new_soln = copy_list
                     result = "?"
                 else:
@@ -262,7 +263,7 @@ def max_walk_sat(model):
                     new_soln = copy_list
                     result = "+"
             output += result
-            if model.eval(new_soln) > model.eval(init_soln):
+            if model.eval(new_soln) > model.eval(init_soln) and model.normalize_val(model.eval(new_soln)) <= threshold:
                 init_soln = list(new_soln)
 
         print "Evals : " + str(evals) + " Current Best Energy : " + \
