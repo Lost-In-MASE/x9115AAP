@@ -238,7 +238,9 @@ def max_walk_sat(model):
         for j in xrange(0, max_changes):
             result = str()
             if model.normalize_val(model.eval(new_soln)) > threshold:
-                return init_soln
+                print("\nBest Solution : " + str(init_soln))
+                print("Best Energy : " + str(model.normalize_val(model.eval(init_soln))))
+                return
 
             c = random.randint(1, model.number_vars) - 1
             if p < random.random():
@@ -266,6 +268,9 @@ def max_walk_sat(model):
         print "Evals : " + str(evals) + " Current Best Energy : " + \
               str(model.normalize_val(model.eval(init_soln))) + " " + output
 
+    print("\nBest Solution : " + str(init_soln))
+    print("Best Energy : " + str(model.normalize_val(model.eval(init_soln))))
+
 if __name__ == '__main__':
     # a = datetime.datetime.now()
     # simulated_annealing(Kursawe())
@@ -278,5 +283,6 @@ if __name__ == '__main__':
     # print("# Runtime: %f" % ((b - a).microseconds/1000000))
 
     for software_model in [Schaffer, Osyczka, Kursawe]:
-        for optimizer in [max_walk_sat]:
+        for optimizer in [simulated_annealing, max_walk_sat]:
+            print "\n\n------------------------------------------------------------\n\n"
             optimizer(software_model())
