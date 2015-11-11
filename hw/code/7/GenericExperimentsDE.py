@@ -323,7 +323,12 @@ def differential_evolution(model):
     def get_mutation(seen):
         soln = []
         for j in xrange(model.number_vars):
-            soln.append(frontier[seen[0]][j] + 0.75 * (frontier[seen[1]][j] - frontier[seen[2]][j]))
+            l , m = model.var_bounds[j]
+            inter = (frontier[seen[0]][j] + 0.75 * (frontier[seen[1]][j] - frontier[seen[2]][j]))
+            if inter >= l and inter <= m:
+                soln.append(inter)
+            else:
+                soln.append(frontier[seen[random.randint(0, 2)]][j])
         return soln
 
 
@@ -386,7 +391,10 @@ if __name__ == '__main__':
     # b = datetime.datetime.now()
     # print("# Runtime: %f" % ((b - a).microseconds/1000000))
 
-    for software_model in [Schaffer, Osyczka, Kursawe, Golinski]:
-        for optimizer in [simulated_annealing, max_walk_sat, differential_evolution]:
-            print "\n\n------------------------------------------------------------\n\n"
-            optimizer(software_model())
+    # for software_model in [Schaffer, Osyczka, Kursawe, Golinski]:
+    #     for optimizer in [simulated_annealing, max_walk_sat, differential_evolution]:
+    #         print "\n\n------------------------------------------------------------\n\n"
+    #         optimizer(software_model())
+            
+            
+    differential_evolution(Golinski())
