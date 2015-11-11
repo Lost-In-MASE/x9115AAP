@@ -128,46 +128,6 @@ class Osyczka(BaseModel):
         return True
 
 
-class Golinski(BaseModel):
-
-    def __init__(self):
-        BaseModel.__init__(self)
-        self.model_name = "Golinski"
-        self.number_vars = 7
-        self.constraints = list()
-        self.constraints.append(lambda x: ((x[0] * (x[1] ** 2) * x[2]) ** -1 - 27 ** -1) <= 0)
-        self.constraints.append(lambda x: ((x[0] * (x[1] ** 2) * (x[2] ** 2)) ** -1 - 397.5 ** -1) <= 0)
-        self.constraints.append(lambda x: ((x[3] ** 3/(x[1] * x[2] ** 2 * x[5] ** 4)) - 1.93 ** -1) <= 0)
-        self.constraints.append(lambda x: x[4] ** 3/(x[1] * x[2] * x[6] ** 4) - 1/1.93 <= 0)
-        self.constraints.append(lambda x: x[1] * x[2] <= 0)
-        self.constraints.append(lambda x: (x[0] / x[1]) - 12 <= 0)
-        self.constraints.append(lambda x: 5 - (x[0] / x[1]) <= 0)
-        self.constraints.append(lambda x: 1.9 - x[3] + 1.5 * x[5] <= 0)
-        self.constraints.append(lambda x: 1.9 - x[4] + 1.1 * x[6] <= 0)
-        self.constraints.append(lambda x: self.f2(x) <= 1300)
-        self.constraints.append(lambda x: (((745 * x[4]/(x[1] * x[2])) ** 2 + 1.575 * 10**8) ** 0.5) /
-                                          (0.1 * x[6] ** 3) <= 1100)
-        self.var_bounds = [(2.6, 3.6), (0.7, 0.8), (17, 28), (7.3, 8.3), (7.3, 8.3), (2.9, 3.9), (5, 5.5)]
-
-    def f2(self, x):
-        return ((745 * x[3] / (x[1] * x[2])) ** 2 + 1.69 * 10 ** 7) ** 0.5 / (0.1 * x[5] ** 3)
-
-    def get_objectives(self):
-        return [
-            lambda x: 0.7854 * x[0] * (x[1]**2) * (10*(x[2]**2)/3 + 14.933*x[2] - 43.0934)
-                      - 1.508 * x[0] * (x[5]**2 + x[6]**2) + 7.477 * (x[5]**3 + x[6]**3)
-                      + 0.7854 * (x[3] * (x[5] ** 2) + x[4] * (x[6] ** 2)),
-            self.f2
-        ]
-
-    def okay(self, x):
-        for constraint in self.constraints:
-            if constraint(x) < 0:
-                return False
-
-        return True
-
-
 class Kursawe(BaseModel):
 
     def __init__(self):

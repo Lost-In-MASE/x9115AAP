@@ -2,7 +2,6 @@ from __future__ import division
 
 import random
 import math
-import datetime
 import sys
 
 
@@ -25,7 +24,10 @@ class BaseModel:
     def get_neighbor(self):
         x = list()
         for i, j in self.var_bounds:
-            x.append(random.randrange(i, j))
+            if isinstance(i, int) and isinstance(j, int):
+                x.append(random.randrange(i, j))
+            else:
+                x.append(random.uniform(i, j))
 
         return x
 
@@ -145,6 +147,43 @@ class Kursawe(BaseModel):
             lambda x: (-10 * math.exp(-0.2 * math.sqrt(x[0] ** 2 + x[1] ** 2)) +
                        (-10 * math.exp(-0.2 * math.sqrt(x[1] ** 2 + x[2] ** 2)))),
             lambda x: sum([(abs(i) ** 0.8 + 5 * math.sin(i)) for i in x])]
+
+class Golinski(BaseModel):
+
+    def __init__(self):
+        BaseModel.__init__(self)
+        self.model_name = "Golinski"
+        self.number_vars = 7
+        self.constraints = list()
+        self.constraints.append(lambda x: ((x[0] * (x[1] ** 2) * x[2]) ** -1 - 27 ** -1) <= 0)
+        self.constraints.append(lambda x: ((x[0] * (x[1] ** 2) * (x[2] ** 2)) ** -1 - 397.5 ** -1) <= 0)
+        self.constraints.append(lambda x: ((x[3] ** 3/(x[1] * x[2] ** 2 * x[5] ** 4)) - 1.93 ** -1) <= 0)
+        self.constraints.append(lambda x: x[4] ** 3/(x[1] * x[2] * x[6] ** 4) - 1/1.93 <= 0)
+        self.constraints.append(lambda x: x[1] * x[2] <= 0)
+        self.constraints.append(lambda x: (x[0] / x[1]) - 12 <= 0)
+        self.constraints.append(lambda x: 5 - (x[0] / x[1]) <= 0)
+        self.constraints.append(lambda x: 1.9 - x[3] + 1.5 * x[5] <= 0)
+        self.constraints.append(lambda x: 1.9 - x[4] + 1.1 * x[6] <= 0)
+        self.constraints.append(lambda x: self.f2(x) <= 1300)
+        self.constraints.append(lambda x: (((745 * x[4]/(x[1] * x[2])) ** 2 + 1.575 * 10**8) ** 0.5) /
+                                          (0.1 * x[6] ** 3) <= 1100)
+        self.var_bounds = [(2.6, 3.6), (0.7, 0.8), (17, 28), (7.3, 8.3), (7.3, 8.3), (2.9, 3.9), (5, 5.5)]
+
+    def f2(self, x):
+        return ((745 * x[3] / (x[1] * x[2])) ** 2 + 1.69 * 10 ** 7) ** 0.5 / (0.1 * x[5] ** 3)
+
+    def get_objectives(self):
+        return [
+            lambda x: 0.7854 * x[0] * (x[1]**2) * (10*(x[2]**2)/3 + 14.933*x[2] - 43.0934) - 1.508 * x[0] * (x[5]**2 + x[6]**2) + 7.477 * (x[5]**3 + x[6]**3) + 0.7854 * (x[3] * (x[5] ** 2) + x[4] * (x[6] ** 2)),
+            self.f2
+        ]
+
+    def okay(self, x):
+        for constraint in self.constraints:
+            if constraint(x) < 0:
+                return False
+
+        return True
 
 
 def simulated_annealing(model):
@@ -272,6 +311,58 @@ def max_walk_sat(model):
     print("\nBest Solution : " + str(init_soln))
     print("Best Energy : " + str(model.normalize_val(model.eval(init_soln))))
 
+
+def differential_evolution(model):
+
+    def build_frontier():
+        new_frontier = []
+        for _ in xrange(100):
+            neighbor = model.get_neighbor()
+            while model.okay(neighbor) is False:
+                neighbor = model.get_neighbor()
+            new_frontier.append(neighbor)
+
+        return new_frontier
+
+    def get_mutation(cur):
+        cf = 0.3
+        seen = []
+        while len(seen) < 3:
+            rand_index = random.randint(0, 99)
+            if rand_index == cur:
+                continue
+            if rand_index not in seen:
+                seen.append(rand_index)
+
+        if cf < random.random():
+            return frontier[seen[0]]
+        else:
+            soln = []
+            for j in xrange(model.number_vars):
+                soln.append(frontier[seen[0]][j] + 0.75 * (frontier[seen[1]][j] - frontier[seen[2]][j]))
+            return soln
+
+    frontier = build_frontier()
+    e = eb = model.normalize_val(model.eval(frontier[0]))
+
+    k_max = 1000
+    k = 0
+
+    while k < k_max:
+        output = ""
+        for i, solution in enumerate(frontier):
+            x = get_mutation(i)
+            if model.eval(solution) > model.eval(x):
+                frontier[i] = x
+                output += "+"
+            else:
+                output += "."
+            k += 1
+            if k % 25 is 0:
+                print output
+                output = ""
+
+
 if __name__ == '__main__':
     # a = datetime.datetime.now()
     # simulated_annealing(Kursawe())
@@ -283,7 +374,9 @@ if __name__ == '__main__':
     # b = datetime.datetime.now()
     # print("# Runtime: %f" % ((b - a).microseconds/1000000))
 
-    for software_model in [Schaffer, Osyczka, Kursawe]:
-        for optimizer in [simulated_annealing, max_walk_sat]:
-            print "\n\n------------------------------------------------------------\n\n"
-            optimizer(software_model())
+    # for software_model in [Schaffer, Osyczka, Kursawe]:
+    #     for optimizer in [simulated_annealing, max_walk_sat]:
+    #         print "\n\n------------------------------------------------------------\n\n"
+    #         optimizer(software_model())
+
+    differential_evolution(Golinski())
