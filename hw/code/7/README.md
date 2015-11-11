@@ -4,4 +4,4 @@
 
 Output shown here is only for Golinski with DE:
 
-![result_one](https://github.com/Lost-In-MASE/x9115AAP/raw/master/hw/code/7/images/de_golinski.png)
+![result_one](https://github.com/Lost-In-MASE/x9115AAP/raw/master/hw/code/7/images/de_golinski.PNG)
