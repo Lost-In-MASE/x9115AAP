@@ -16,11 +16,23 @@ Xiaoyin Wang, Lu Zhang, Tao Xie John Anvik, Jiasu Sun; "An Approach to Detecting
 Many a times multiple bugs have the same natural language and many times multiple bugs have similar execution trace with slightly different endings due to difference in some condition. Thus both these informations independently cannot determine the similarities in the bugs. Examples of these are given in the paper from the Firefox bug repository. The natural language normally represents the external appearance of the bug while the execution information normally represents the internal abnormalities in the software. Thus, combining the internal and external parameters might lead to better results. This was the key motivating factor behind combining the two approaches. 
 
 #####iii2. Hypotheses
+Till now natural language processing was the only approach available for detecting the bug reports to be similar. The accuracy of this approach achieved a recall range of 36%-50% for Firefox bug repository and suggested a list of similar bugs between 3 and 7. However this paper proposes a new approach for bug detection using additional information available in the form of execution information. The results from the paper show that the recall range for the new approach increases to 67% to 93% and suggested list size increases to 1 to 10 similar bugs for Firefox bug repository. These results seem to increase the acccuracy in detecting the duplicate bug reports and will pioneer the foundations of new ways to further explore bug reports and increase accuracy.
 
 #####iii3. Data
 The data used to collect bug reports were used from the Eclipse bug repository and Firefox bug repository. The eclipse bug repository was used to calibrate the paramters of the approach and then the firefox bug repository was used to evaluate the approach. Some of the special bug reports like feature request and the patch reports were ignored. 
 
 #####iii4. Visualization
+* **Figure-1** depicts how the recall rates vary as different parameters are modified in eclipse bug repository.
+
+![Figure-1](https://github.com/Lost-In-MASE/x9115AAP/blob/master/hw/read/5/images/Parameter_tuning_eclipse.png)
+
+* **Figure-2** shows the performance measure of different combinations of paramters in determining the similarity for the eclipse bug repository.
+
+![Figure-2](https://github.com/Lost-In-MASE/x9115AAP/blob/master/hw/read/5/images/Performance_parameters_eclipse.png)
+
+* **Figure-3** is a visual depiction of the performance measure of different combinations of parameters in determining the similarity for the Firefox bug repository. 
+
+![Figure-3](https://github.com/Lost-In-MASE/x9115AAP/blob/master/hw/read/5/images/Performance_paramter_Firefox.png)
 
 ### iv. Improvements  
 * iv1. The execution trace though adds a lot to the accuracy of bug detection, execution trace also adds added cost on the bug reporters. Bug reporters have to run the instrumented version of the software to re-generate the bugs and publish the execution trace. This can be cumbersome for the reports and time consuming as well. This can be improved in future works by adding automated ways of publishing this execution trace.  
