@@ -1,3 +1,4 @@
+
 ### i. Paper Reviewed
 Xiaoyin Wang, Lu Zhang, Tao Xie John Anvik, Jiasu Sun; "An Approach to Detecting Duplicate Bug Reports using Natural Language and Execution Information" in Software Engineering, ICSE 2008. ACM/IEEE 30th International Conference. 
 
@@ -24,15 +25,15 @@ The data used to collect bug reports were used from the Eclipse bug repository a
 #####iii4. Visualization
 * **Figure-1** depicts how the recall rates vary as different parameters are modified in eclipse bug repository.
 
-![Figure-1](https://github.com/Lost-In-MASE/x9115AAP/blob/master/hw/read/5/images/Parameter_tuning_eclipse.png)
+![Figure-1](https://github.com/Lost-In-MASE/x9115AAP/blob/master/hw/read/5/Images/Parameter_tuning_eclipse.png)
 
 * **Figure-2** shows the performance measure of different combinations of paramters in determining the similarity for the eclipse bug repository.
 
-![Figure-2](https://github.com/Lost-In-MASE/x9115AAP/blob/master/hw/read/5/images/Performance_parameters_eclipse.png)
+![Figure-2](https://github.com/Lost-In-MASE/x9115AAP/blob/master/hw/read/5/Images/Performance_parameters_eclipse.png)
 
 * **Figure-3** is a visual depiction of the performance measure of different combinations of parameters in determining the similarity for the Firefox bug repository. 
 
-![Figure-3](https://github.com/Lost-In-MASE/x9115AAP/blob/master/hw/read/5/images/Performance_paramter_Firefox.png)
+![Figure-3](https://github.com/Lost-In-MASE/x9115AAP/blob/master/hw/read/5/Images/Performance_paramter_Firefox.png)
 
 ### iv. Improvements  
 * iv1. The execution trace though adds a lot to the accuracy of bug detection, execution trace also adds added cost on the bug reporters. Bug reporters have to run the instrumented version of the software to re-generate the bugs and publish the execution trace. This can be cumbersome for the reports and time consuming as well. This can be improved in future works by adding automated ways of publishing this execution trace.  
