@@ -61,26 +61,7 @@ class BaseModel:
         return energy
 
     def get_objectives(self):
-        return self.obj_fns
-
-    def baselines(self):
-        self.lo = sys.maxint
-        self.hi = -self.lo
-
-        for _ in xrange(0, 10000):
-
-            while True:
-                soln = self.get_neighbor()
-                if self.okay(soln):
-                    break
-
-            energy = self.eval(soln)
-
-            if energy > self.hi:
-                self.hi = energy
-
-            if energy < self.lo:
-                self.lo = energy
+        return None
 
     def get_baselines(self):
         return self.lo, self.hi
@@ -168,6 +149,7 @@ class Golinski(BaseModel):
         self.constraints.append(lambda x: (((745 * x[4]/(x[1] * x[2])) ** 2 + 1.575 * 10**8) ** 0.5) /
                                           (0.1 * x[6] ** 3) <= 1100)
         self.var_bounds = [(2.6, 3.6), (0.7, 0.8), (17, 28), (7.3, 8.3), (7.3, 8.3), (2.9, 3.9), (5, 5.5)]
+        self.baselines()
 
     def f2(self, x):
         return ((745 * x[3] / (x[1] * x[2])) ** 2 + 1.69 * 10 ** 7) ** 0.5 / (0.1 * x[5] ** 3)
@@ -286,7 +268,10 @@ def max_walk_sat(model):
             if p < random.random():
                 copy_list = list(new_soln)
                 i, j = model.var_bounds[c]
-                copy_list[c] = random.randrange(i, j)
+                if isinstance(i, int) and isinstance(j, int):
+                    copy_list[c] = random.randrange(i, j)
+                else:
+                    copy_list[c] = random.uniform(i, j)
 
                 if model.okay(copy_list) and model.normalize_val(model.eval(new_soln)) <= threshold:
                     new_soln = copy_list
@@ -323,9 +308,8 @@ def differential_evolution(model):
             new_frontier.append(neighbor)
 
         return new_frontier
-
-    def get_mutation(cur):
-        cf = 0.3
+        
+    def get_frontier_neighbors(cur):
         seen = []
         while len(seen) < 3:
             rand_index = random.randint(0, 99)
@@ -333,34 +317,62 @@ def differential_evolution(model):
                 continue
             if rand_index not in seen:
                 seen.append(rand_index)
+                
+        return seen
 
-        if cf < random.random():
-            return frontier[seen[0]]
-        else:
-            soln = []
-            for j in xrange(model.number_vars):
-                soln.append(frontier[seen[0]][j] + 0.75 * (frontier[seen[1]][j] - frontier[seen[2]][j]))
-            return soln
+    def get_mutation(seen):
+        soln = []
+        for j in xrange(model.number_vars):
+            soln.append(frontier[seen[0]][j] + 0.75 * (frontier[seen[1]][j] - frontier[seen[2]][j]))
+        return soln
 
+
+    print "Model Name : " + model.model_name + ", Optimizer : differential evolution"
     frontier = build_frontier()
-    e = eb = model.normalize_val(model.eval(frontier[0]))
+    e = model.eval(frontier[0])
+    best_sol = frontier[0]
 
     k_max = 1000
     k = 0
+    cf = 0.3
+    threshold = 0
 
     while k < k_max:
         output = ""
+        
+        if model.normalize_val(e) == threshold:
+            break
+
         for i, solution in enumerate(frontier):
-            x = get_mutation(i)
-            if model.eval(solution) > model.eval(x):
-                frontier[i] = x
-                output += "+"
+            seen = get_frontier_neighbors(i)
+            mutation = frontier[seen[0]]
+            cur_e = model.eval(solution)
+            out = "."
+            if cf < random.random():
+                if model.eval(mutation) < cur_e:
+                    cur_e = model.eval(mutation)
+                    frontier[i] = mutation
+                    out += "+"
             else:
-                output += "."
+                mutation = get_mutation(seen)
+                if model.okay(mutation) and model.eval(mutation) < cur_e:
+                    frontier[i] = mutation
+                    cur_e = model.eval(mutation)
+                    out = "+"
+                        
+            if cur_e < e and model.normalize_val(cur_e) >= threshold:
+                out = "?"
+                e = cur_e
+                best_sol = frontier[i]
+                
+            output += out
             k += 1
             if k % 25 is 0:
-                print output
+                print ("%.5f,  %20s" % (model.normalize_val(e), output))
                 output = ""
+
+    print("\nBest Solution : " + str(best_sol))
+    print("Best Energy : " + str(model.normalize_val(model.eval(best_sol))))
 
 
 if __name__ == '__main__':
@@ -374,9 +386,7 @@ if __name__ == '__main__':
     # b = datetime.datetime.now()
     # print("# Runtime: %f" % ((b - a).microseconds/1000000))
 
-    # for software_model in [Schaffer, Osyczka, Kursawe]:
-    #     for optimizer in [simulated_annealing, max_walk_sat]:
-    #         print "\n\n------------------------------------------------------------\n\n"
-    #         optimizer(software_model())
-
-    differential_evolution(Golinski())
+    for software_model in [Schaffer, Osyczka, Kursawe, Golinski]:
+        for optimizer in [simulated_annealing, max_walk_sat, differential_evolution]:
+            print "\n\n------------------------------------------------------------\n\n"
+            optimizer(software_model())
