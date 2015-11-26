@@ -153,10 +153,13 @@ class Golinski(BaseModel):
 
 
 def genetic_algorithm(model):
+    population_size = 100
+    mutate_prob = 0.05
+    k_max = 1000
 
     def build_population():
         new_population = []
-        for _ in xrange(100):
+        for _ in xrange(population_size):
             neighbor = model.get_neighbor()
             while model.okay(neighbor) is False:
                 neighbor = model.get_neighbor()
@@ -164,11 +167,74 @@ def genetic_algorithm(model):
 
         return new_population
 
-    def get_mutation(parents):
-        child = []
+    def mutate(candidate):
+        for i in xrange(model.number_vars):
+            if random.random() < mutate_prob:
+                l, h = model.var_bounds[i]
+                candidate[i] = random.uniform(l, h)
 
-    def cross_over(parents):
-        child = []
+    def cross_over(parent1, parent2):
+        cross_point = random.randint(0, model.number_vars - 1)
+        child1 = []
+        child2 = []
+        for i in xrange(0, cross_point):
+            child1[i] = parent1[i]
+            child2[i] = parent2[i]
+
+        for i in xrange(cross_point, model.number_vars):
+            child1[i] = parent2[i]
+            child2[i] = parent1[i]
+
+        return (child1, child2)
+
+    def select(population):
+        pool = []
+        used = []
+
+        for _ in xrange(population_size/2):
+            c1 = random.randint(0, population_size)
+            while(c1 in used):
+                c1 = random.randint(0, population_size)
+
+            c2 = random.randint(0, population_size)
+            while(c1 in used):
+                c2 = random.randint(0, population_size)
+
+            used.append(c1)
+            used.append(c2)
+
+            if model.eval(population[c1]) > model.eval(population[c2]):
+                pool.append(c1)
+            else:
+                pool.append(c2)
+
+        return pool
+
+    print "Model Name : " + model.model_name + ", Optimizer : Genetic Algorithm"
+    population = build_population()
+    best_sol = model.eval(population[0])
+
+    for _ in xrange(k_max):
+        next_gen = []
+        best_pool = select(population)
+
+        for _ in xrange(population_size/2):
+            parent1 = population[best_pool[random.randint(0, population_size/2)]]
+            parent2 = population[best_pool[random.randint(0, population_size/2)]]
+            child1, child2 = cross_over(parent1, parent2)
+            mutate(child1)
+            mutate(child2)
+            next_gen.append(child1)
+            next_gen.append(child2)
+
+            '''Update best solution'''
+            if model.eval(child1) > best_sol:
+                best_sol = model.eval(child1)
+            if model.eval(child2) > best_sol:
+                best_sol = model.eval(child2)
+
+
+        population = next_gen
 
 
 
