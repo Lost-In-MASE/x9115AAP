@@ -197,7 +197,7 @@ def genetic_algorithm(model):
                 c1 = random.randint(0, population_size - 1)
 
             c2 = random.randint(0, population_size - 1)
-            while(c1 in used):
+            while(c2 in used):
                 c2 = random.randint(0, population_size - 1)
 
             used.append(c1)
@@ -218,7 +218,7 @@ def genetic_algorithm(model):
         next_gen = []
         best_pool = select(population)
         mating_pool_size = int(population_size/2)
-        for _ in xrange(mating_pool_size):
+        for _ in xrange(population_size):
             parent1 = population[best_pool[random.randint(0, mating_pool_size - 1)]]
             parent2 = population[best_pool[random.randint(0, mating_pool_size - 1)]]
             child1, child2 = cross_over(parent1, parent2)
@@ -233,8 +233,8 @@ def genetic_algorithm(model):
             if model.eval(child2) > best_sol:
                 best_sol = model.eval(child2)
 
-
         population = next_gen
+        print("\nBest Solution : " + str(best_sol))
 
 
 
@@ -317,8 +317,8 @@ def differential_evolution(model):
                 print ("%.5f,  %20s" % (model.normalize_val(e), output))
                 output = ""
 
-        print("\nBest Solution : " + str(best_sol))
-        print("Best Energy : " + str(model.normalize_val(model.eval(best_sol))))
+    print("\nBest Solution : " + str(best_sol))
+    print("Best Energy : " + str(model.normalize_val(model.eval(best_sol))))
 
 
 if __name__ == '__main__':
