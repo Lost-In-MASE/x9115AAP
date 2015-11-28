@@ -178,12 +178,12 @@ def genetic_algorithm(model):
         child1 = []
         child2 = []
         for i in xrange(0, cross_point):
-            child1[i] = parent1[i]
-            child2[i] = parent2[i]
+            child1.append(parent1[i])
+            child2.append(parent2[i])
 
         for i in xrange(cross_point, model.number_vars):
-            child1[i] = parent2[i]
-            child2[i] = parent1[i]
+            child1.append(parent2[i])
+            child2.append(parent1[i])
 
         return (child1, child2)
 
@@ -191,14 +191,14 @@ def genetic_algorithm(model):
         pool = []
         used = []
 
-        for _ in xrange(population_size/2):
-            c1 = random.randint(0, population_size)
+        for _ in xrange(int(population_size/2)):
+            c1 = random.randint(0, population_size - 1)
             while(c1 in used):
-                c1 = random.randint(0, population_size)
+                c1 = random.randint(0, population_size - 1)
 
-            c2 = random.randint(0, population_size)
+            c2 = random.randint(0, population_size - 1)
             while(c1 in used):
-                c2 = random.randint(0, population_size)
+                c2 = random.randint(0, population_size - 1)
 
             used.append(c1)
             used.append(c2)
@@ -217,10 +217,10 @@ def genetic_algorithm(model):
     for _ in xrange(k_max):
         next_gen = []
         best_pool = select(population)
-
-        for _ in xrange(population_size/2):
-            parent1 = population[best_pool[random.randint(0, population_size/2)]]
-            parent2 = population[best_pool[random.randint(0, population_size/2)]]
+        mating_pool_size = int(population_size/2)
+        for _ in xrange(mating_pool_size):
+            parent1 = population[best_pool[random.randint(0, mating_pool_size - 1)]]
+            parent2 = population[best_pool[random.randint(0, mating_pool_size - 1)]]
             child1, child2 = cross_over(parent1, parent2)
             mutate(child1)
             mutate(child2)
@@ -317,9 +317,9 @@ def differential_evolution(model):
                 print ("%.5f,  %20s" % (model.normalize_val(e), output))
                 output = ""
 
-    print("\nBest Solution : " + str(best_sol))
-    print("Best Energy : " + str(model.normalize_val(model.eval(best_sol))))
+        print("\nBest Solution : " + str(best_sol))
+        print("Best Energy : " + str(model.normalize_val(model.eval(best_sol))))
 
 
 if __name__ == '__main__':
-    differential_evolution(Golinski())
+    genetic_algorithm(Osyczka())
