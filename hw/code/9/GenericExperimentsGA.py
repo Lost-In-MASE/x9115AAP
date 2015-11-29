@@ -243,7 +243,7 @@ def genetic_algorithm(model):
                 print ("%.5f,  %20s" % (model.normalize_val(best_sol), output))
                 output = ""
         population = next_gen
-        print("\nBest Solution : " + str(best_sol))
+        #print("\nBest Solution : " + str(best_sol))
 
 
 
