@@ -215,10 +215,13 @@ def genetic_algorithm(model):
     best_sol = model.eval(population[0])
 
     for _ in xrange(k_max):
+        output = ""
+        k = 0
         next_gen = []
         best_pool = select(population)
         mating_pool_size = int(population_size/2)
         for _ in xrange(population_size):
+            out = "."
             parent1 = population[best_pool[random.randint(0, mating_pool_size - 1)]]
             parent2 = population[best_pool[random.randint(0, mating_pool_size - 1)]]
             child1, child2 = cross_over(parent1, parent2)
@@ -230,9 +233,15 @@ def genetic_algorithm(model):
             '''Update best solution'''
             if model.eval(child1) > best_sol:
                 best_sol = model.eval(child1)
+                out = "+"
             if model.eval(child2) > best_sol:
                 best_sol = model.eval(child2)
-
+                out = "+"
+            k += 1
+            output += out
+            if k % 25 is 0:
+                print ("%.5f,  %20s" % (model.normalize_val(best_sol), output))
+                output = ""
         population = next_gen
         print("\nBest Solution : " + str(best_sol))
 
