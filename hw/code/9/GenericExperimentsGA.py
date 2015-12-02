@@ -155,6 +155,7 @@ class Golinski(BaseModel):
 def genetic_algorithm(model):
     population_size = 100
     mutate_prob = 0.05
+    cross_prob = 0.80
     k_max = 1000
 
     def build_population():
@@ -224,19 +225,23 @@ def genetic_algorithm(model):
             out = "."
             parent1 = population[best_pool[random.randint(0, mating_pool_size - 1)]]
             parent2 = population[best_pool[random.randint(0, mating_pool_size - 1)]]
-            child1, child2 = cross_over(parent1, parent2)
-            mutate(child1)
-            mutate(child2)
-            next_gen.append(child1)
-            next_gen.append(child2)
+            if random.random() < cross_prob:
+                child1, child2 = cross_over(parent1, parent2)
+                mutate(child1)
+                mutate(child2)
+                next_gen.append(child1)
+                next_gen.append(child2)
 
-            '''Update best solution'''
-            if model.eval(child1) > best_sol:
-                best_sol = model.eval(child1)
-                out = "+"
-            if model.eval(child2) > best_sol:
-                best_sol = model.eval(child2)
-                out = "+"
+                '''Update best solution'''
+                if model.eval(child1) > best_sol:
+                    best_sol = model.eval(child1)
+                    out = "+"
+                if model.eval(child2) > best_sol:
+                    best_sol = model.eval(child2)
+                    out = "+"
+            else:
+                next_gen.append(parent1)
+                next_gen.append(parent2)
             k += 1
             output += out
             if k % 25 is 0:
