@@ -151,10 +151,51 @@ class Golinski(BaseModel):
 
         return True
 
+class DTLZ7(BaseModel):
+
+
+    def __init__(self, num_dec, num_obj):
+        BaseModel.__init__(self)
+        self.model_name = "DTLZ7"
+        self.number_vars = num_dec
+        self.number_obj = num_obj
+        self.var_bounds = []
+        for _ in xrange(self.number_vars):
+            self.var_bounds.append((0,1))
+        self.baselines()
+
+    def gx(self, x):
+        y = 0.0
+        for i in xrange(0, self.number_vars):
+            y += x[i]
+        return(9*y/self.number_vars)
+
+    def hx(self, f, g, x):
+        y = 0.0
+        for i in xrange(0, self.number_obj - 1):
+            y += (f[i](x) / (1 + g)) * (1 + math.sin(3 * math.pi * f[i](x)))
+        return self.number_obj - y
+
+    def last_obj(self, x, f):
+        g = 1 + self.gx(x)
+        res = (1 + g) * self.hx(f, g, x)
+        return res
+
+    def obj(self, x, i):
+        return x[i]
+
+    def get_objectives(self):
+        f = [None] * self.number_obj
+        for i in xrange(0, self.number_obj - 1):
+            f[i] = lambda x : self.obj(x, i)
+        f[self.number_obj - 1] = lambda x : self.last_obj(x, f)
+
+        return f
 
 def genetic_algorithm(model):
     population_size = 100
     mutate_prob = 0.05
+    cross_prob = 0.80
     k_max = 1000
 
     def build_population():
@@ -224,111 +265,31 @@ def genetic_algorithm(model):
             out = "."
             parent1 = population[best_pool[random.randint(0, mating_pool_size - 1)]]
             parent2 = population[best_pool[random.randint(0, mating_pool_size - 1)]]
-            child1, child2 = cross_over(parent1, parent2)
-            mutate(child1)
-            mutate(child2)
-            next_gen.append(child1)
-            next_gen.append(child2)
+            if random.random() < cross_prob:
+                child1, child2 = cross_over(parent1, parent2)
+                mutate(child1)
+                mutate(child2)
+                next_gen.append(child1)
+                next_gen.append(child2)
 
-            '''Update best solution'''
-            if model.eval(child1) > best_sol:
-                best_sol = model.eval(child1)
-                out = "+"
-            if model.eval(child2) > best_sol:
-                best_sol = model.eval(child2)
-                out = "+"
+                '''Update best solution'''
+                if model.eval(child1) > best_sol:
+                    best_sol = model.eval(child1)
+                    out = "+"
+                if model.eval(child2) > best_sol:
+                    best_sol = model.eval(child2)
+                    out = "+"
+            else:
+                next_gen.append(parent1)
+                next_gen.append(parent2)
             k += 1
             output += out
             if k % 25 is 0:
-                print ("%.5f,  %20s" % (model.normalize_val(best_sol), output))
+                print ("%.5f,  %20s" % (best_sol, output))
                 output = ""
         population = next_gen
         #print("\nBest Solution : " + str(best_sol))
 
 
-
-def differential_evolution(model):
-
-    def build_frontier():
-        new_frontier = []
-        for _ in xrange(100):
-            neighbor = model.get_neighbor()
-            while model.okay(neighbor) is False:
-                neighbor = model.get_neighbor()
-            new_frontier.append(neighbor)
-
-        return new_frontier
-        
-    def get_frontier_neighbors(cur):
-        seen = []
-        while len(seen) < 3:
-            rand_index = random.randint(0, 99)
-            if rand_index == cur:
-                continue
-            if rand_index not in seen:
-                seen.append(rand_index)
-                
-        return seen
-
-    def get_mutation(seen):
-        soln = []
-        for j in xrange(model.number_vars):
-            l , m = model.var_bounds[j]
-            inter = (frontier[seen[0]][j] + 0.75 * (frontier[seen[1]][j] - frontier[seen[2]][j]))
-            if inter >= l and inter <= m:
-                soln.append(inter)
-            else:
-                soln.append(frontier[seen[random.randint(0, 2)]][j])
-        return soln
-
-
-    print "Model Name : " + model.model_name + ", Optimizer : differential evolution"
-    frontier = build_frontier()
-    e = model.eval(frontier[0])
-    best_sol = frontier[0]
-
-    k_max = 1000
-    k = 0
-    cf = 0.3
-    threshold = 0
-
-    while k < k_max:
-        output = ""
-        
-        if model.normalize_val(e) == threshold:
-            break
-
-        for i, solution in enumerate(frontier):
-            seen = get_frontier_neighbors(i)
-            mutation = frontier[seen[0]]
-            cur_e = model.eval(solution)
-            out = "."
-            if cf < random.random():
-                if model.eval(mutation) < cur_e:
-                    cur_e = model.eval(mutation)
-                    frontier[i] = mutation
-                    out += "+"
-            else:
-                mutation = get_mutation(seen)
-                if model.okay(mutation) and model.eval(mutation) < cur_e:
-                    frontier[i] = mutation
-                    cur_e = model.eval(mutation)
-                    out = "+"
-                        
-            if cur_e < e and model.normalize_val(cur_e) >= threshold:
-                out = "?"
-                e = cur_e
-                best_sol = frontier[i]
-                
-            output += out
-            k += 1
-            if k % 25 is 0:
-                print ("%.5f,  %20s" % (model.normalize_val(e), output))
-                output = ""
-
-    print("\nBest Solution : " + str(best_sol))
-    print("Best Energy : " + str(model.normalize_val(model.eval(best_sol))))
-
-
 if __name__ == '__main__':
-    genetic_algorithm(Osyczka())
+    genetic_algorithm(DTLZ7(10, 2))
