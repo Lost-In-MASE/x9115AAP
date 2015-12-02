@@ -166,9 +166,49 @@ class Golinski(BaseModel):
                 return False
 
         return True
+        
+class DTLZ7(BaseModel):
 
+    def __init__(self):
+        BaseModel.__init__(self)
+        self.model_name = "Golinski"
+        self.number_vars = 7
+        self.constraints = list()
+        for i in xrange(0, 10):
+            self.constraints.append(lambda x: x[i] >= 0 and x[i] <= 1)
+        self.baselines()
+        
+    def f2(self, x):
+        f1 = x[0]
+        f2 = (1 + self.f_1(x)) * self.f_2(f1, self.f_1(x),2)
+        return f2
+
+    def f_1(self, x):
+        res = sum(x)
+        res = 1 + (9/len(x))*res
+        return res
+
+    def f_2(self, f1, g, M):
+        theeta = 3 * math.pi * f1
+        res = (f1/(1+g))*(1+math.sin(theeta))
+        res = M - res
+        return res
+    
+    def get_objectives(self):
+        return [
+            lambda x: x[0],
+            self.f2
+        ]
+    
+    def okay(self, x):
+        for constraint in self.constraints:
+            if constraint(x) < 0:
+                return False
+
+        return True
 
 def simulated_annealing(model):
+    
     
     def get_probability(cur_energy, neighbor_energy, count):
         return math.exp((cur_energy - neighbor_energy)/count)
