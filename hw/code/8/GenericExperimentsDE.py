@@ -4,6 +4,8 @@ import random
 import math
 import sys
 
+from sk import a12
+
 
 class BaseModel:
 
@@ -51,7 +53,8 @@ class BaseModel:
                 self.lo = energy
 
     def normalize_val(self, value):
-        return (value - self.lo)/(self.hi - self.lo)
+        return value
+        # return (value - self.lo)/(self.hi - self.lo)
 
     def eval(self, x):
         energy = 0
@@ -171,11 +174,12 @@ class DTLZ7(BaseModel):
 
     def __init__(self):
         BaseModel.__init__(self)
-        self.model_name = "Golinski"
-        self.number_vars = 7
+        self.model_name = "DTLZ7"
+        self.number_vars = 10
         self.constraints = list()
-        for i in xrange(0, 10):
+        for i in xrange(0, self.number_vars):
             self.constraints.append(lambda x: x[i] >= 0 and x[i] <= 1)
+        self.var_bounds = [(0, 1), (0, 1), (0, 1), (0, 1), (0, 1), (0, 1), (0, 1), (0, 1), (0, 1), (0, 1)]
         self.baselines()
         
     def f2(self, x):
@@ -376,11 +380,16 @@ def differential_evolution(model):
     frontier = build_frontier()
     e = model.eval(frontier[0])
     best_sol = frontier[0]
+    
+    eras = 3
+    previous_era = []
+    current_era = []
+    era_length = 100
 
     k_max = 1000
     k = 0
     cf = 0.3
-    threshold = 0
+    threshold = model.hi
 
     while k < k_max:
         output = ""
@@ -415,9 +424,42 @@ def differential_evolution(model):
             if k % 25 is 0:
                 print ("%.5f,  %20s" % (model.normalize_val(e), output))
                 output = ""
+            
+            if (k + 1) % 100 is 0:
+                if len(previous_era) is not 0:
+                    eras += type2(previous_era, current_era, model)
+                    
+                previous_era = list(current_era)
+                current_era = []
+            else:
+                current_era.append(solution)
+                
+            if eras == 0:
+                print "Early Termination " + str(k) + " : " + str(eras)
+                return
 
     print("\nBest Solution : " + str(best_sol))
     print("Best Energy : " + str(model.normalize_val(model.eval(best_sol))))
+    print("\n Eras : " + str(eras) + " : " + str(k))
+    
+def type1(solution, sb, model):
+    if model.eval(solution) > model.eval(sb):
+        return True
+        
+    return False
+    
+def type2(era_one, era_two, model):
+    for objective in model.get_objectives():
+        era_one_objective = []
+        era_two_objective = []
+        for i in xrange(0, len(era_one)):
+            era_one_objective.append(objective(era_one[i]))
+            era_two_objective.append(objective(era_two[i]))
+        if (a12(era_one_objective, era_two_objective) > 0.56):
+            return 5
+    
+
+    return -1
 
 
 if __name__ == '__main__':
@@ -437,4 +479,4 @@ if __name__ == '__main__':
     #         optimizer(software_model())
             
             
-    differential_evolution(Golinski())
+    differential_evolution(DTLZ7())
