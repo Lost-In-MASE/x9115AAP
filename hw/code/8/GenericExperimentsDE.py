@@ -176,9 +176,6 @@ class DTLZ7(BaseModel):
         BaseModel.__init__(self)
         self.model_name = "DTLZ7"
         self.number_vars = 10
-        self.constraints = list()
-        for i in xrange(0, self.number_vars):
-            self.constraints.append(lambda x: x[i] >= 0 and x[i] <= 1)
         self.var_bounds = [(0, 1), (0, 1), (0, 1), (0, 1), (0, 1), (0, 1), (0, 1), (0, 1), (0, 1), (0, 1)]
         self.baselines()
         
@@ -203,13 +200,6 @@ class DTLZ7(BaseModel):
             lambda x: x[0],
             self.f2
         ]
-    
-    def okay(self, x):
-        for constraint in self.constraints:
-            if constraint(x) < 0:
-                return False
-
-        return True
 
 def simulated_annealing(model):
     
