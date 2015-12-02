@@ -53,8 +53,8 @@ class BaseModel:
                 self.lo = energy
 
     def normalize_val(self, value):
-        return value
-        # return (value - self.lo)/(self.hi - self.lo)
+        # return value
+        return (value - self.lo)/(self.hi - self.lo)
 
     def eval(self, x):
         energy = 0
@@ -436,7 +436,7 @@ def differential_evolution(model):
                 
             if eras == 0:
                 print "Early Termination " + str(k) + " : " + str(eras)
-                return
+                break
 
     print("\nBest Solution : " + str(best_sol))
     print("Best Energy : " + str(model.normalize_val(model.eval(best_sol))))
@@ -457,7 +457,6 @@ def type2(era_one, era_two, model):
             era_two_objective.append(objective(era_two[i]))
         if (a12(era_one_objective, era_two_objective) > 0.56):
             return 5
-    
 
     return -1
 
@@ -479,4 +478,4 @@ if __name__ == '__main__':
     #         optimizer(software_model())
             
             
-    differential_evolution(DTLZ7())
+    differential_evolution(Golinski())
