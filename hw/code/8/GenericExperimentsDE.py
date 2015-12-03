@@ -5,7 +5,7 @@ import math
 import sys
 
 from sk import a12
-
+from sk import rdivDemo
 
 class BaseModel:
 
@@ -214,17 +214,40 @@ def simulated_annealing(model):
     
     def get_probability(cur_energy, neighbor_energy, count):
         return math.exp((cur_energy - neighbor_energy)/count)
+        
+    def type1(solution, sb, model):
+        if model.eval(solution) > model.eval(sb):
+            return True
+        
+        return False
+    
+    def type2(era_one, era_two, model):
+        for objective in model.get_objectives():
+            era_one_objective = []
+            era_two_objective = []
+            for i in xrange(0, len(era_one)):
+                era_one_objective.append(objective(era_one[i]))
+                era_two_objective.append(objective(era_two[i]))
+            if (a12(era_one_objective, era_two_objective) > 0.56):
+                return 5
+
+        return -1
 
     print "Model Name : " + model.model_name + ", Optimizer : simulated annealing"
     
     # Base variables
-    kMax = 1000
-    eMax = -.1
+    kMax = 10**5
+    eMax = 0
     output = ""
 
     # Start with a random value
     start_val = model.get_neighbor()
     cur_energy = model.normalize_val(model.eval(start_val))
+    
+    eras = 10
+    previous_era = []
+    current_era = []
+    era_length = 100
 
     best_energy = cur_energy
     best_val = start_val
@@ -258,11 +281,25 @@ def simulated_annealing(model):
             print ("%6d : %.5f,  %25s" % (i, best_energy, output))
             output = ""
             cur_energy = 1
+            
+        if i % 100 is 0 and i is not 0:
+            if len(previous_era) is not 0:
+                eras += type2(previous_era, current_era, model)
+                    
+            previous_era = list(current_era)
+            current_era = []
+        else:
+            current_era.append(mutated_neighbor)
+                
+        if eras == 0:
+            print "Early Termination " + str(i) + " : " + str(eras)
+            return previous_era
 
         i += 1
 
     print("Best Value : " + str(best_val))
     print("Best Energy : %f" % best_energy)
+    return previous_era
 
 
 def max_walk_sat(model):
@@ -279,14 +316,37 @@ def max_walk_sat(model):
             if model.okay(solution) and model.eval(solution) > model.eval(best):
                 best = list(solution)
         return best, evaluations
+        
+    def type1(solution, sb, model):
+        if model.eval(solution) > model.eval(sb):
+            return True
+        
+        return False
+    
+    def type2(era_one, era_two, model):
+        for objective in model.get_objectives():
+            era_one_objective = []
+            era_two_objective = []
+            for i in xrange(0, len(era_one)):
+                era_one_objective.append(objective(era_one[i]))
+                era_two_objective.append(objective(era_two[i]))
+            if (a12(era_one_objective, era_two_objective) > 0.56):
+                return 5
+
+        return -1
 
     print "Model Name : " + model.model_name + ", Optimizer : max walk sat"
     
-    max_tries = 100
+    max_tries = 100000
     max_changes = 50
     p = 0.5
     threshold = 1
     steps = 10
+    
+    eras = 3
+    previous_era = []
+    current_era = []
+    era_length = 100
 
     evals = 0
     init_soln = model.get_neighbor()
@@ -304,7 +364,10 @@ def max_walk_sat(model):
             if model.normalize_val(model.eval(new_soln)) > threshold:
                 print("\nBest Solution : " + str(init_soln))
                 print("Best Energy : " + str(model.normalize_val(model.eval(init_soln))))
-                return
+                if len(previous_era) is not 0:
+                    return previous_era
+                else:
+                    return current_era
 
             c = random.randint(1, model.number_vars) - 1
             if p < random.random():
@@ -334,9 +397,26 @@ def max_walk_sat(model):
 
         print "Evals : " + str(evals) + " Current Best Energy : " + \
               str(model.normalize_val(model.eval(init_soln))) + " " + output
+              
+        if i % 100 is 0 and i is not 0:
+            if len(previous_era) is not 0:
+                eras += type2(previous_era, current_era, model)
+                    
+            previous_era = list(current_era)
+            current_era = []
+        else:
+            current_era.append(new_soln)
+                
+        if eras == 0:
+            print "Early Termination " + str(i) + " : " + str(eras)
+            return previous_era
 
     print("\nBest Solution : " + str(init_soln))
     print("Best Energy : " + str(model.normalize_val(model.eval(init_soln))))
+    if len(previous_era) is not 0:
+        return previous_era
+    else:
+        return current_era
 
 
 def differential_evolution(model):
@@ -452,10 +532,11 @@ def differential_evolution(model):
                 
             if eras == 0:
                 print "Early Termination " + str(k) + " : " + str(eras)
-                return
+                return previous_era
 
     print("\nBest Solution : " + str(best_sol))
     print("Best Energy : " + str(model.normalize_val(model.eval(best_sol))))
+    return previous_era
 
 
 if __name__ == '__main__':
@@ -474,5 +555,14 @@ if __name__ == '__main__':
     #         print "\n\n------------------------------------------------------------\n\n"
     #         optimizer(software_model())
             
-            
-    differential_evolution(DTLZ7(10, 2))
+    era_collection = []
+    text = ["SA2", "DE3"]
+    ct = 0
+    model = DTLZ7(10, 2)
+    for optimizer in [simulated_annealing, differential_evolution]:
+        era_val = [model.eval(val) for val in optimizer(model)]
+        era_val.insert(0, text[ct])
+        era_collection.append(era_val)
+        ct += 1
+        
+    print rdivDemo(era_collection)
