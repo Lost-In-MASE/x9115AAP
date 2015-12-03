@@ -284,7 +284,7 @@ def simulated_annealing(model):
             
         if i % 100 is 0 and i is not 0:
             if len(previous_era) is not 0:
-                eras += type2(previous_era, current_era, model)
+                eras += type2(current_era, previous_era, model)
                     
             previous_era = list(current_era)
             current_era = []
@@ -400,7 +400,7 @@ def max_walk_sat(model):
               
         if i % 100 is 0 and i is not 0:
             if len(previous_era) is not 0:
-                eras += type2(previous_era, current_era, model)
+                eras += type2(current_era, previous_era, model)
                     
             previous_era = list(current_era)
             current_era = []
@@ -523,7 +523,7 @@ def differential_evolution(model):
                 
             if k % 100 is 0 and k is not 0:
                 if len(previous_era) is not 0:
-                    eras += type2(previous_era, current_era, model)
+                    eras += type2(current_era, previous_era, model)
                     
                 previous_era = list(current_era)
                 current_era = []
@@ -556,13 +556,14 @@ if __name__ == '__main__':
     #         optimizer(software_model())
             
     era_collection = []
-    text = ["SA2", "DE3"]
+    text = ["MWS1", "SA2", "DE3"]
     ct = 0
     model = DTLZ7(10, 2)
-    for optimizer in [simulated_annealing, differential_evolution]:
+    for optimizer in [max_walk_sat, simulated_annealing, differential_evolution]:
         era_val = [model.eval(val) for val in optimizer(model)]
         era_val.insert(0, text[ct])
         era_collection.append(era_val)
         ct += 1
         
+    # print era_collection[0]
     print rdivDemo(era_collection)
