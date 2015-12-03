@@ -209,8 +209,8 @@ class DTLZ7(BaseModel):
 
         return f
 
+
 def simulated_annealing(model):
-    
     
     def get_probability(cur_energy, neighbor_energy, count):
         return math.exp((cur_energy - neighbor_energy)/count)
@@ -372,6 +372,24 @@ def differential_evolution(model):
             else:
                 soln.append(frontier[seen[random.randint(0, 2)]][j])
         return soln
+        
+    def type1(solution, sb, model):
+        if model.eval(solution) > model.eval(sb):
+            return True
+        
+        return False
+    
+    def type2(era_one, era_two, model):
+        for objective in model.get_objectives():
+            era_one_objective = []
+            era_two_objective = []
+            for i in xrange(0, len(era_one)):
+                era_one_objective.append(objective(era_one[i]))
+                era_two_objective.append(objective(era_two[i]))
+            if (a12(era_one_objective, era_two_objective) > 0.56):
+                return 5
+
+        return -1
 
 
     print "Model Name : " + model.model_name + ", Optimizer : differential evolution"
@@ -384,10 +402,10 @@ def differential_evolution(model):
     current_era = []
     era_length = 100
 
-    k_max = sys.maxint
+    k_max = 100000
     k = 0
     cf = 0.3
-    threshold = 1
+    threshold = 0
 
     while k < k_max:
         output = ""
@@ -422,8 +440,8 @@ def differential_evolution(model):
             if k % 25 is 0:
                 print ("%.5f,  %20s" % (model.normalize_val(e), output))
                 output = ""
-            
-            if (k + 1) % 100 is 0:
+                
+            if k % 100 is 0 and k is not 0:
                 if len(previous_era) is not 0:
                     eras += type2(previous_era, current_era, model)
                     
@@ -438,25 +456,6 @@ def differential_evolution(model):
 
     print("\nBest Solution : " + str(best_sol))
     print("Best Energy : " + str(model.normalize_val(model.eval(best_sol))))
-    print("\n Eras : " + str(eras) + " : " + str(k))
-    
-def type1(solution, sb, model):
-    if model.eval(solution) > model.eval(sb):
-        return True
-        
-    return False
-    
-def type2(era_one, era_two, model):
-    for objective in model.get_objectives():
-        era_one_objective = []
-        era_two_objective = []
-        for i in xrange(0, len(era_one)):
-            era_one_objective.append(objective(era_one[i]))
-            era_two_objective.append(objective(era_two[i]))
-        if (a12(era_one_objective, era_two_objective) > 0.56):
-            return 5
-
-    return -1
 
 
 if __name__ == '__main__':
