@@ -24,10 +24,11 @@ class BaseModel:
         return True
         
     def type1(self, solution, sb):
-        if eval(solution) > eval(sb):
-            return True
+        for objective in self.get_objectives():
+            if objective(solution) > objective(sb):
+                return False
         
-        return False
+        return True
 
     def get_neighbor(self):
         x = list()
@@ -236,7 +237,7 @@ def simulated_annealing(model):
     print "Model Name : " + model.model_name + ", Optimizer : simulated annealing"
     
     # Base variables
-    kMax = 10**5
+    kMax = 10000
     eMax = 0
     output = ""
 
@@ -260,12 +261,12 @@ def simulated_annealing(model):
         
         neighbor_energy = model.normalize_val(model.eval(mutated_neighbor))
 
-        if neighbor_energy < best_energy:
+        if model.type1(mutated_neighbor, best_val):
             best_energy = neighbor_energy
             best_val = mutated_neighbor
             output += "!"
 
-        if neighbor_energy < cur_energy:
+        if model.type1(mutated_neighbor, cur_val):
             cur_energy = neighbor_energy
             cur_val = mutated_neighbor
             output += "+"
@@ -313,7 +314,7 @@ def max_walk_sat(model):
         for k in xrange(0, steps):
             evaluations += 1
             solution[index] = low + delta*k
-            if model.okay(solution) and model.eval(solution) < model.eval(best):
+            if model.okay(solution) and model.type1(best, solution):
                 best = list(solution)
         return best, evaluations
     
@@ -344,7 +345,7 @@ def max_walk_sat(model):
 
     evals = 0
     init_soln = model.get_neighbor()
-    while model.okay(init_soln) is False and model.normalize_val(model.eval(init_soln)) > threshold:
+    while model.okay(init_soln) is False and model.normalize_val(model.eval(init_soln)) < threshold:
         init_soln = model.get_neighbor()
 
     for i in xrange(0, max_tries):
@@ -355,7 +356,7 @@ def max_walk_sat(model):
 
         for j in xrange(0, max_changes):
             result = str()
-            if model.normalize_val(model.eval(new_soln)) <= threshold:
+            if model.normalize_val(model.eval(new_soln)) < threshold:
                 print("\nBest Solution : " + str(init_soln))
                 print("Best Energy : " + str(model.normalize_val(model.eval(init_soln))))
                 if len(previous_era) is not 0:
@@ -386,24 +387,24 @@ def max_walk_sat(model):
                     new_soln = copy_list
                     result = "+"
             output += result
-            if model.eval(new_soln) < model.eval(init_soln) and model.normalize_val(model.eval(new_soln)) >= threshold:
+            if model.type1(new_soln, init_soln) and model.normalize_val(model.eval(new_soln)) >= threshold:
                 init_soln = list(new_soln)
+                
+            if len(current_era) is 100:
+                if len(previous_era) is not 0:
+                    eras += type2(current_era, previous_era, model)
+                    
+                    previous_era = list(current_era)
+                    current_era = []
+                else:
+                    current_era.append(new_soln)
+                
+            if eras == 0:
+                print "Early Termination " + str(i) + " : " + str(eras)
+                return previous_era
 
         print "Evals : " + str(evals) + " Current Best Energy : " + \
               str(model.normalize_val(model.eval(init_soln))) + " " + output
-              
-        if i % 100 is 0 and i is not 0:
-            if len(previous_era) is not 0:
-                eras += type2(current_era, previous_era, model)
-                    
-            previous_era = list(current_era)
-            current_era = []
-        else:
-            current_era.append(new_soln)
-                
-        if eras == 0:
-            print "Early Termination " + str(i) + " : " + str(eras)
-            return previous_era
 
     print("\nBest Solution : " + str(init_soln))
     print("Best Energy : " + str(model.normalize_val(model.eval(init_soln))))
@@ -470,7 +471,7 @@ def differential_evolution(model):
     current_era = []
     era_length = 100
 
-    k_max = 100000
+    k_max = 1000
     k = 0
     cf = 0.3
     threshold = 0
@@ -487,18 +488,20 @@ def differential_evolution(model):
             cur_e = model.eval(solution)
             out = "."
             if cf < random.random():
-                if model.eval(mutation) < cur_e:
+                if model.type1(mutation, solution):
                     cur_e = model.eval(mutation)
                     frontier[i] = mutation
+                    solution = mutation
                     out += "+"
             else:
                 mutation = get_mutation(seen)
-                if model.okay(mutation) and model.eval(mutation) < cur_e:
+                if model.okay(mutation) and model.type1(mutation, solution):
                     frontier[i] = mutation
+                    solution = mutation
                     cur_e = model.eval(mutation)
                     out = "+"
                         
-            if cur_e < e and model.normalize_val(cur_e) >= threshold:
+            if model.type1(solution, best_sol) and model.normalize_val(cur_e) >= threshold:
                 out = "?"
                 e = cur_e
                 best_sol = frontier[i]
