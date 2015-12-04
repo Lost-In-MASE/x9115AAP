@@ -337,10 +337,10 @@ def max_walk_sat(model):
 
     print "Model Name : " + model.model_name + ", Optimizer : max walk sat"
     
-    max_tries = 100000
+    max_tries = 100
     max_changes = 50
     p = 0.5
-    threshold = 1
+    threshold = 1.3
     steps = 10
     
     eras = 3
@@ -556,14 +556,17 @@ if __name__ == '__main__':
     #         optimizer(software_model())
             
     era_collection = []
-    text = ["MWS1", "SA2", "DE3"]
+    text = ["MWS", "SA", "DE"]
     ct = 0
     model = DTLZ7(10, 2)
-    for optimizer in [max_walk_sat, simulated_annealing, differential_evolution]:
-        era_val = [model.eval(val) for val in optimizer(model)]
-        era_val.insert(0, text[ct])
-        era_collection.append(era_val)
-        ct += 1
+    i = 1
+    for _ in xrange(0, 3):
+        i += 1
+        for optimizer in [max_walk_sat, simulated_annealing, differential_evolution]:
+            era_val = [model.eval(val) for val in optimizer(model)]
+            era_val.insert(0, text[ct%3] + str(i))
+            era_collection.append(era_val)
+            ct += 1
         
-    # print era_collection[0]
+    # print era_collection
     print rdivDemo(era_collection)
