@@ -22,6 +22,12 @@ class BaseModel:
 
     def okay(self, _):
         return True
+        
+    def type1(self, solution, sb):
+        if eval(solution) > eval(sb):
+            return True
+        
+        return False
 
     def get_neighbor(self):
         x = list()
@@ -214,12 +220,6 @@ def simulated_annealing(model):
     
     def get_probability(cur_energy, neighbor_energy, count):
         return math.exp((cur_energy - neighbor_energy)/count)
-        
-    def type1(solution, sb, model):
-        if model.eval(solution) > model.eval(sb):
-            return True
-        
-        return False
     
     def type2(era_one, era_two, model):
         for objective in model.get_objectives():
@@ -313,15 +313,9 @@ def max_walk_sat(model):
         for k in xrange(0, steps):
             evaluations += 1
             solution[index] = low + delta*k
-            if model.okay(solution) and model.eval(solution) > model.eval(best):
+            if model.okay(solution) and model.eval(solution) < model.eval(best):
                 best = list(solution)
         return best, evaluations
-        
-    def type1(solution, sb, model):
-        if model.eval(solution) > model.eval(sb):
-            return True
-        
-        return False
     
     def type2(era_one, era_two, model):
         for objective in model.get_objectives():
@@ -340,7 +334,7 @@ def max_walk_sat(model):
     max_tries = 100
     max_changes = 50
     p = 0.5
-    threshold = 1.3
+    threshold = 0
     steps = 10
     
     eras = 3
@@ -361,7 +355,7 @@ def max_walk_sat(model):
 
         for j in xrange(0, max_changes):
             result = str()
-            if model.normalize_val(model.eval(new_soln)) > threshold:
+            if model.normalize_val(model.eval(new_soln)) <= threshold:
                 print("\nBest Solution : " + str(init_soln))
                 print("Best Energy : " + str(model.normalize_val(model.eval(init_soln))))
                 if len(previous_era) is not 0:
@@ -378,7 +372,7 @@ def max_walk_sat(model):
                 else:
                     copy_list[c] = random.uniform(i, j)
 
-                if model.okay(copy_list) and model.normalize_val(model.eval(new_soln)) <= threshold:
+                if model.okay(copy_list) and model.normalize_val(model.eval(new_soln)) >= threshold:
                     new_soln = copy_list
                     result = "?"
                 else:
@@ -392,7 +386,7 @@ def max_walk_sat(model):
                     new_soln = copy_list
                     result = "+"
             output += result
-            if model.eval(new_soln) > model.eval(init_soln) and model.normalize_val(model.eval(new_soln)) <= threshold:
+            if model.eval(new_soln) < model.eval(init_soln) and model.normalize_val(model.eval(new_soln)) >= threshold:
                 init_soln = list(new_soln)
 
         print "Evals : " + str(evals) + " Current Best Energy : " + \
@@ -452,12 +446,6 @@ def differential_evolution(model):
             else:
                 soln.append(frontier[seen[random.randint(0, 2)]][j])
         return soln
-        
-    def type1(solution, sb, model):
-        if model.eval(solution) > model.eval(sb):
-            return True
-        
-        return False
     
     def type2(era_one, era_two, model):
         for objective in model.get_objectives():
@@ -559,14 +547,15 @@ if __name__ == '__main__':
     text = ["MWS", "SA", "DE"]
     ct = 0
     model = DTLZ7(10, 2)
-    i = 1
-    for _ in xrange(0, 3):
-        i += 1
-        for optimizer in [max_walk_sat, simulated_annealing, differential_evolution]:
-            era_val = [model.eval(val) for val in optimizer(model)]
-            era_val.insert(0, text[ct%3] + str(i))
-            era_collection.append(era_val)
-            ct += 1
+    max_walk_sat(model)
+    # i = 0
+    # for _ in xrange(0, 3):
+    #     i += 1
+    #     for optimizer in [max_walk_sat, simulated_annealing, differential_evolution]:
+    #         era_val = [model.eval(val) for val in optimizer(model)]
+    #         era_val.insert(0, text[ct%3] + str(i))
+    #         era_collection.append(era_val)
+    #         ct += 1
         
-    # print era_collection
-    print rdivDemo(era_collection)
+    # # print era_collection
+    # print rdivDemo(era_collection)
