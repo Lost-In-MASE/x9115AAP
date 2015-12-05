@@ -6,6 +6,7 @@ import sys
 
 from sk import a12
 from sk import rdivDemo
+from cdom import cdom
 
 class BaseModel:
 
@@ -24,11 +25,7 @@ class BaseModel:
         return True
         
     def type1(self, solution, sb):
-        for objective in self.get_objectives():
-            if objective(solution) > objective(sb):
-                return False
-        
-        return True
+        return cdom(solution, sb)
 
     def get_neighbor(self):
         x = list()
@@ -74,107 +71,7 @@ class BaseModel:
 
     def get_baselines(self):
         return self.lo, self.hi
-
-
-class Schaffer(BaseModel):
-
-    def __init__(self):
-        BaseModel.__init__(self)
-        self.model_name = "Schaffer"
-        self.baseline_count = 10**6
-        self.number_vars = 1
-        self.max_bound = 10**4
-        self.min_bound = -self.max_bound
-        self.var_bounds = [(self.min_bound, self.max_bound)]
-        self.baselines()
-
-    def get_objectives(self):
-        return [lambda x: x[0]**2, lambda x: (x[0] - 2)**2]
-
-
-class Osyczka(BaseModel):
-
-    def __init__(self):
-        BaseModel.__init__(self)
-        self.model_name = "Osyczka"
-        self.number_vars = 6
-        self.constraints = list()
-        self.constraints.append(lambda x: x[0] + x[1] - 2)
-        self.constraints.append(lambda x: 6 - x[0] - x[1])
-        self.constraints.append(lambda x: 2 - x[1] + x[0])
-        self.constraints.append(lambda x: 2 - x[0] + 3*x[1])
-        self.constraints.append(lambda x: 4 - x[3] - (x[2] - 3)**2)
-        self.constraints.append(lambda x: (x[4] - 3)**3 + x[5] - 4)
-        self.var_bounds = [(0, 10), (0, 10), (1, 5), (0, 6), (1, 5), (0, 10)]
-        self.baselines()
-
-    def get_objectives(self):
-        return [
-            lambda x: -(25 * (x[0] - 2)**2 + (x[1] - 2)**2 + (x[2] - 1)**2 * (x[3] - 4)**2 + (x[4] - 1)**2),
-            lambda x: sum([i**2 for i in x])]
-
-    def okay(self, x):
-        for constraint in self.constraints:
-            if constraint(x) < 0:
-                return False
-
-        return True
-
-
-class Kursawe(BaseModel):
-
-    def __init__(self):
-        BaseModel.__init__(self)
-        self.model_name = "Kursawe"
-        self.number_vars = 3
-        self.max_bound = 5
-        self.min_bound = -self.max_bound
-        self.var_bounds = [(self.min_bound, self.max_bound) for _ in xrange(self.number_vars)]
-        self.baselines()
-
-    def get_objectives(self):
-        return [
-            lambda x: (-10 * math.exp(-0.2 * math.sqrt(x[0] ** 2 + x[1] ** 2)) +
-                       (-10 * math.exp(-0.2 * math.sqrt(x[1] ** 2 + x[2] ** 2)))),
-            lambda x: sum([(abs(i) ** 0.8 + 5 * math.sin(i)) for i in x])]
-
-class Golinski(BaseModel):
-
-    def __init__(self):
-        BaseModel.__init__(self)
-        self.model_name = "Golinski"
-        self.number_vars = 7
-        self.constraints = list()
-        self.constraints.append(lambda x: ((x[0] * (x[1] ** 2) * x[2]) ** -1 - 27 ** -1) <= 0)
-        self.constraints.append(lambda x: ((x[0] * (x[1] ** 2) * (x[2] ** 2)) ** -1 - 397.5 ** -1) <= 0)
-        self.constraints.append(lambda x: ((x[3] ** 3/(x[1] * x[2] ** 2 * x[5] ** 4)) - 1.93 ** -1) <= 0)
-        self.constraints.append(lambda x: x[4] ** 3/(x[1] * x[2] * x[6] ** 4) - 1/1.93 <= 0)
-        self.constraints.append(lambda x: x[1] * x[2] <= 0)
-        self.constraints.append(lambda x: (x[0] / x[1]) - 12 <= 0)
-        self.constraints.append(lambda x: 5 - (x[0] / x[1]) <= 0)
-        self.constraints.append(lambda x: 1.9 - x[3] + 1.5 * x[5] <= 0)
-        self.constraints.append(lambda x: 1.9 - x[4] + 1.1 * x[6] <= 0)
-        self.constraints.append(lambda x: self.f2(x) <= 1300)
-        self.constraints.append(lambda x: (((745 * x[4]/(x[1] * x[2])) ** 2 + 1.575 * 10**8) ** 0.5) /
-                                          (0.1 * x[6] ** 3) <= 1100)
-        self.var_bounds = [(2.6, 3.6), (0.7, 0.8), (17, 28), (7.3, 8.3), (7.3, 8.3), (2.9, 3.9), (5, 5.5)]
-        self.baselines()
-
-    def f2(self, x):
-        return ((745 * x[3] / (x[1] * x[2])) ** 2 + 1.69 * 10 ** 7) ** 0.5 / (0.1 * x[5] ** 3)
-
-    def get_objectives(self):
-        return [
-            lambda x: 0.7854 * x[0] * (x[1]**2) * (10*(x[2]**2)/3 + 14.933*x[2] - 43.0934) - 1.508 * x[0] * (x[5]**2 + x[6]**2) + 7.477 * (x[5]**3 + x[6]**3) + 0.7854 * (x[3] * (x[5] ** 2) + x[4] * (x[6] ** 2)),
-            self.f2
-        ]
-
-    def okay(self, x):
-        for constraint in self.constraints:
-            if constraint(x) < 0:
-                return False
-
-        return True
+        
         
 class DTLZ7(BaseModel):
 
@@ -237,7 +134,7 @@ def simulated_annealing(model):
     print "Model Name : " + model.model_name + ", Optimizer : simulated annealing"
     
     # Base variables
-    kMax = 10000
+    kMax = 10**5
     eMax = 0
     output = ""
 
@@ -261,12 +158,12 @@ def simulated_annealing(model):
         
         neighbor_energy = model.normalize_val(model.eval(mutated_neighbor))
 
-        if model.type1(mutated_neighbor, best_val):
+        if model.eval(mutated_neighbor) < model.eval(best_val):
             best_energy = neighbor_energy
             best_val = mutated_neighbor
             output += "!"
 
-        if model.type1(mutated_neighbor, cur_val):
+        if model.eval(mutated_neighbor) < model.eval(cur_val):
             cur_energy = neighbor_energy
             cur_val = mutated_neighbor
             output += "+"
@@ -314,7 +211,7 @@ def max_walk_sat(model):
         for k in xrange(0, steps):
             evaluations += 1
             solution[index] = low + delta*k
-            if model.okay(solution) and model.type1(best, solution):
+            if model.okay(solution) and model.eval(solution) < model.eval(best):
                 best = list(solution)
         return best, evaluations
     
@@ -345,7 +242,7 @@ def max_walk_sat(model):
 
     evals = 0
     init_soln = model.get_neighbor()
-    while model.okay(init_soln) is False and model.normalize_val(model.eval(init_soln)) < threshold:
+    while model.okay(init_soln) is False and model.normalize_val(model.eval(init_soln)) > threshold:
         init_soln = model.get_neighbor()
 
     for i in xrange(0, max_tries):
@@ -387,24 +284,24 @@ def max_walk_sat(model):
                     new_soln = copy_list
                     result = "+"
             output += result
-            if model.type1(new_soln, init_soln) and model.normalize_val(model.eval(new_soln)) >= threshold:
+            if model.eval(new_soln) < model.eval(init_soln) and model.normalize_val(model.eval(new_soln)) >= threshold:
                 init_soln = list(new_soln)
-                
-            if len(current_era) is 100:
-                if len(previous_era) is not 0:
-                    eras += type2(current_era, previous_era, model)
-                    
-                    previous_era = list(current_era)
-                    current_era = []
-                else:
-                    current_era.append(new_soln)
-                
-            if eras == 0:
-                print "Early Termination " + str(i) + " : " + str(eras)
-                return previous_era
 
         print "Evals : " + str(evals) + " Current Best Energy : " + \
               str(model.normalize_val(model.eval(init_soln))) + " " + output
+              
+        if i % 100 is 0 and i is not 0:
+            if len(previous_era) is not 0:
+                eras += type2(current_era, previous_era, model)
+                    
+            previous_era = list(current_era)
+            current_era = []
+        else:
+            current_era.append(new_soln)
+                
+        if eras == 0:
+            print "Early Termination " + str(i) + " : " + str(eras)
+            return previous_era
 
     print("\nBest Solution : " + str(init_soln))
     print("Best Energy : " + str(model.normalize_val(model.eval(init_soln))))
@@ -471,7 +368,7 @@ def differential_evolution(model):
     current_era = []
     era_length = 100
 
-    k_max = 1000
+    k_max = 100000
     k = 0
     cf = 0.3
     threshold = 0
@@ -488,20 +385,18 @@ def differential_evolution(model):
             cur_e = model.eval(solution)
             out = "."
             if cf < random.random():
-                if model.type1(mutation, solution):
+                if model.eval(mutation) < cur_e:
                     cur_e = model.eval(mutation)
                     frontier[i] = mutation
-                    solution = mutation
                     out += "+"
             else:
                 mutation = get_mutation(seen)
-                if model.okay(mutation) and model.type1(mutation, solution):
+                if model.okay(mutation) and model.eval(mutation) < cur_e:
                     frontier[i] = mutation
-                    solution = mutation
                     cur_e = model.eval(mutation)
                     out = "+"
                         
-            if model.type1(solution, best_sol) and model.normalize_val(cur_e) >= threshold:
+            if cur_e < e and model.normalize_val(cur_e) >= threshold:
                 out = "?"
                 e = cur_e
                 best_sol = frontier[i]
@@ -550,15 +445,15 @@ if __name__ == '__main__':
     text = ["MWS", "SA", "DE"]
     ct = 0
     model = DTLZ7(10, 2)
-    max_walk_sat(model)
-    # i = 0
-    # for _ in xrange(0, 3):
-    #     i += 1
-    #     for optimizer in [max_walk_sat, simulated_annealing, differential_evolution]:
-    #         era_val = [model.eval(val) for val in optimizer(model)]
-    #         era_val.insert(0, text[ct%3] + str(i))
-    #         era_collection.append(era_val)
-    #         ct += 1
+    # max_walk_sat(model)
+    i = 0
+    for _ in xrange(0, 3):
+        i += 1
+        for optimizer in [max_walk_sat, simulated_annealing, differential_evolution]:
+            era_val = [model.eval(val) for val in optimizer(model)]
+            era_val.insert(0, text[ct%3] + str(i))
+            era_collection.append(era_val)
+            ct += 1
         
-    # # print era_collection
-    # print rdivDemo(era_collection)
+    # print era_collection
+    print rdivDemo(era_collection)
