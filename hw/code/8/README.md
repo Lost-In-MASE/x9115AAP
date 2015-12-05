@@ -37,4 +37,5 @@ We run the above steps for all 3 optimizers using the DTLZ model and the optimiz
 ### V.	THREATS TO VALIDITY
 Most optimization algorithms use exploration and exploitation to find a globally optimal solution. Exploration refers to a technique used to investigate new and unknown areas in the search space, and exploitation refers to a technique that makes use of previously visited points to find better points. A good search algorithm must find a tradeoff between the two. A purely random search is good at exploration, where as a purely hill climbing method is good at exploitation/ The combination of the two techniques is required to achieve a global optimal solution but it is very difficult to strike the best balance between the two.
 ### VI.	Results
+![result_sk](https://github.com/Lost-In-MASE/x9115AAP/raw/master/hw/code/8/images/sn.PNG)
 
