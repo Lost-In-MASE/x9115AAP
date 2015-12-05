@@ -4,6 +4,8 @@ import random
 import math
 import sys
 
+from sk import a12
+from sk import rdivDemo
 
 class BaseModel:
 
@@ -203,9 +205,9 @@ class DTLZ7(BaseModel):
         return f
 
 def genetic_algorithm(model):
-    population_size = 100
+    population_size = model.number_vars * 10
     mutate_prob = 0.05
-    cross_prob = 0.80
+    cross_prob = 0.90
     k_max = 1000
 
     def build_population():
@@ -217,6 +219,18 @@ def genetic_algorithm(model):
             new_population.append(neighbor)
 
         return new_population
+
+    def type2(era_one, era_two, model):
+        for objective in model.get_objectives():
+            era_one_objective = []
+            era_two_objective = []
+            for i in xrange(0, len(era_one)):
+                era_one_objective.append(objective(era_one[i]))
+                era_two_objective.append(objective(era_two[i]))
+            if (a12(era_one_objective, era_two_objective) > 0.56):
+                return 5
+
+        return -1
 
     def mutate(candidate):
         for i in xrange(model.number_vars):
@@ -255,7 +269,7 @@ def genetic_algorithm(model):
                         dominated.append(c2)
                     if c2 in pool:
                         pool.remove(c2)
-        print len(pool)
+        # print len(pool)
         if(len(pool) == 0):
             # print "Length of pool is 0"
             return range(0, population_size)
@@ -281,12 +295,16 @@ def genetic_algorithm(model):
     avg_energy = []
     avg_energy.append(best_avg_sol)
 
-    threshold = 0
+    era = 50
     min_sol = best_sol
     for gen_count in xrange(k_max):
         k = 0
         next_gen = []
         best_pool = select(population)
+        # print ""
+        # print ""
+        # for i in best_pool:
+        #     print model.normalize_val(model.eval(population[i]))
         # print best_pool
         for _ in xrange(0,population_size,2):
 
@@ -317,15 +335,51 @@ def genetic_algorithm(model):
         #     break
         # elif(min_sol < best_sol):
             best_sol = min_sol
+        era += type2(population, next_gen, model)
+
+        if era == 0:
+            print "Early Termination"
+            print "Best Energy: ", best_sol, " | Average Energy: ", best_avg_sol
+            break
+
         population = next_gen
         avg_energy.append(k/population_size)
 
         if(k/population_size < best_avg_sol):
             best_avg_sol = k/population_size
 
+        energies = []
+        for i in xrange(population_size):
+            #print ("%.5f \n" % (model.normalize_val(model.eval(population[i]))))
+            energies.append(model.normalize_val(model.eval(population[i])))
+        energies.sort()
+        # print energies
 
-    print "Best Energy: ", best_sol, " | Average Energy: ", best_avg_sol
+        sum = 0
+        #Calculate the percentage of population that are similar
+        for i in xrange(1, len(energies)):
+            if energies[i] == energies[i-1]:
+                sum += 1
+        # print sum/population_size
+
+    # print "Best Energy: ", best_sol, " | Average Energy: ", best_avg_sol, "Length of Population: "
+    return population
     # print avg_energy
 
 if __name__ == '__main__':
-    genetic_algorithm(DTLZ7(10,2))
+
+    era_collection = []
+    decisions = [10]
+    objectives = [2, 4, 6, 8]
+    models = [DTLZ7]
+    model_text = ["DTLZ7"]
+
+    for model_type, text in zip(models, model_text):
+        for decs in decisions:
+            for objs in objectives:
+                model = model_type(decs, objs)
+                era_val = [model.eval(val) for val in genetic_algorithm(model)]
+                era_val.insert(0, text + "_" + str(decs) + "_" + str(objs))
+                era_collection.append(era_val)
+    # print era_collection
+    print rdivDemo(era_collection)
