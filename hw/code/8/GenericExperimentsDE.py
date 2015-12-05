@@ -6,7 +6,54 @@ import sys
 
 from sk import a12
 from sk import rdivDemo
-from cdom import cdom
+
+import math
+PI = math.pi
+def loss1(i,x,y):
+    return (x - y) if better(i) == lt else (y - x)
+
+def expLoss(i,x,y,n):
+    return math.exp( loss1(i,x,y) / n)
+
+def loss(x1, y1):
+    x,y    = objs(x1), objs(y1)
+    n      = min(len(x), len(y)) #lengths should be equal
+    losses = [ expLoss(i,xi,yi,n)
+                 for i, (xi, yi)
+                   in enumerate(zip(x,y)) ]
+    # print losses
+    return sum(losses) / n
+
+def cdom(x, y):
+   "x dominates y if it losses least"
+   return loss(x,y) < loss(y,x)
+
+def gt(x,y): return x > y
+def lt(x,y): return x < y
+
+def better(i):  return lt
+
+def f_one(x):
+    return x[0]
+
+def f_two(x):
+    f1 = f_one(x)
+    f2 = (1+g(x))*h(f1,g(x),2)
+    return f2
+
+def g(x):
+    res = sum(x)
+    res = 1 + (9/len(x))*res
+    return res
+
+def h(f1,g,M):
+    theeta = 3*PI*f1
+    res = (f1/(1+g))*(1+math.sin(theeta))
+    res = M - res
+    return res
+
+def objs(can):
+    return [f_one(can),f_two(can)]
 
 class BaseModel:
 
@@ -25,7 +72,7 @@ class BaseModel:
         return True
         
     def type1(self, solution, sb):
-        return cdom(solution, sb)
+        return cdom(solution, sb) and model.eval(solution) < model.eval(sb)
 
     def get_neighbor(self):
         x = list()
@@ -158,12 +205,12 @@ def simulated_annealing(model):
         
         neighbor_energy = model.normalize_val(model.eval(mutated_neighbor))
 
-        if model.eval(mutated_neighbor) < model.eval(best_val):
+        if model.type1(mutated_neighbor, best_val):
             best_energy = neighbor_energy
             best_val = mutated_neighbor
             output += "!"
 
-        if model.eval(mutated_neighbor) < model.eval(cur_val):
+        if model.type1(mutated_neighbor, cur_val):
             cur_energy = neighbor_energy
             cur_val = mutated_neighbor
             output += "+"
@@ -211,7 +258,7 @@ def max_walk_sat(model):
         for k in xrange(0, steps):
             evaluations += 1
             solution[index] = low + delta*k
-            if model.okay(solution) and model.eval(solution) < model.eval(best):
+            if model.okay(solution) and model.type1(solution, best):
                 best = list(solution)
         return best, evaluations
     
@@ -284,7 +331,7 @@ def max_walk_sat(model):
                     new_soln = copy_list
                     result = "+"
             output += result
-            if model.eval(new_soln) < model.eval(init_soln) and model.normalize_val(model.eval(new_soln)) >= threshold:
+            if model.type1(new_soln, init_soln) and model.normalize_val(model.eval(new_soln)) >= threshold:
                 init_soln = list(new_soln)
 
         print "Evals : " + str(evals) + " Current Best Energy : " + \
@@ -385,18 +432,18 @@ def differential_evolution(model):
             cur_e = model.eval(solution)
             out = "."
             if cf < random.random():
-                if model.eval(mutation) < cur_e:
+                if model.type1(mutation, solution):
                     cur_e = model.eval(mutation)
                     frontier[i] = mutation
                     out += "+"
             else:
                 mutation = get_mutation(seen)
-                if model.okay(mutation) and model.eval(mutation) < cur_e:
+                if model.okay(mutation) and model.type1(mutation, solution):
                     frontier[i] = mutation
                     cur_e = model.eval(mutation)
                     out = "+"
                         
-            if cur_e < e and model.normalize_val(cur_e) >= threshold:
+            if model.type1(solution, best_sol) and model.normalize_val(cur_e) >= threshold:
                 out = "?"
                 e = cur_e
                 best_sol = frontier[i]
