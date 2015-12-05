@@ -21,6 +21,13 @@ class BaseModel:
     def okay(self, _):
         return True
 
+    def type1(self, solution, sb):
+        for objective in self.get_objectives():
+            if objective(solution) > objective(sb):
+                return False
+
+        return True
+
     def get_neighbor(self):
         x = list()
         for i, j in self.var_bounds:
@@ -50,8 +57,8 @@ class BaseModel:
             if energy < self.lo:
                 self.lo = energy
 
-        # self.hi = 25
-        # self.lo = 7
+        # self.hi = 100
+        # self.lo = 0
 
     def normalize_val(self, value):
         return (value - self.lo)/(self.hi - self.lo)
@@ -233,15 +240,24 @@ def genetic_algorithm(model):
 
     def select(population):
         pool = []
+        dominated = []
         for c1 in xrange(population_size):
+            if c1 in dominated:
+                continue
             for c2 in xrange(population_size):
-                if(c1 == c2):
+                if c1 == c2:
                     continue
-                if(bdom_better(population[c1], population[c2])):
+                if(model.type1(population[c1], population[c2])):
                     # print "Binary Dominated:", c1
-                    pool.append(c1)
+                    if c1 not in pool:
+                        pool.append(c1)
+                    if c2 not in dominated:
+                        dominated.append(c2)
+                    if c2 in pool:
+                        pool.remove(c2)
+        print len(pool)
         if(len(pool) == 0):
-            print "Length of pool is 0"
+            # print "Length of pool is 0"
             return range(0, population_size)
         return pool
 
@@ -251,8 +267,8 @@ def genetic_algorithm(model):
         for objective in model.get_objectives():
             cobj1.append(objective(c1))
             cobj2.append(objective(c2))
-        better = any([x > y for x,y in zip(cobj1, cobj2)])
-        worse = any([x < y for x,y in zip(cobj1, cobj2)])
+        better = any([x < y for x,y in zip(cobj1, cobj2)])
+        worse = any([x > y for x,y in zip(cobj1, cobj2)])
         return better and not worse
 
     print "Model Name : " + model.model_name + ", Optimizer : Genetic Algorithm"
@@ -265,42 +281,51 @@ def genetic_algorithm(model):
     avg_energy = []
     avg_energy.append(best_avg_sol)
 
+    threshold = 0
+    min_sol = best_sol
     for gen_count in xrange(k_max):
         k = 0
         next_gen = []
         best_pool = select(population)
+        # print best_pool
         for _ in xrange(0,population_size,2):
 
             parent1 = population[best_pool[random.randint(0, len(best_pool) - 1)]]
             parent2 = population[best_pool[random.randint(0, len(best_pool) - 1)]]
+            if random.random() < cross_prob:
+                child1, child2 = cross_over(parent1, parent2)
+                mutate(child1)
+                mutate(child2)
+            else:
+                child1, child2 = parent1, parent2
 
-            child1, child2 = cross_over(parent1, parent2)
-            mutate(child1)
-            mutate(child2)
             next_gen.append(child1)
             next_gen.append(child2)
-
             energy1 = model.normalize_val(model.eval(child1))
             energy2 = model.normalize_val(model.eval(child2))
 
             '''Update best solution'''
-            if energy1 > best_sol:
-                best_sol = energy1
+            if energy1 < min_sol:
+                min_sol = energy1
 
-            if energy2 > best_sol:
-                best_sol = energy2
+            if energy2 < min_sol:
+                min_sol = energy2
             k += energy1
             k += energy2
 
+        # if(min_sol <= threshold):
+        #     break
+        # elif(min_sol < best_sol):
+            best_sol = min_sol
         population = next_gen
         avg_energy.append(k/population_size)
 
-        if(k/population_size > best_avg_sol):
+        if(k/population_size < best_avg_sol):
             best_avg_sol = k/population_size
 
 
     print "Best Energy: ", best_sol, " | Average Energy: ", best_avg_sol
-    print avg_energy
+    # print avg_energy
 
 if __name__ == '__main__':
-    genetic_algorithm(Osyczka())
+    genetic_algorithm(DTLZ7(10,2))
