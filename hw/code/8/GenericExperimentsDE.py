@@ -230,7 +230,7 @@ def simulated_annealing(model):
             output += "."
 
         if i % 25 == 0:
-            print ("%6d : %.5f,  %25s" % (i, best_energy, output))
+            # print ("%6d : %.5f,  %25s" % (i, best_energy, output))
             output = ""
             cur_energy = 1
             
@@ -249,8 +249,8 @@ def simulated_annealing(model):
 
         i += 1
 
-    print("Best Value : " + str(best_val))
-    print("Best Energy : %f" % best_energy)
+    # print("Best Value : " + str(best_val))
+    # print("Best Energy : %f" % best_energy)
     return previous_era
 
 
@@ -308,8 +308,8 @@ def max_walk_sat(model):
         for j in xrange(0, max_changes):
             result = str()
             if model.normalize_val(model.eval(new_soln)) < threshold:
-                print("\nBest Solution : " + str(init_soln))
-                print("Best Energy : " + str(model.normalize_val(model.eval(init_soln))))
+                # print("\nBest Solution : " + str(init_soln))
+                # print("Best Energy : " + str(model.normalize_val(model.eval(init_soln))))
                 if len(previous_era) is not 0:
                     return previous_era
                 else:
@@ -341,8 +341,8 @@ def max_walk_sat(model):
             if model.type1(new_soln, init_soln) and model.normalize_val(model.eval(new_soln)) >= threshold:
                 init_soln = list(new_soln)
 
-        print "Evals : " + str(evals) + " Current Best Energy : " + \
-              str(model.normalize_val(model.eval(init_soln))) + " " + output
+        # print "Evals : " + str(evals) + " Current Best Energy : " + \
+        #       str(model.normalize_val(model.eval(init_soln))) + " " + output
               
         if i % 100 is 0 and i is not 0:
             if len(previous_era) is not 0:
@@ -357,8 +357,8 @@ def max_walk_sat(model):
             print "Early Termination " + str(i) + " : " + str(eras)
             return previous_era
 
-    print("\nBest Solution : " + str(init_soln))
-    print("Best Energy : " + str(model.normalize_val(model.eval(init_soln))))
+    # print("\nBest Solution : " + str(init_soln))
+    # print("Best Energy : " + str(model.normalize_val(model.eval(init_soln))))
     if len(previous_era) is not 0:
         return previous_era
     else:
@@ -458,7 +458,7 @@ def differential_evolution(model):
             output += out
             k += 1
             if k % 25 is 0:
-                print ("%.5f,  %20s" % (model.normalize_val(e), output))
+                # print ("%.5f,  %20s" % (model.normalize_val(e), output))
                 output = ""
                 
             if k % 100 is 0 and k is not 0:
@@ -474,8 +474,8 @@ def differential_evolution(model):
                 print "Early Termination " + str(k) + " : " + str(eras)
                 return previous_era
 
-    print("\nBest Solution : " + str(best_sol))
-    print("Best Energy : " + str(model.normalize_val(model.eval(best_sol))))
+    # print("\nBest Solution : " + str(best_sol))
+    # print("Best Energy : " + str(model.normalize_val(model.eval(best_sol))))
     return previous_era
 
 
