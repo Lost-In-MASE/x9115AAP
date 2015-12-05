@@ -72,7 +72,7 @@ class BaseModel:
         return True
         
     def type1(self, solution, sb):
-        return cdom(solution, sb) and model.eval(solution) < model.eval(sb)
+        return cdom(solution, sb) #and model.eval(solution) < model.eval(sb)
 
     def get_neighbor(self):
         x = list()
@@ -131,6 +131,13 @@ class DTLZ7(BaseModel):
         for _ in xrange(self.number_vars):
             self.var_bounds.append((0.0,1.0))
         self.baselines()
+        
+    def eval(self, x):
+        energy = 0
+        for obj in self.get_objectives():
+            energy += obj(x)
+
+        return energy
 
     def gx(self, x):
         y = 0.0
@@ -215,7 +222,7 @@ def simulated_annealing(model):
             cur_val = mutated_neighbor
             output += "+"
 
-        elif get_probability(cur_energy, neighbor_energy,  (1 - i/kMax)**10) > random.random():
+        elif get_probability(cur_energy, neighbor_energy,  (1 - i/kMax)**4) > random.random():
             cur_val = mutated_neighbor
             cur_energy = neighbor_energy
             output += "?"
@@ -276,7 +283,7 @@ def max_walk_sat(model):
 
     print "Model Name : " + model.model_name + ", Optimizer : max walk sat"
     
-    max_tries = 100
+    max_tries = 1000
     max_changes = 50
     p = 0.5
     threshold = 0
@@ -346,7 +353,7 @@ def max_walk_sat(model):
         else:
             current_era.append(new_soln)
                 
-        if eras == 0:
+        if eras <= 0:
             print "Early Termination " + str(i) + " : " + str(eras)
             return previous_era
 
@@ -494,10 +501,10 @@ if __name__ == '__main__':
     model = DTLZ7(10, 2)
     # max_walk_sat(model)
     i = 0
-    for _ in xrange(0, 3):
+    for _ in xrange(0, 20):
         i += 1
         for optimizer in [max_walk_sat, simulated_annealing, differential_evolution]:
-            era_val = [model.eval(val) for val in optimizer(model)]
+            era_val = [model.normalize_val(model.eval(val)) for val in optimizer(model)]
             era_val.insert(0, text[ct%3] + str(i))
             era_collection.append(era_val)
             ct += 1
