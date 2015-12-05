@@ -21,6 +21,13 @@ class BaseModel:
     def okay(self, _):
         return True
 
+    def type1(self, solution, sb):
+        for objective in self.get_objectives():
+            if objective(solution) > objective(sb):
+                return False
+
+        return True
+
     def get_neighbor(self):
         x = list()
         for i, j in self.var_bounds:
@@ -50,8 +57,8 @@ class BaseModel:
             if energy < self.lo:
                 self.lo = energy
 
-            self.hi = 25
-            self.lo = 7
+        # self.hi = 100
+        # self.lo = 0
 
     def normalize_val(self, value):
         return (value - self.lo)/(self.hi - self.lo)
@@ -212,18 +219,10 @@ def genetic_algorithm(model):
         return new_population
 
     def mutate(candidate):
-        # i = random.randint(0, int(model.number_vars/4))
-        # for _ in xrange(i):
+        for i in xrange(model.number_vars):
             if random.random() < mutate_prob:
-                index = random.randint(0, model.number_vars - 1)
-                l, h = model.var_bounds[index]
-                candidate[index] = random.uniform(l, h)
-
-        # for i in xrange(model.number_vars):
-        #     if random.random() < mutate_prob:
-        #         l, h = model.var_bounds[i]
-        #         candidate[i] = random.uniform(l, h)
-        # #         # print candidate[i], i
+                l, h = model.var_bounds[i]
+                candidate[i] = random.uniform(l, h)
 
     def cross_over(parent1, parent2):
         cross_point = random.randint(0, model.number_vars - 1)
@@ -241,109 +240,92 @@ def genetic_algorithm(model):
 
     def select(population):
         pool = []
-        used = []
-
-        for _ in xrange(int(population_size/2)):
-            c1 = random.randint(0, population_size - 1)
-            while(c1 in used):
-                c1 = random.randint(0, population_size - 1)
-
-            c2 = random.randint(0, population_size - 1)
-            while(c2 in used):
-                c2 = random.randint(0, population_size - 1)
-
-            used.append(c1)
-            used.append(c2)
-
-            if model.eval(population[c1]) > model.eval(population[c2]):
-                pool.append(c1)
-            else:
-                pool.append(c2)
-
+        dominated = []
+        for c1 in xrange(population_size):
+            if c1 in dominated:
+                continue
+            for c2 in xrange(population_size):
+                if c1 == c2:
+                    continue
+                if(model.type1(population[c1], population[c2])):
+                    # print "Binary Dominated:", c1
+                    if c1 not in pool:
+                        pool.append(c1)
+                    if c2 not in dominated:
+                        dominated.append(c2)
+                    if c2 in pool:
+                        pool.remove(c2)
+        print len(pool)
+        if(len(pool) == 0):
+            # print "Length of pool is 0"
+            return range(0, population_size)
         return pool
+
+    def bdom_better(c1, c2):
+        cobj1 = []
+        cobj2 = []
+        for objective in model.get_objectives():
+            cobj1.append(objective(c1))
+            cobj2.append(objective(c2))
+        better = any([x < y for x,y in zip(cobj1, cobj2)])
+        worse = any([x > y for x,y in zip(cobj1, cobj2)])
+        return better and not worse
 
     print "Model Name : " + model.model_name + ", Optimizer : Genetic Algorithm"
     population = build_population()
-    best_sol = model.eval(population[0])
+    best_sol = model.normalize_val(model.eval(population[0]))
+    sumofpop = 0
+    for i in population:
+        sumofpop += model.normalize_val(model.eval(i))
+    best_avg_sol = sumofpop / population_size
+    avg_energy = []
+    avg_energy.append(best_avg_sol)
 
-    sim_count = 0
+    threshold = 0
+    min_sol = best_sol
     for gen_count in xrange(k_max):
-        output = ""
         k = 0
         next_gen = []
         best_pool = select(population)
-        mating_pool_size = int(population_size/2)
-        for _ in xrange(population_size):
-            out = "."
-            parent1 = population[best_pool[random.randint(0, mating_pool_size - 1)]]
-            parent2 = population[best_pool[random.randint(0, mating_pool_size - 1)]]
+        # print best_pool
+        for _ in xrange(0,population_size,2):
 
-            child1, child2 = cross_over(parent1, parent2)
-            mutate(child1)
-            mutate(child2)
+            parent1 = population[best_pool[random.randint(0, len(best_pool) - 1)]]
+            parent2 = population[best_pool[random.randint(0, len(best_pool) - 1)]]
+            if random.random() < cross_prob:
+                child1, child2 = cross_over(parent1, parent2)
+                mutate(child1)
+                mutate(child2)
+            else:
+                child1, child2 = parent1, parent2
+
             next_gen.append(child1)
             next_gen.append(child2)
+            energy1 = model.normalize_val(model.eval(child1))
+            energy2 = model.normalize_val(model.eval(child2))
 
             '''Update best solution'''
-            if model.eval(child1) > best_sol:
-                best_sol = model.eval(child1)
-                out = "+"
-            if model.eval(child2) > best_sol:
-                best_sol = model.eval(child2)
-                out = "+"
+            if energy1 < min_sol:
+                min_sol = energy1
 
-            # if random.random() < cross_prob:
-            #     child1, child2 = cross_over(parent1, parent2)
-            #     mutate(child1)
-            #     mutate(child2)
-            #     next_gen.append(child1)
-            #     next_gen.append(child2)
+            if energy2 < min_sol:
+                min_sol = energy2
+            k += energy1
+            k += energy2
 
-            #     '''Update best solution'''
-            #     if model.eval(child1) > best_sol:
-            #         best_sol = model.eval(child1)
-            #         out = "+"
-            #     if model.eval(child2) > best_sol:
-            #         best_sol = model.eval(child2)
-            #         out = "+"
-            # else:
-            #     next_gen.append(parent1)
-            #     next_gen.append(parent2)
-
-            k += 1
-            output += out
-            # if k % 25 is 0:
-            #     print ("%.5f,  %20s" % (model.normalize_val(best_sol), output))
-            #     output = ""
+        # if(min_sol <= threshold):
+        #     break
+        # elif(min_sol < best_sol):
+            best_sol = min_sol
         population = next_gen
+        avg_energy.append(k/population_size)
 
-        #Print the energies of the population
-        energies = []
-        for i in xrange(population_size):
-            #print ("%.5f \n" % (model.normalize_val(model.eval(population[i]))))
-            energies.append(model.normalize_val(model.eval(population[i])))
-        energies.sort()
-        sum = 0
+        if(k/population_size < best_avg_sol):
+            best_avg_sol = k/population_size
 
-        #Calculate the percentage of population that are similar
-        for i in xrange(1, population_size):
-            if model.normalize_val(model.eval(population[i])) == model.normalize_val(model.eval(population[i-1])):
-                sum += 1
 
-        print sum/population_size, model.normalize_val(best_sol), reduce(lambda x, y: x + y, energies) / len(energies)
-        if sum/population_size > 0.75 :
-            sim_count += 1
-        elif sum/population_size < 0.5 :
-            sim_count -=5
-
-        #Every 100 generations, check if it consistently above 80% are similar
-        if gen_count % 100 == 0 :
-            if sim_count > 75:
-                print "Early Termination"
-                print "Best Energy: ", model.normalize_val(best_sol), " | Average Energy: ", reduce(lambda x, y: x + y, energies) / len(energies)
-                break
-            else :
-                sim_count = 0
+    print "Best Energy: ", best_sol, " | Average Energy: ", best_avg_sol
+    # print avg_energy
 
 if __name__ == '__main__':
     genetic_algorithm(DTLZ7(10,2))
