@@ -192,7 +192,7 @@ class DTLZ1(BaseModel):
 
     def get_objectives(self):
         f = [None] * self.number_obj
-        for i in xrange(0, self.number_obj - 1):
+        for i in xrange(0, self.number_obj):
             f[i] = lambda x: self.obj(x, i)
         return f
 
@@ -267,7 +267,7 @@ class DTLZ5(BaseModel):
     def get_objectives(self):
         f = [None] * self.number_obj
         for i in xrange(0, self.number_obj):
-            f[i] = lambda x: self.obj(x, i)
+            f[i] = lambda x : self.obj(x, i)
         return f
 
 class DTLZ7(BaseModel):
@@ -477,11 +477,11 @@ def genetic_algorithm(model):
 if __name__ == '__main__':
 
     era_collection = []
-    decisions = [10, 20, 40]
-    objectives = [2, 4, 6, 8]
+    decisions = [10]
+    objectives = [2]
     # decisions = [10, 20]
     # objectives = [2]
-    models = [DTLZ7]
+    models = [DTLZ3]
     model_text = ["DTLZ7"]
 
     for model_type, text in zip(models, model_text):
