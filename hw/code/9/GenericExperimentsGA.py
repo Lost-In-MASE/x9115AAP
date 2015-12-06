@@ -18,7 +18,7 @@ class BaseModel:
         self.constraints = None
         self.number_vars = 0
         self.var_bounds = []
-        self.baseline_count = 10**4
+        self.baseline_count = 10**6
 
     def okay(self, _):
         return True
@@ -227,8 +227,8 @@ def genetic_algorithm(model):
             for i in xrange(0, len(era_one)):
                 era_one_objective.append(objective(era_one[i]))
                 era_two_objective.append(objective(era_two[i]))
-            if (a12(era_one_objective, era_two_objective) > 0.56):
-                return 5
+            if (a12(era_one_objective, era_two_objective) > 0.5):
+                return 10
 
         return -1
 
@@ -290,12 +290,12 @@ def genetic_algorithm(model):
     best_sol = model.normalize_val(model.eval(population[0]))
     sumofpop = 0
     for i in population:
-        sumofpop += model.normalize_val(model.eval(i))
+        sumofpop += model.eval(i)
     best_avg_sol = sumofpop / population_size
     avg_energy = []
     avg_energy.append(best_avg_sol)
 
-    era = 50
+    era = 100
     min_sol = best_sol
     for gen_count in xrange(k_max):
         k = 0
@@ -319,8 +319,8 @@ def genetic_algorithm(model):
 
             next_gen.append(child1)
             next_gen.append(child2)
-            energy1 = model.normalize_val(model.eval(child1))
-            energy2 = model.normalize_val(model.eval(child2))
+            energy1 = model.eval(child1)
+            energy2 = model.eval(child2)
 
             '''Update best solution'''
             if energy1 < min_sol:
@@ -335,10 +335,11 @@ def genetic_algorithm(model):
         #     break
         # elif(min_sol < best_sol):
             best_sol = min_sol
-        era += type2(population, next_gen, model)
+        if gen_count > 100:
+            era += type2(population, next_gen, model)
 
         if era == 0:
-            print "Early Termination"
+            print "Early Termination -", gen_count + 1, " number of generations"
             print "Best Energy: ", best_sol, " | Average Energy: ", best_avg_sol
             break
 
@@ -351,7 +352,7 @@ def genetic_algorithm(model):
         energies = []
         for i in xrange(population_size):
             #print ("%.5f \n" % (model.normalize_val(model.eval(population[i]))))
-            energies.append(model.normalize_val(model.eval(population[i])))
+            energies.append(model.eval(population[i]))
         energies.sort()
         # print energies
 
@@ -369,8 +370,10 @@ def genetic_algorithm(model):
 if __name__ == '__main__':
 
     era_collection = []
-    decisions = [10]
+    decisions = [10, 20, 40]
     objectives = [2, 4, 6, 8]
+    # decisions = [10, 20]
+    # objectives = [2]
     models = [DTLZ7]
     model_text = ["DTLZ7"]
 
@@ -381,5 +384,12 @@ if __name__ == '__main__':
                 era_val = [model.eval(val) for val in genetic_algorithm(model)]
                 era_val.insert(0, text + "_" + str(decs) + "_" + str(objs))
                 era_collection.append(era_val)
+    models = [Osyczka, Kursawe, Golinski]
+    model_text = ["OSYCZ", "KURSA", "GOLIN"]
+    for model_type, text in zip(models, model_text):
+        model = model_type()
+        era_val = [model.eval(val) for val in genetic_algorithm(model)]
+        era_val.insert(0, text)
+        era_collection.append(era_val)
     # print era_collection
     print rdivDemo(era_collection)
