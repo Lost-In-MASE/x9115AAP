@@ -403,7 +403,7 @@ def genetic_algorithm(model):
     avg_energy.append(best_avg_sol)
 
     era = 100
-    min_sol = best_sols
+    min_sol = best_sol
     for gen_count in xrange(k_max):
         k = 0
         next_gen = []
