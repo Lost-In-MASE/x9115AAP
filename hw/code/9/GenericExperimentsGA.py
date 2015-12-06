@@ -163,6 +163,113 @@ class Golinski(BaseModel):
 
         return True
 
+
+class DTLZ1(BaseModel):
+    def __init__(self, num_dec, num_obj):
+        BaseModel.__init__(self)
+        self.model_name = "DTLZ1"
+        self.number_vars = num_dec
+        self.number_obj = num_obj
+        self.var_bounds = []
+        for _ in xrange(self.number_vars):
+            self.var_bounds.append((0.0, 1.0))
+        self.baselines()
+
+    def gx(self, x):
+        g = 0.0
+        for i in xrange(0, self.number_vars):
+            g += math.pow(x[i] - 0.5, 2) - math.cos(20 * math.pi * (x[i] - 0.5))
+        g = 100 * (g + self.number_vars)
+        return g
+
+    def obj(self, x, i):
+        result = 0.5 * (1 + self.gx(x))
+        for j in xrange(0, self.number_obj - (i + 1)):
+            result *= x[j]
+        if (i != 0):
+            result *= 1 - x[self.number_obj - (i + 1)]
+        return result
+
+    def get_objectives(self):
+        f = [None] * self.number_obj
+        for i in xrange(0, self.number_obj - 1):
+            f[i] = lambda x: self.obj(x, i)
+        return f
+
+
+class DTLZ3(BaseModel):
+    def __init__(self, num_dec, num_obj):
+        BaseModel.__init__(self)
+        self.model_name = "DTLZ3"
+        self.number_vars = num_dec
+        self.number_obj = num_obj
+        self.var_bounds = []
+        for _ in xrange(self.number_vars):
+            self.var_bounds.append((0.0, 1.0))
+        self.baselines()
+
+    def gx(self, x):
+        g = 0.0
+        for i in xrange(0, self.number_vars):
+            g += math.pow(x[i] - 0.5, 2) - math.cos(20 * math.pi * (x[i] - 0.5))
+        g = 100 * (g + self.number_vars)
+        return g
+
+    def obj(self, x, i):
+        result = 1 + self.gx(x)
+        for j in xrange(0, self.number_obj - (i + 1)):
+            result *= math.cos(x[j] * math.pi * 0.5)
+        if (i != 0):
+            result *= math.sin(x[self.number_obj - (i + 1)] * math.pi * 0.5)
+        return result
+
+    def get_objectives(self):
+        f = [None] * self.number_obj
+        for i in xrange(0, self.number_obj):
+            f[i] = lambda x: self.obj(x, i)
+        return f
+
+
+class DTLZ5(BaseModel):
+    def __init__(self, num_dec, num_obj):
+        BaseModel.__init__(self)
+        self.model_name = "DTLZ5"
+        self.number_vars = num_dec
+        self.number_obj = num_obj
+        self.var_bounds = []
+        for _ in xrange(self.number_vars):
+            self.var_bounds.append((0.0, 1.0))
+        self.baselines()
+
+    def gx(self, x):
+        g = 0.0;
+        for i in xrange(0, self.number_vars):
+            g += math.pow(x[i] - 0.5, 2)
+        return g
+
+    '''Verify the theta function g(r) is not defined'''
+    def theta(self, x, i):
+        if (i == 0):
+            return x[0]
+        else:
+            g = self.gx(x)
+            t = 1 / (2 * (1 + g))
+            return t + ((g * x[i]) / (1 + g))
+
+    def obj(self, x, i):
+        result = 1 + self.gx(x)
+        for j in xrange(0, self.number_obj - (i + 1)):
+            result *= math.cos(self.theta(x, j) * math.pi * 0.5)
+        if (i != 0):
+            result *= math.sin(self.theta(x, self.number_obj - (i + 1)) * math.pi * 0.5)
+        return result
+
+    def get_objectives(self):
+        f = [None] * self.number_obj
+        for i in xrange(0, self.number_obj):
+            f[i] = lambda x: self.obj(x, i)
+        return f
+
 class DTLZ7(BaseModel):
 
 
@@ -296,7 +403,7 @@ def genetic_algorithm(model):
     avg_energy.append(best_avg_sol)
 
     era = 100
-    min_sol = best_sol
+    min_sol = best_sols
     for gen_count in xrange(k_max):
         k = 0
         next_gen = []
