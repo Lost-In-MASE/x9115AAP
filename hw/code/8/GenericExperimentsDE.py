@@ -480,26 +480,11 @@ def differential_evolution(model):
 
 
 if __name__ == '__main__':
-    # a = datetime.datetime.now()
-    # simulated_annealing(Kursawe())
-    # b = datetime.datetime.now()
-    # print("# Runtime: %f" % ((b - a).microseconds/1000000))
-
-    # a = datetime.datetime.now()
-    # max_walk_sat(Kursawe())
-    # b = datetime.datetime.now()
-    # print("# Runtime: %f" % ((b - a).microseconds/1000000))
-
-    # for software_model in [Schaffer, Osyczka, Kursawe, Golinski]:
-    #     for optimizer in [simulated_annealing, max_walk_sat, differential_evolution]:
-    #         print "\n\n------------------------------------------------------------\n\n"
-    #         optimizer(software_model())
             
     era_collection = []
     text = ["MWS", "SA", "DE"]
     ct = 0
     model = DTLZ7(10, 2)
-    # max_walk_sat(model)
     i = 0
     for _ in xrange(0, 20):
         i += 1
