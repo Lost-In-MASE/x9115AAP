@@ -38,6 +38,34 @@ Once the GA terminates, in order to evaluate the efficiency of the algorithm, we
 
 How to compare Pareto sets lies at the heart of research in multi-objective optimization. A measure that has been the subject of much recent study in evolutionary multi-objective optimization is the Hypervolume Indicator (Hv). It measures the volume of the dominated portion of the objective space and is of exceptional interest. Thus we chose to report the efficiency of our algorithm in terms of Hv. For each model, decision and objective combination, the GA is run for 10 times and the hv for each of these runs is recorded. We finally compute the mean value for Hv and the standard deviation observed.
 
+**DTLZ1**
+
+|Objectives\Decisions|10|20|40|
+|:---:|---|---|---|
+|2|Mean = 0.995164, SD = 0.000418|Mean = 0.995661, SD = 0.001073|Mean = 0.997755, SD = 0.000787|
+|4|Mean = 0.995025, SD = 1.11e-16|Mean = 0.995564, SD = 0.000934|Mean = 0.997587, SD = 0.000666|
+|6|Mean = 0.995711, SD = 0.001349|Mean = 0.995863, SD = 0.001208|Mean = 0.997711, SD = 0.001007|
+|8|Mean = 0.995945, SD = 0.001145|Mean = 0.996240, SD = 0.001337|Mean = 0.997361, SD = 0.000837|
+
+**DTLZ3**
+
+|Objectives\Decisions|10|20|40|
+|:---:|---|---|---|
+|2|Mean = 0.995025, SD = 1.11e-16|Mean = 0.996175, SD = 0.001117|Mean = 0.997354, SD = 0.000697|
+|4|Mean = 0.995274, SD = 0.000746|Mean = 0.996454, SD = 0.001165|Mean = 0.997760, SD = 0.000924|
+|6|Mean = 0.995204, SD = 0.000434|Mean = 0.995374, SD = 0.000726|Mean = 0.997244, SD = 0.000547|
+|8|Mean = 0.995522, SD = 0.000995|Mean = 0.995786, SD = 0.001068|Mean = 0.997604, SD = 0.000650|
+
+**DTLZ5**
+
+|Objectives\Decisions|10|20|40|
+|:---:|---|---|---|
+|2|Mean = 0.995274, SD = 0.000746|Mean = 0.995741, SD = 0.000963|Mean = 0.997400, SD = 0.000815|
+|4|Mean = 0.995776, SD = 0.001137|Mean = 0.995550, SD = 0.000773|Mean = 0.997280, SD = 0.000778|
+|6|Mean = 0.995050, SD = 7.46e-05|Mean = 0.996299, SD = 0.001378|Mean = 0.997431, SD = 0.000945|
+|8|Mean = 0.995254, SD = 0.000502|Mean = 0.995826, SD = 0.001129|Mean = 0.997483, SD = 0.000549|
+
+
 ## V. THREATS TO VALIDITY
 
 Most optimisation algorithms use exploration and exploitation to find a globally optimal solution. Exploration refers to a technique used to investigate new and unknown areas in the search space, and exploitation refers to a technique that makes use of previously visited points to find better points. A good search algorithm must find a tradeoff between the two. A purely random search is good at exploration, where as a purely hillclimbing method is good at exploitation/ The combination of the two techniques is required to achieve a global optimal solution but it is very difficult to strike the best balance between the two. We have sometimes seen the problem of “slow convergence” on some models as well as the problem of “early convergence” on some other models as well. We found that by changing the mutation probability we could control the convergence rate. In our algorithm, the mutation rate is a constant throughout the run of the program and the rate is independent of the kind of distribution and how well the search is progressing.
