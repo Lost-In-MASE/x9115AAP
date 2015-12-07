@@ -1,196 +1,490 @@
-Model Name : DTLZ1, Optimizer : Genetic Algorithm
-Early Termination - 201  number of generations
-Best Energy:  2099.78310564  | Average Energy:  2057.33636204
-Model Name : DTLZ1, Optimizer : Genetic Algorithm
-Early Termination - 201  number of generations
-Best Energy:  4196.15847631  | Average Energy:  4099.56664791
-Model Name : DTLZ1, Optimizer : Genetic Algorithm
-Early Termination - 201  number of generations
-Best Energy:  6299.47821045  | Average Energy:  6199.41467394
-Model Name : DTLZ1, Optimizer : Genetic Algorithm
-Early Termination - 201  number of generations
-Best Energy:  8391.54020216  | Average Energy:  8256.28215162
-Model Name : DTLZ1, Optimizer : Genetic Algorithm
-Early Termination - 201  number of generations
-Best Energy:  4211.22997185  | Average Energy:  4090.81944783
-Model Name : DTLZ1, Optimizer : Genetic Algorithm
-Early Termination - 201  number of generations
-Best Energy:  8425.62807804  | Average Energy:  8262.98374615
-Model Name : DTLZ1, Optimizer : Genetic Algorithm
-Early Termination - 201  number of generations
-Best Energy:  12633.0331925  | Average Energy:  12309.7505331
-Model Name : DTLZ1, Optimizer : Genetic Algorithm
-Early Termination - 201  number of generations
-Best Energy:  16851.5231595  | Average Energy:  16393.2008923
-Model Name : DTLZ1, Optimizer : Genetic Algorithm
-Early Termination - 421  number of generations
-Best Energy:  8610.67412584  | Average Energy:  8354.34725748
-Model Name : DTLZ1, Optimizer : Genetic Algorithm
-Early Termination - 366  number of generations
-Best Energy:  17217.8274136  | Average Energy:  16686.1960011
-Model Name : DTLZ1, Optimizer : Genetic Algorithm
-Early Termination - 443  number of generations
-Best Energy:  25824.6895804  | Average Energy:  25136.3891171
-Model Name : DTLZ1, Optimizer : Genetic Algorithm
-Early Termination - 311  number of generations
-Best Energy:  34447.7561311  | Average Energy:  33428.4571825
-Model Name : DTLZ3, Optimizer : Genetic Algorithm
-Early Termination - 201  number of generations
-Best Energy:  4392.23515832  | Average Energy:  4328.89745515
-Model Name : DTLZ3, Optimizer : Genetic Algorithm
-Early Termination - 201  number of generations
-Best Energy:  8783.24010316  | Average Energy:  8610.8364764
-Model Name : DTLZ3, Optimizer : Genetic Algorithm
-Early Termination - 201  number of generations
-Best Energy:  13178.8389802  | Average Energy:  12962.0119557
-Model Name : DTLZ3, Optimizer : Genetic Algorithm
-Early Termination - 201  number of generations
-Best Energy:  17572.3238092  | Average Energy:  17286.0397168
-Model Name : DTLZ3, Optimizer : Genetic Algorithm
-Early Termination - 201  number of generations
-Best Energy:  8782.95160086  | Average Energy:  8580.25716206
-Model Name : DTLZ3, Optimizer : Genetic Algorithm
-Early Termination - 212  number of generations
-Best Energy:  17565.9347561  | Average Energy:  17137.3912182
-Model Name : DTLZ3, Optimizer : Genetic Algorithm
-Early Termination - 201  number of generations
-Best Energy:  26351.7117225  | Average Energy:  25799.7345952
-Model Name : DTLZ3, Optimizer : Genetic Algorithm
-Early Termination - 201  number of generations
-Best Energy:  35123.1622325  | Average Energy:  34302.7612533
-Model Name : DTLZ3, Optimizer : Genetic Algorithm
-Early Termination - 333  number of generations
-Best Energy:  17564.143874  | Average Energy:  17086.4367645
-Model Name : DTLZ3, Optimizer : Genetic Algorithm
-Early Termination - 311  number of generations
-Best Energy:  35134.8529985  | Average Energy:  34151.9836442
-Model Name : DTLZ3, Optimizer : Genetic Algorithm
-Early Termination - 311  number of generations
-Best Energy:  52702.2656628  | Average Energy:  51210.2051305
-Model Name : DTLZ3, Optimizer : Genetic Algorithm
-Early Termination - 300  number of generations
-Best Energy:  70255.9249306  | Average Energy:  68174.5786137
-Model Name : DTLZ5, Optimizer : Genetic Algorithm
-Early Termination - 201  number of generations
-Best Energy:  6.99119948991  | Average Energy:  6.88232032146
-Model Name : DTLZ5, Optimizer : Genetic Algorithm
-Early Termination - 201  number of generations
-Best Energy:  13.9740693085  | Average Energy:  13.74791818
-Model Name : DTLZ5, Optimizer : Genetic Algorithm
-Early Termination - 201  number of generations
-Best Energy:  20.9790154133  | Average Energy:  20.6839173375
-Model Name : DTLZ5, Optimizer : Genetic Algorithm
-Early Termination - 201  number of generations
-Best Energy:  27.9029630446  | Average Energy:  27.3480459805
-Model Name : DTLZ5, Optimizer : Genetic Algorithm
-Early Termination - 201  number of generations
-Best Energy:  11.9681973939  | Average Energy:  11.6539824368
-Model Name : DTLZ5, Optimizer : Genetic Algorithm
-Early Termination - 201  number of generations
-Best Energy:  23.9115319569  | Average Energy:  23.279662526
-Model Name : DTLZ5, Optimizer : Genetic Algorithm
-Early Termination - 201  number of generations
-Best Energy:  35.8834962519  | Average Energy:  34.8639329439
-Model Name : DTLZ5, Optimizer : Genetic Algorithm
-Early Termination - 201  number of generations
-Best Energy:  47.8016490652  | Average Energy:  46.4882682799
-Model Name : DTLZ5, Optimizer : Genetic Algorithm
-Early Termination - 333  number of generations
-Best Energy:  21.9147671193  | Average Energy:  21.260171827
-Model Name : DTLZ5, Optimizer : Genetic Algorithm
-Early Termination - 289  number of generations
-Best Energy:  43.8750175225  | Average Energy:  42.3772459053
-Model Name : DTLZ5, Optimizer : Genetic Algorithm
-Early Termination - 278  number of generations
-Best Energy:  65.7591068814  | Average Energy:  63.5512242449
-Model Name : DTLZ5, Optimizer : Genetic Algorithm
-Early Termination - 366  number of generations
-Best Energy:  87.7758183794  | Average Energy:  84.7775471708
-Model Name : DTLZ7, Optimizer : Genetic Algorithm
-Early Termination - 201  number of generations
-Best Energy:  21.9729479251  | Average Energy:  21.4470121957
-Model Name : DTLZ7, Optimizer : Genetic Algorithm
-Early Termination - 201  number of generations
-Best Energy:  43.9486214286  | Average Energy:  42.9566313633
-Model Name : DTLZ7, Optimizer : Genetic Algorithm
-Early Termination - 201  number of generations
-Best Energy:  65.9166244357  | Average Energy:  64.8050694562
-Model Name : DTLZ7, Optimizer : Genetic Algorithm
-Early Termination - 212  number of generations
-Best Energy:  88.135107287  | Average Energy:  86.2433190881
-Model Name : DTLZ7, Optimizer : Genetic Algorithm
-Early Termination - 223  number of generations
-Best Energy:  22.0630744653  | Average Energy:  21.589565393
-Model Name : DTLZ7, Optimizer : Genetic Algorithm
-Early Termination - 212  number of generations
-Best Energy:  44.5975187218  | Average Energy:  43.3636101825
-Model Name : DTLZ7, Optimizer : Genetic Algorithm
-Early Termination - 223  number of generations
-Best Energy:  67.177816684  | Average Energy:  65.3336222163
-Model Name : DTLZ7, Optimizer : Genetic Algorithm
-Early Termination - 245  number of generations
-Best Energy:  89.8075706949  | Average Energy:  87.2449334494
-Model Name : DTLZ7, Optimizer : Genetic Algorithm
-Early Termination - 234  number of generations
-Best Energy:  22.2405969004  | Average Energy:  21.6743435172
-Model Name : DTLZ7, Optimizer : Genetic Algorithm
-Early Termination - 421  number of generations
-Best Energy:  45.0500438287  | Average Energy:  43.693443754
-Model Name : DTLZ7, Optimizer : Genetic Algorithm
-Early Termination - 344  number of generations
-Best Energy:  67.7946690308  | Average Energy:  65.7556258309
-Model Name : DTLZ7, Optimizer : Genetic Algorithm
-Early Termination - 322  number of generations
-Best Energy:  90.6080635338  | Average Energy:  87.8249557779
-
-rank ,         name ,    med   ,  iqr 
-----------------------------------------------------
-   1 ,   DTLZ7_10_6 ,    1.15  ,  0.05 (               |*             ), 1.11,  1.15,  1.17
-   1 ,   DTLZ3_10_6 ,    1.17  ,  0.02 (               |-*            ), 1.15,  1.17,  1.17
-   2 ,   DTLZ1_10_6 ,    1.23  ,  0.01 (               | -*           ), 1.22,  1.23,  1.23
-   2 ,   DTLZ3_10_2 ,    1.23  ,  0.04 (               | -*           ), 1.19,  1.23,  1.23
-   2 ,   DTLZ3_10_4 ,    1.24  ,  0.03 (               | -*           ), 1.21,  1.24,  1.24
-   2 ,   DTLZ7_10_8 ,    1.24  ,  0.10 (               | -*           ), 1.18,  1.24,  1.28
-   3 ,   DTLZ1_10_4 ,    1.26  ,  0.02 (               |  *           ), 1.24,  1.26,  1.26
-   3 ,   DTLZ3_10_8 ,    1.26  ,  0.08 (               | -*           ), 1.18,  1.26,  1.26
-   3 ,   DTLZ7_10_2 ,    1.26  ,  0.04 (               |  *           ), 1.23,  1.26,  1.27
-   3 ,   DTLZ1_10_2 ,    1.27  ,  0.04 (               |  *           ), 1.23,  1.27,  1.27
-   3 ,   DTLZ7_10_4 ,    1.27  ,  0.09 (               | -*           ), 1.21,  1.27,  1.30
-   3 ,   DTLZ5_10_2 ,    1.28  ,  0.03 (               |  *           ), 1.25,  1.28,  1.28
-   3 ,   DTLZ1_10_8 ,    1.28  ,  0.07 (               | -*           ), 1.21,  1.28,  1.28
-   3 ,   DTLZ1_20_8 ,    1.29  ,  0.06 (               |  *           ), 1.23,  1.29,  1.30
-   3 ,   DTLZ5_10_6 ,    1.30  ,  0.06 (               |  -*          ), 1.24,  1.30,  1.30
-   4 ,   DTLZ3_20_8 ,    1.31  ,  0.06 (               |  -*          ), 1.26,  1.31,  1.32
-   4 ,   DTLZ5_10_8 ,    1.32  ,  0.07 (               |  -*          ), 1.25,  1.32,  1.32
-   4 ,   DTLZ1_20_4 ,    1.34  ,  0.05 (               |   *          ), 1.30,  1.34,  1.35
-   5 ,   DTLZ5_10_4 ,    1.36  ,  0.05 (               |   *          ), 1.30,  1.36,  1.36
-   5 ,   DTLZ3_20_4 ,    1.36  ,  0.06 (               |   *          ), 1.31,  1.36,  1.37
-   6 ,   DTLZ3_20_6 ,    1.37  ,  0.06 (               |   -*         ), 1.32,  1.37,  1.38
-   6 ,   DTLZ3_20_2 ,    1.39  ,  0.05 (               |   -*         ), 1.34,  1.39,  1.40
-   7 ,   DTLZ3_40_6 ,    1.40  ,  0.05 (               |    *         ), 1.37,  1.40,  1.42
-   7 ,   DTLZ1_20_6 ,    1.42  ,  0.05 (               |    *         ), 1.37,  1.42,  1.42
-   8 ,   DTLZ1_20_2 ,    1.44  ,  0.06 (               |    -*        ), 1.39,  1.44,  1.45
-   8 ,   DTLZ7_20_8 ,    1.45  ,  0.08 (               |    -*        ), 1.40,  1.45,  1.48
-   9 ,   DTLZ7_20_6 ,    1.48  ,  0.09 (               |    -*        ), 1.43,  1.48,  1.51
-   9 ,   DTLZ1_40_2 ,    1.48  ,  0.05 (               |     *        ), 1.46,  1.48,  1.51
-  10 ,   DTLZ1_40_4 ,    1.49  ,  0.05 (               |     *        ), 1.47,  1.49,  1.52
-  11 ,   DTLZ3_40_4 ,    1.51  ,  0.05 (               |     -*       ), 1.49,  1.51,  1.53
-  11 ,   DTLZ7_20_2 ,    1.52  ,  0.08 (               |     -*       ), 1.47,  1.52,  1.55
-  11 ,   DTLZ5_20_2 ,    1.52  ,  0.06 (               |     -*       ), 1.49,  1.52,  1.56
-  11 ,   DTLZ1_40_6 ,    1.52  ,  0.06 (               |     -*       ), 1.50,  1.52,  1.55
-  11 ,   DTLZ5_20_8 ,    1.52  ,  0.06 (               |     -*       ), 1.48,  1.52,  1.55
-  11 ,   DTLZ3_40_2 ,    1.52  ,  0.06 (               |      *       ), 1.50,  1.52,  1.55
-  11 ,   DTLZ1_40_8 ,    1.53  ,  0.06 (               |      *       ), 1.50,  1.53,  1.56
-  11 ,   DTLZ5_20_6 ,    1.54  ,  0.07 (               |     -*       ), 1.49,  1.54,  1.56
-  11 ,   DTLZ5_20_4 ,    1.55  ,  0.06 (               |      *       ), 1.51,  1.55,  1.57
-  11 ,   DTLZ3_40_8 ,    1.55  ,  0.06 (               |      *       ), 1.52,  1.55,  1.58
-  12 ,   DTLZ7_20_4 ,    1.60  ,  0.09 (               |      -*      ), 1.56,  1.60,  1.65
-  13 ,   DTLZ7_40_6 ,    1.68  ,  0.09 (               |        *     ), 1.64,  1.68,  1.73
-  14 ,   DTLZ7_40_8 ,    1.74  ,  0.08 (               |        -*    ), 1.69,  1.74,  1.77
-  14 ,   DTLZ5_40_8 ,    1.77  ,  0.07 (               |         -*   ), 1.73,  1.77,  1.80
-  14 ,   DTLZ7_40_4 ,    1.78  ,  0.10 (               |         -*   ), 1.72,  1.78,  1.83
-  15 ,   DTLZ5_40_4 ,    1.80  ,  0.07 (               |         -*   ), 1.76,  1.80,  1.84
-  15 ,   DTLZ5_40_2 ,    1.80  ,  0.06 (               |         -*   ), 1.76,  1.80,  1.83
-  15 ,   DTLZ5_40_6 ,    1.80  ,  0.08 (               |         -*   ), 1.76,  1.80,  1.84
-  16 ,   DTLZ7_40_2 ,    1.94  ,  0.09 (               |           -* ), 1.89,  1.94,  1.98
-[(2, 1.2652048308247763, <sk.Num instance at 0x7fe635a95128>), (2, 1.2552134038608354, <sk.Num instance at 0x7fe634aa1200>), (1, 1.2280739060573114, <sk.Num instance at 0x7fe635a392d8>), (2, 1.2781562502215447, <sk.Num instance at 0x7fe635a393b0>), (7, 1.4436412449197775, <sk.Num instance at 0x7fe635a2fc68>), (3, 1.34306658716838, <sk.Num instance at 0x7fe635a2fdd0>), (6, 1.4161775180001004, <sk.Num instance at 0x7fe635a2f0e0>), (2, 1.2855329687080366, <sk.Num instance at 0x7fe635a2f518>), (8, 1.4801303254318483, <sk.Num instance at 0x7fe634aa85f0>), (9, 1.493649793036533, <sk.Num instance at 0x7fe634aa8a28>), (10, 1.521776073139279, <sk.Num instance at 0x7fe634aabb00>), (10, 1.5320908660059838, <sk.Num instance at 0x7fe634aab290>), (1, 1.2289430744715253, <sk.Num instance at 0x7fe634aab098>), (1, 1.2377289783975747, <sk.Num instance at 0x7fe634aabcb0>), (0, 1.165482057057749, <sk.Num instance at 0x7fe634aab998>), (2, 1.2566825683891, <sk.Num instance at 0x7fe634aabf80>), (5, 1.3864966171114075, <sk.Num instance at 0x7fe634aab128>), (4, 1.3591199628970463, <sk.Num instance at 0x7fe634aabdd0>), (5, 1.3726484178027962, <sk.Num instance at 0x7fe634aab908>), (3, 1.3097438717575067, <sk.Num instance at 0x7fe634aab7a0>), (10, 1.5236295742549473, <sk.Num instance at 0x7fe634aa70e0>), (10, 1.5077239838591885, <sk.Num instance at 0x7fe634aa73f8>), (6, 1.396879545879588, <sk.Num instance at 0x7fe634aa76c8>), (10, 1.5496931379490133, <sk.Num instance at 0x7fe634aa7ab8>), (2, 1.2776498675864707, <sk.Num instance at 0x7fe634aa7830>), (4, 1.355560737871906, <sk.Num instance at 0x7fe635a6f998>), (2, 1.296326843421335, <sk.Num instance at 0x7fe635a6f7a0>), (3, 1.3214906210866257, <sk.Num instance at 0x7fe634a9e7a0>), (10, 1.520643339876246, <sk.Num instance at 0x7fe634a9e518>), (10, 1.5480771435333875, <sk.Num instance at 0x7fe634a9e560>), (10, 1.5416173227638126, <sk.Num instance at 0x7fe634aa2f80>), (10, 1.5227882460450215, <sk.Num instance at 0x7fe634aa2290>), (14, 1.7967975776820122, <sk.Num instance at 0x7fe634aa2050>), (14, 1.7966598005468162, <sk.Num instance at 0x7fe634aa2560>), (14, 1.7975022834088183, <sk.Num instance at 0x7fe634a92fc8>), (13, 1.7718073123692104, <sk.Num instance at 0x7fe634a92710>), (2, 1.2648398125719802, <sk.Num instance at 0x7fe634a925a8>), (2, 1.270997558693674, <sk.Num instance at 0x7fe634a92050>), (0, 1.1513653181452739, <sk.Num instance at 0x7fe634a92830>), (1, 1.2429699067511584, <sk.Num instance at 0x7fe634a92dd0>), (10, 1.5184267123164021, <sk.Num instance at 0x7fe634a925f0>), (11, 1.5993569086475445, <sk.Num instance at 0x7fe634a92a70>), (8, 1.4768033590675427, <sk.Num instance at 0x7fe634a92e18>), (7, 1.446578196521958, <sk.Num instance at 0x7fe634a8d200>), (15, 1.9373977205518287, <sk.Num instance at 0x7fe634a8d560>), (13, 1.7794820245240466, <sk.Num instance at 0x7fe634a8de60>), (12, 1.6830501575935921, <sk.Num instance at 0x7fe634a8d8c0>), (13, 1.738718990795491, <sk.Num instance at 0x7fe634a8df80>)]
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9964179104477612)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9950248756218906)
+Model =  DTLZ1
+Decisions = 10 Objectives = 2
+('Mean = ', 0.99516417910447763)
+('Standard Deviation = ', 0.00041791044776118286)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9950248756218906)
+Model =  DTLZ1
+Decisions = 10 Objectives = 4
+('Mean = ', 0.99502487562189068)
+('Standard Deviation = ', 1.1102230246251565e-16)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9953233830845771)
+('Hyper Volume: ', 0.9975124378109452)
+('Hyper Volume: ', 0.9991044776119403)
+('Hyper Volume: ', 0.9950248756218906)
+Model =  DTLZ1
+Decisions = 10 Objectives = 6
+('Mean = ', 0.99571144278606971)
+('Standard Deviation = ', 0.001349313901122441)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9975124378109452)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9975124378109452)
+('Hyper Volume: ', 0.9967661691542289)
+('Hyper Volume: ', 0.9975124378109452)
+('Hyper Volume: ', 0.9950248756218906)
+Model =  DTLZ1
+Decisions = 10 Objectives = 8
+('Mean = ', 0.99594527363184082)
+('Standard Deviation = ', 0.0011456297452407151)
+('Hyper Volume: ', 0.995273631840796)
+('Hyper Volume: ', 0.9987064676616916)
+('Hyper Volume: ', 0.9955188679245283)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9959433962264151)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9951243781094528)
+('Hyper Volume: ', 0.9959433962264151)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9950248756218906)
+Model =  DTLZ1
+Decisions = 20 Objectives = 2
+('Mean = ', 0.99566096404768611)
+('Standard Deviation = ', 0.0010729027957661614)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9953773584905661)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9973134328358209)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9952830188679245)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9975124378109452)
+Model =  DTLZ1
+Decisions = 20 Objectives = 4
+('Mean = ', 0.99556355017365994)
+('Standard Deviation = ', 0.00093352231611190607)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9977114427860696)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9975124378109452)
+('Hyper Volume: ', 0.9952830188679245)
+('Hyper Volume: ', 0.997877358490566)
+('Hyper Volume: ', 0.9951243781094528)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9950248756218906)
+Model =  DTLZ1
+Decisions = 20 Objectives = 6
+('Mean = ', 0.99586330141744117)
+('Standard Deviation = ', 0.0012078587592183544)
+('Hyper Volume: ', 0.9952830188679245)
+('Hyper Volume: ', 0.9958706467661692)
+('Hyper Volume: ', 0.9975621890547264)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9976119402985074)
+('Hyper Volume: ', 0.9972139303482587)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9987562189054726)
+('Hyper Volume: ', 0.9950248756218906)
+Model =  DTLZ1
+Decisions = 20 Objectives = 8
+('Mean = ', 0.99623974467286192)
+('Standard Deviation = ', 0.0013367365127914164)
+('Hyper Volume: ', 0.9962546816479401)
+('Hyper Volume: ', 0.9975689223057644)
+('Hyper Volume: ', 0.997431693989071)
+('Hyper Volume: ', 0.9988939051918736)
+('Hyper Volume: ', 0.9972677595628415)
+('Hyper Volume: ', 0.9973740053050398)
+('Hyper Volume: ', 0.9985971223021582)
+('Hyper Volume: ', 0.9984350132625994)
+('Hyper Volume: ', 0.9971830985915493)
+('Hyper Volume: ', 0.998546511627907)
+Model =  DTLZ1
+Decisions = 40 Objectives = 2
+('Mean = ', 0.99775527137867448)
+('Standard Deviation = ', 0.0007870782191452682)
+('Hyper Volume: ', 0.997946611909651)
+('Hyper Volume: ', 0.9968666666666667)
+('Hyper Volume: ', 0.9975438596491228)
+('Hyper Volume: ', 0.9981987577639752)
+('Hyper Volume: ', 0.9980523255813953)
+('Hyper Volume: ', 0.9968944099378882)
+('Hyper Volume: ', 0.9972676056338028)
+('Hyper Volume: ', 0.9973474801061007)
+('Hyper Volume: ', 0.9989677419354839)
+('Hyper Volume: ', 0.9967845659163987)
+Model =  DTLZ1
+Decisions = 40 Objectives = 4
+('Mean = ', 0.99758700251004839)
+('Standard Deviation = ', 0.00066560120723795416)
+('Hyper Volume: ', 0.9993111638954869)
+('Hyper Volume: ', 0.9988571428571429)
+('Hyper Volume: ', 0.9972981366459628)
+('Hyper Volume: ', 0.9977973568281938)
+('Hyper Volume: ', 0.9957264957264957)
+('Hyper Volume: ', 0.9968163265306123)
+('Hyper Volume: ', 0.997093023255814)
+('Hyper Volume: ', 0.9979334916864608)
+('Hyper Volume: ', 0.9976171875)
+('Hyper Volume: ', 0.998659793814433)
+Model =  DTLZ1
+Decisions = 40 Objectives = 6
+('Mean = ', 0.99771101187406031)
+('Standard Deviation = ', 0.001006538012874662)
+('Hyper Volume: ', 0.9972383720930232)
+('Hyper Volume: ', 0.9977426636568849)
+('Hyper Volume: ', 0.9991279069767441)
+('Hyper Volume: ', 0.9982397003745318)
+('Hyper Volume: ', 0.9965397923875432)
+('Hyper Volume: ', 0.9962040816326531)
+('Hyper Volume: ', 0.9973521126760564)
+('Hyper Volume: ', 0.9964028776978417)
+('Hyper Volume: ', 0.9974937343358395)
+('Hyper Volume: ', 0.9972677595628415)
+Model =  DTLZ1
+Decisions = 40 Objectives = 8
+('Mean = ', 0.99736090013939582)
+('Standard Deviation = ', 0.00083737750318588016)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9950248756218906)
+Model =  DTLZ3
+Decisions = 10 Objectives = 2
+('Mean = ', 0.99502487562189068)
+('Standard Deviation = ', 1.1102230246251565e-16)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9975124378109452)
+('Hyper Volume: ', 0.9950248756218906)
+Model =  DTLZ3
+Decisions = 10 Objectives = 4
+('Mean = ', 0.99527363184079609)
+('Standard Deviation = ', 0.00074626865671639786)
+('Hyper Volume: ', 0.9964676616915423)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9953731343283582)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9950248756218906)
+Model =  DTLZ3
+Decisions = 10 Objectives = 6
+('Mean = ', 0.99520398009950239)
+('Standard Deviation = ', 0.00043383541008142811)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9975124378109452)
+('Hyper Volume: ', 0.9975124378109452)
+('Hyper Volume: ', 0.9950248756218906)
+Model =  DTLZ3
+Decisions = 10 Objectives = 8
+('Mean = ', 0.99552238805970139)
+('Standard Deviation = ', 0.00099502487562186381)
+('Hyper Volume: ', 0.9969651741293533)
+('Hyper Volume: ', 0.9958018867924529)
+('Hyper Volume: ', 0.9950746268656716)
+('Hyper Volume: ', 0.9959203980099502)
+('Hyper Volume: ', 0.9975124378109452)
+('Hyper Volume: ', 0.9978109452736318)
+('Hyper Volume: ', 0.9975943396226415)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9950248756218906)
+Model =  DTLZ3
+Decisions = 20 Objectives = 2
+('Mean = ', 0.9961754435370318)
+('Standard Deviation = ', 0.0011174600627052635)
+('Hyper Volume: ', 0.9956603773584906)
+('Hyper Volume: ', 0.9976415094339622)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9975124378109452)
+('Hyper Volume: ', 0.9958706467661692)
+('Hyper Volume: ', 0.9975124378109452)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9975124378109452)
+('Hyper Volume: ', 0.9977611940298508)
+('Hyper Volume: ', 0.9950248756218906)
+Model =  DTLZ3
+Decisions = 20 Objectives = 4
+('Mean = ', 0.99645456678869804)
+('Standard Deviation = ', 0.0011652094588830511)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9958706467661692)
+('Hyper Volume: ', 0.9952830188679245)
+('Hyper Volume: ', 0.997412935323383)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9950248756218906)
+Model =  DTLZ3
+Decisions = 20 Objectives = 6
+('Mean = ', 0.99537407303107117)
+('Standard Deviation = ', 0.00072563128350946213)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9975124378109452)
+('Hyper Volume: ', 0.9955223880597015)
+('Hyper Volume: ', 0.9971641791044776)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9975124378109452)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9950248756218906)
+Model =  DTLZ3
+Decisions = 20 Objectives = 8
+('Mean = ', 0.99578606965174132)
+('Standard Deviation = ', 0.001067984353556295)
+('Hyper Volume: ', 0.9990353697749196)
+('Hyper Volume: ', 0.9971220930232558)
+('Hyper Volume: ', 0.9976585365853659)
+('Hyper Volume: ', 0.9965397923875432)
+('Hyper Volume: ', 0.997093023255814)
+('Hyper Volume: ', 0.996996996996997)
+('Hyper Volume: ', 0.9978197674418605)
+('Hyper Volume: ', 0.9966666666666667)
+('Hyper Volume: ', 0.9968944099378882)
+('Hyper Volume: ', 0.9977170418006431)
+Model =  DTLZ3
+Decisions = 40 Objectives = 2
+('Mean = ', 0.99735436978709535)
+('Standard Deviation = ', 0.00069745316450879103)
+('Hyper Volume: ', 0.997093023255814)
+('Hyper Volume: ', 0.9978632478632479)
+('Hyper Volume: ', 0.9989974937343359)
+('Hyper Volume: ', 0.9972677595628415)
+('Hyper Volume: ', 0.9969453376205788)
+('Hyper Volume: ', 0.9962546816479401)
+('Hyper Volume: ', 0.9982919254658386)
+('Hyper Volume: ', 0.9971830985915493)
+('Hyper Volume: ', 0.9992824074074074)
+('Hyper Volume: ', 0.9984259259259259)
+Model =  DTLZ3
+Decisions = 40 Objectives = 4
+('Mean = ', 0.99776049010754808)
+('Standard Deviation = ', 0.00092389430183936598)
+('Hyper Volume: ', 0.9969662921348315)
+('Hyper Volume: ', 0.9969254658385093)
+('Hyper Volume: ', 0.9975581395348837)
+('Hyper Volume: ', 0.9973474801061007)
+('Hyper Volume: ', 0.9962546816479401)
+('Hyper Volume: ', 0.9971830985915493)
+('Hyper Volume: ', 0.9985213032581454)
+('Hyper Volume: ', 0.996996996996997)
+('Hyper Volume: ', 0.9974226804123711)
+('Hyper Volume: ', 0.9972677595628415)
+Model =  DTLZ3
+Decisions = 40 Objectives = 6
+('Mean = ', 0.9972443898084169)
+('Standard Deviation = ', 0.00054730622299306239)
+('Hyper Volume: ', 0.997093023255814)
+('Hyper Volume: ', 0.9974226804123711)
+('Hyper Volume: ', 0.9983229813664596)
+('Hyper Volume: ', 0.998313953488372)
+('Hyper Volume: ', 0.9986967418546366)
+('Hyper Volume: ', 0.9966666666666667)
+('Hyper Volume: ', 0.9978546712802768)
+('Hyper Volume: ', 0.997093023255814)
+('Hyper Volume: ', 0.9968944099378882)
+('Hyper Volume: ', 0.9976851851851852)
+Model =  DTLZ3
+Decisions = 40 Objectives = 8
+('Mean = ', 0.99760433367034851)
+('Standard Deviation = ', 0.00064974318208150031)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9975124378109452)
+Model =  DTLZ5
+Decisions = 10 Objectives = 2
+('Mean = ', 0.99527363184079609)
+('Standard Deviation = ', 0.00074626865671639786)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9950746268656716)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9975124378109452)
+('Hyper Volume: ', 0.9975124378109452)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9975124378109452)
+Model =  DTLZ5
+Decisions = 10 Objectives = 4
+('Mean = ', 0.99577611940298494)
+('Standard Deviation = ', 0.0011367805387659201)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.995273631840796)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9950248756218906)
+Model =  DTLZ5
+Decisions = 10 Objectives = 6
+('Mean = ', 0.99504975124378114)
+('Standard Deviation = ', 7.462686567162313e-05)
+('Hyper Volume: ', 0.9954228855721393)
+('Hyper Volume: ', 0.9967164179104477)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9951243781094528)
+('Hyper Volume: ', 0.9951243781094528)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9950248756218906)
+Model =  DTLZ5
+Decisions = 10 Objectives = 8
+('Mean = ', 0.99525373134328365)
+('Standard Deviation = ', 0.00050157544919913317)
+('Hyper Volume: ', 0.9952830188679245)
+('Hyper Volume: ', 0.9965470852017937)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9975124378109452)
+('Hyper Volume: ', 0.9952830188679245)
+('Hyper Volume: ', 0.997412935323383)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.995273631840796)
+Model =  DTLZ5
+Decisions = 20 Objectives = 2
+('Mean = ', 0.99574116304003302)
+('Standard Deviation = ', 0.00096293279417388356)
+('Hyper Volume: ', 0.9976616915422886)
+('Hyper Volume: ', 0.9952830188679245)
+('Hyper Volume: ', 0.9958962264150943)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9955660377358491)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9951741293532338)
+('Hyper Volume: ', 0.9958208955223881)
+('Hyper Volume: ', 0.9950248756218906)
+Model =  DTLZ5
+Decisions = 20 Objectives = 4
+('Mean = ', 0.99555015019243398)
+('Standard Deviation = ', 0.00077255002334150299)
+('Hyper Volume: ', 0.9975621890547264)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9976415094339622)
+('Hyper Volume: ', 0.9975124378109452)
+('Hyper Volume: ', 0.9952830188679245)
+('Hyper Volume: ', 0.9960377358490566)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9988557213930348)
+Model =  DTLZ5
+Decisions = 20 Objectives = 6
+('Mean = ', 0.99629921148972134)
+('Standard Deviation = ', 0.0013784513652822525)
+('Hyper Volume: ', 0.9976415094339622)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9955156950672646)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9973134328358209)
+('Hyper Volume: ', 0.9950248756218906)
+('Hyper Volume: ', 0.9976415094339622)
+Model =  DTLZ5
+Decisions = 20 Objectives = 8
+('Mean = ', 0.99582614005023518)
+('Standard Deviation = ', 0.0011292340776400801)
+('Hyper Volume: ', 0.9977973568281938)
+('Hyper Volume: ', 0.9967985611510791)
+('Hyper Volume: ', 0.9971830985915493)
+('Hyper Volume: ', 0.9973291925465838)
+('Hyper Volume: ', 0.9962546816479401)
+('Hyper Volume: ', 0.996996996996997)
+('Hyper Volume: ', 0.9971830985915493)
+('Hyper Volume: ', 0.9971830985915493)
+('Hyper Volume: ', 0.997790973871734)
+('Hyper Volume: ', 0.9994855305466238)
+Model =  DTLZ5
+Decisions = 40 Objectives = 2
+('Mean = ', 0.99740025893637996)
+('Standard Deviation = ', 0.00081499917810513476)
+('Hyper Volume: ', 0.9973666666666666)
+('Hyper Volume: ', 0.996996996996997)
+('Hyper Volume: ', 0.9988014981273409)
+('Hyper Volume: ', 0.9968944099378882)
+('Hyper Volume: ', 0.9969204152249135)
+('Hyper Volume: ', 0.9968944099378882)
+('Hyper Volume: ', 0.99609375)
+('Hyper Volume: ', 0.9975390625)
+('Hyper Volume: ', 0.9967845659163987)
+('Hyper Volume: ', 0.9985093167701863)
+Model =  DTLZ5
+Decisions = 40 Objectives = 4
+('Mean = ', 0.99728010920782784)
+('Standard Deviation = ', 0.00077847260321684691)
+('Hyper Volume: ', 0.9972972972972973)
+('Hyper Volume: ', 0.9967845659163987)
+('Hyper Volume: ', 0.999061224489796)
+('Hyper Volume: ', 0.9971942446043165)
+('Hyper Volume: ', 0.996996996996997)
+('Hyper Volume: ', 0.9961111111111111)
+('Hyper Volume: ', 0.9972677595628415)
+('Hyper Volume: ', 0.9964028776978417)
+('Hyper Volume: ', 0.998752688172043)
+('Hyper Volume: ', 0.9984429065743945)
+Model =  DTLZ5
+Decisions = 40 Objectives = 6
+('Mean = ', 0.99743116724230385)
+('Standard Deviation = ', 0.00094521959858730176)

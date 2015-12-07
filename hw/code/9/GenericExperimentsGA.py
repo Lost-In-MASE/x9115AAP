@@ -313,7 +313,7 @@ class DTLZ7(BaseModel):
         return f
 
 def genetic_algorithm(model):
-    population_size = model.number_vars * 10
+    population_size = 100
     mutate_prob = 0.05
     cross_prob = 0.80
     k_max = 1000
@@ -394,7 +394,7 @@ def genetic_algorithm(model):
         worse = any([x < y for x,y in zip(cobj1, cobj2)])
         return better and not worse
 
-    print "Model Name : " + model.model_name + ", Optimizer : Genetic Algorithm"
+    # print "Model Name : " + model.model_name + ", Optimizer : Genetic Algorithm"
     population = build_population()
     best_sol = model.normalize_val(model.eval(population[0]))
     sumofpop = 0
@@ -449,7 +449,7 @@ def genetic_algorithm(model):
             era += type2(population, next_gen, model)
 
         if era == 0:
-            print "Early Termination -", gen_count + 1, " number of generations"
+            # print "Early Termination -", gen_count + 1, " number of generations"
             # print "Best Energy: ", best_sol, " | Average Energy: ", best_avg_sol
             break
 
@@ -517,10 +517,10 @@ def cal_hv(model, generations, population_size):
 if __name__ == '__main__':
 
     era_collection = []
-    decisions = [10, 20, 40]
-    objectives = [2, 4, 6, 8]
-    models = [DTLZ1, DTLZ3, DTLZ5]
-    model_text = ["DTLZ1", "DTLZ3", "DTLZ5"]
+    decisions = [40]
+    objectives = [8]
+    models = [DTLZ5]
+    model_text = ["DTLZ5"]
     # decisions = [10, 20, 40]
     # objectives = [2, 4, 6, 8]
     # models = [DTLZ1, DTLZ3, DTLZ5, DTLZ7]
@@ -533,6 +533,8 @@ if __name__ == '__main__':
                 for _ in xrange(10):
                     model = model_type(decs, objs)
                     val.append(genetic_algorithm(model))
+                print "Model = ", model.model_name
+                print "Decisions =", decs, "Objectives =", objs
                 print("Mean = ", numpy.mean(val))
                 print("Standard Deviation = ", numpy.std(val))
 
