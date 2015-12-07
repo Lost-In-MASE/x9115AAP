@@ -25,7 +25,7 @@ class BaseModel:
 
     def type1(self, solution, sb):
         for objective in self.get_objectives():
-            if objective(solution) > objective(sb):
+            if objective(solution) < objective(sb):
                 return False
 
         return True
@@ -388,8 +388,8 @@ def genetic_algorithm(model):
         for objective in model.get_objectives():
             cobj1.append(objective(c1))
             cobj2.append(objective(c2))
-        better = any([x < y for x,y in zip(cobj1, cobj2)])
-        worse = any([x > y for x,y in zip(cobj1, cobj2)])
+        better = any([x > y for x,y in zip(cobj1, cobj2)])
+        worse = any([x < y for x,y in zip(cobj1, cobj2)])
         return better and not worse
 
     print "Model Name : " + model.model_name + ", Optimizer : Genetic Algorithm"
@@ -430,10 +430,10 @@ def genetic_algorithm(model):
             energy2 = model.eval(child2)
 
             '''Update best solution'''
-            if energy1 < min_sol:
+            if energy1 > min_sol:
                 min_sol = energy1
 
-            if energy2 < min_sol:
+            if energy2 > min_sol:
                 min_sol = energy2
             k += energy1
             k += energy2
@@ -453,7 +453,7 @@ def genetic_algorithm(model):
         population = next_gen
         avg_energy.append(k/population_size)
 
-        if(k/population_size < best_avg_sol):
+        if(k/population_size > best_avg_sol):
             best_avg_sol = k/population_size
 
         energies = []
@@ -477,26 +477,26 @@ def genetic_algorithm(model):
 if __name__ == '__main__':
 
     era_collection = []
-    decisions = [10]
-    objectives = [2]
-    # decisions = [10, 20]
+    # decisions = [10]
     # objectives = [2]
-    models = [DTLZ3]
-    model_text = ["DTLZ7"]
+    decisions = [10, 20, 40]
+    objectives = [2, 4, 6, 8]
+    models = [DTLZ1, DTLZ3, DTLZ5, DTLZ7]
+    model_text = ["DTLZ1", "DTLZ3", "DTLZ5", "DTLZ7"]
 
     for model_type, text in zip(models, model_text):
         for decs in decisions:
             for objs in objectives:
                 model = model_type(decs, objs)
-                era_val = [model.eval(val) for val in genetic_algorithm(model)]
+                era_val = [model.normalize_val(model.eval(val)) for val in genetic_algorithm(model)]
                 era_val.insert(0, text + "_" + str(decs) + "_" + str(objs))
                 era_collection.append(era_val)
-    models = [Osyczka, Kursawe, Golinski]
-    model_text = ["OSYCZ", "KURSA", "GOLIN"]
-    for model_type, text in zip(models, model_text):
-        model = model_type()
-        era_val = [model.eval(val) for val in genetic_algorithm(model)]
-        era_val.insert(0, text)
-        era_collection.append(era_val)
+    # models = [Osyczka, Kursawe, Golinski]
+    # model_text = ["OSYCZ", "KURSA", "GOLIN"]
+    # for model_type, text in zip(models, model_text):
+    #     model = model_type()
+    #     era_val = [model.eval(val) for val in genetic_algorithm(model)]
+    #     era_val.insert(0, text)
+    #     era_collection.append(era_val)
     # print era_collection
     print rdivDemo(era_collection)
