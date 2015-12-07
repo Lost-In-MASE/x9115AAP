@@ -3,6 +3,7 @@ from __future__ import division
 import random
 import math
 import sys
+import numpy
 
 from sk import a12
 from sk import rdivDemo
@@ -518,7 +519,7 @@ if __name__ == '__main__':
     era_collection = []
     decisions = [10, 20, 40]
     objectives = [2, 4, 6, 8]
-    models = [DTLZ1]
+    models = [DTLZ3]
     model_text = ["DTLZ1"]
     # decisions = [10, 20, 40]
     # objectives = [2, 4, 6, 8]
@@ -529,10 +530,12 @@ if __name__ == '__main__':
         for decs in decisions:
             for objs in objectives:
                 val = []
-                for _ in xrange(10):
+                for _ in xrange(5):
                     model = model_type(decs, objs)
                     val.append(genetic_algorithm(model))
-                
+                print("Mean = ", numpy.mean(val))
+                print("Standard Deviation = ", numpy.std(val))
+
                 # era_val = [model.normalize_val(model.eval(val)) for val in genetic_algorithm(model)]
                 # era_val.insert(0, text + "_" + str(decs) + "_" + str(objs))
                 # era_collection.append(era_val)
