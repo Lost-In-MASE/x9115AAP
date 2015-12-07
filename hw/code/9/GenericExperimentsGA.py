@@ -316,6 +316,7 @@ def genetic_algorithm(model):
     mutate_prob = 0.05
     cross_prob = 0.90
     k_max = 1000
+    generations = []
 
     def build_population():
         new_population = []
@@ -404,6 +405,7 @@ def genetic_algorithm(model):
 
     era = 100
     min_sol = best_sol
+    generations.append(population)
     for gen_count in xrange(k_max):
         k = 0
         next_gen = []
@@ -451,6 +453,7 @@ def genetic_algorithm(model):
             break
 
         population = next_gen
+        generations.append(population)
         avg_energy.append(k/population_size)
 
         if(k/population_size > best_avg_sol):
@@ -470,19 +473,56 @@ def genetic_algorithm(model):
                 sum += 1
         # print sum/population_size
 
+    '''Calulate hyper volume'''
+    hv = cal_hv(model, generations, population_size)
+    print("Hyper Volume: ", hv)
     # print "Best Energy: ", best_sol, " | Average Energy: ", best_avg_sol, "Length of Population: "
     return population
     # print avg_energy
 
+def cal_hv(model, generations, population_size):
+    threshold = 100000
+    total_gen = len(generations)
+
+    frontier = generations[total_gen - 1]
+
+    for _ in xrange(threshold):
+        gen_index = random.randint(0, total_gen - 2)
+        front_index = random.randint(0, len(frontier) - 1)
+        pop_index = random.randint(0, population_size - 1)
+
+        frontier_can = frontier[front_index]
+        can = generations[gen_index][pop_index]
+        if model.type1(frontier_can, can):
+            continue
+        elif model.type1(can, frontier_can):
+            frontier[front_index] = can
+            generations[gen_index][pop_index] = frontier_can
+        else :
+            frontier.append(can)
+
+    for can1 in frontier:
+        for can2 in frontier:
+            if can1 == can2:
+                continue
+            if model.type1(can1, can2):
+                frontier.remove(can2)
+
+    hv = (total_gen * population_size - len(frontier)) / (total_gen * population_size)
+    return hv
+
+
 if __name__ == '__main__':
 
     era_collection = []
-    # decisions = [10]
-    # objectives = [2]
-    decisions = [10, 20, 40]
-    objectives = [2, 4, 6, 8]
-    models = [DTLZ1, DTLZ3, DTLZ5, DTLZ7]
-    model_text = ["DTLZ1", "DTLZ3", "DTLZ5", "DTLZ7"]
+    decisions = [10]
+    objectives = [2]
+    models = [DTLZ7]
+    model_text = ["DTLZ1"]
+    # decisions = [10, 20, 40]
+    # objectives = [2, 4, 6, 8]
+    # models = [DTLZ1, DTLZ3, DTLZ5, DTLZ7]
+    # model_text = ["DTLZ1", "DTLZ3", "DTLZ5", "DTLZ7"]
 
     for model_type, text in zip(models, model_text):
         for decs in decisions:
