@@ -3,12 +3,16 @@ from __future__ import division
 import random
 from sk import a12
 
+from GenericExperimentsGA import DTLZ1, DTLZ3, DTLZ5, DTLZ7
+
+
 class BaseModel:
 
     def __init__(self):
         self.model_name = None
         self.constraints = None
         self.number_vars = 0
+        self.model_type = None
         self.var_bounds = []
 
     def okay(self, _):
@@ -26,11 +30,8 @@ class BaseModel:
         return x
 
     def eval(self, x):
-        energy = 0
-        for obj in self.get_objectives():
-            energy += obj(x)
-
-        return energy
+        # Return hyper volume ratio
+        return 0
 
     def get_baselines(self):
         return self.lo, self.hi
@@ -38,32 +39,26 @@ class BaseModel:
 
 class ParameterModel(BaseModel):
 
-    def __init__(self, num_dec, num_obj):
+    def __init__(self):
         BaseModel.__init__(self)
         self.model_name = "ParameterModel"
-        self.number_vars = num_dec
-        self.number_obj = num_obj
-        self.var_bounds = []
-        for _ in xrange(self.number_vars):
-            self.var_bounds.append((0.0, 1.0))
+        self.number_vars = 3
+        self.var_bounds = [(0.01, 0.1), (0.6, 1.0), (30, 150)]
 
     def eval(self, x):
         # Call GA here
-        mnop = 10
-
-    def okay(self, x):
-        for constraint in self.constraints:
-            if constraint(x) < 0:
-                return False
-
-        return True
+        return genetic_algorithm(self.model_type, x)
 
 
-def differential_evolution(model):
+def differential_evolution(model_type):
+
+    frontier_size = 10
+    model = ParameterModel()
+    model.model_type = model_type
 
     def build_frontier():
         new_frontier = []
-        for _ in xrange(100):
+        for _ in xrange(frontier_size):
             neighbor = model.get_neighbor()
             while model.okay(neighbor) is False:
                 neighbor = model.get_neighbor()
@@ -74,7 +69,7 @@ def differential_evolution(model):
     def get_frontier_neighbors(cur):
         seen = []
         while len(seen) < 3:
-            rand_index = random.randint(0, 99)
+            rand_index = random.randint(0, frontier_size - 1)
             if rand_index == cur:
                 continue
             if rand_index not in seen:
@@ -87,6 +82,9 @@ def differential_evolution(model):
         for j in xrange(model.number_vars):
             l, m = model.var_bounds[j]
             inter = (frontier[seen[0]][j] + 0.75 * (frontier[seen[1]][j] - frontier[seen[2]][j]))
+
+            if isinstance(l, int) and isinstance(m, int):
+                inter = int(inter)
             if inter >= l and inter <= m:
                 soln.append(inter)
             else:
@@ -98,52 +96,49 @@ def differential_evolution(model):
     e = model.eval(frontier[0])
     best_sol = frontier[0]
 
-    k_max = 1000
+    k_max = 1
     k = 0
     cf = 0.3
-    threshold = 0
 
     while k < k_max:
-        output = ""
-
-        if model.normalize_val(e) == threshold:
-            break
 
         for i, solution in enumerate(frontier):
             seen = get_frontier_neighbors(i)
+            print seen
             mutation = frontier[seen[0]]
             cur_e = model.eval(solution)
-            out = "."
             if cf < random.random():
-                if model.eval(mutation) < cur_e:
-                    cur_e = model.eval(mutation)
+                new_en = model.eval(mutation)
+                if new_en > cur_e:
+                    cur_e = new_en
                     frontier[i] = mutation
-                    out += "+"
             else:
                 mutation = get_mutation(seen)
-                if model.okay(mutation) and model.eval(mutation) < cur_e:
+                new_en = model.eval(mutation)
+                if model.okay(mutation) and new_en > cur_e:
                     frontier[i] = mutation
-                    cur_e = model.eval(mutation)
-                    out = "+"
+                    cur_e = new_en
 
-            if cur_e < e and model.normalize_val(cur_e) >= threshold:
-                out = "?"
+            if cur_e > e:
                 e = cur_e
                 best_sol = frontier[i]
 
-            output += out
             k += 1
-            if k % 25 is 0:
-                print ("%.5f,  %20s" % (model.normalize_val(e), output))
-                output = ""
 
     print("\nBest Solution : " + str(best_sol))
-    print("Best Energy : " + str(model.normalize_val(model.eval(best_sol))))
+    print("Best Energy : " + str(e))
 
-def genetic_algorithm(model, mutation = 0.05, crossover = 0.80, population = 100, get_pop_flag = False):
-    population_size = population
-    mutate_prob = mutation
-    cross_prob = crossover
+    return best_sol
+
+
+def genetic_algorithm(model, tuned_params):
+    return genetic_algorithm(model, tuned_params, False)
+
+
+def genetic_algorithm(model, tuned_params, get_pop_flag=False):  # mutation = 0.05, crossover = 0.80, population = 100, get_pop_flag = False):
+    population_size = tuned_params[2]  # population
+    mutate_prob = tuned_params[0]  # mutation
+    cross_prob = tuned_params[1]  # crossover
     k_max = 1000
     generations = []
 
@@ -207,7 +202,7 @@ def genetic_algorithm(model, mutation = 0.05, crossover = 0.80, population = 100
                     if c2 in pool:
                         pool.remove(c2)
         # print len(pool)
-        if(len(pool) == 0):
+        if len(pool) is 0:
             # print "Length of pool is 0"
             return range(0, population_size)
         return pool
@@ -218,8 +213,8 @@ def genetic_algorithm(model, mutation = 0.05, crossover = 0.80, population = 100
         for objective in model.get_objectives():
             cobj1.append(objective(c1))
             cobj2.append(objective(c2))
-        better = any([x > y for x,y in zip(cobj1, cobj2)])
-        worse = any([x < y for x,y in zip(cobj1, cobj2)])
+        better = any([x > y for x, y in zip(cobj1, cobj2)])
+        worse = any([x < y for x, y in zip(cobj1, cobj2)])
         return better and not worse
 
     print "Model Name : " + model.model_name + ", Optimizer : Genetic Algorithm"
@@ -229,7 +224,7 @@ def genetic_algorithm(model, mutation = 0.05, crossover = 0.80, population = 100
     for i in population:
         sumofpop += model.eval(i)
     best_avg_sol = sumofpop / population_size
-    avg_energy = []
+    avg_energy = list()
     avg_energy.append(best_avg_sol)
 
     era = 100
@@ -285,18 +280,18 @@ def genetic_algorithm(model, mutation = 0.05, crossover = 0.80, population = 100
         generations.append(population)
         avg_energy.append(k/population_size)
 
-        if(k/population_size > best_avg_sol):
+        if k/population_size > best_avg_sol:
             best_avg_sol = k/population_size
 
         energies = []
         for i in xrange(population_size):
-            #print ("%.5f \n" % (model.normalize_val(model.eval(population[i]))))
+            # print ("%.5f \n" % (model.normalize_val(model.eval(population[i]))))
             energies.append(model.eval(population[i]))
         energies.sort()
         # print energies
 
         sum = 0
-        #Calculate the percentage of population that are similar
+        # Calculate the percentage of population that are similar
         for i in xrange(1, len(energies)):
             if energies[i] == energies[i-1]:
                 sum += 1
@@ -312,6 +307,7 @@ def genetic_algorithm(model, mutation = 0.05, crossover = 0.80, population = 100
     # print "Best Energy: ", best_sol, " | Average Energy: ", best_avg_sol, "Length of Population: "
     # return population
     # print avg_energy
+
 
 def cal_hv(model, generations, population_size):
     threshold = 100000
@@ -343,3 +339,7 @@ def cal_hv(model, generations, population_size):
 
     hv = (total_gen * population_size - len(frontier)) / (total_gen * population_size)
     return hv
+
+if __name__ == '__main__':
+    for model in [DTLZ1, DTLZ3, DTLZ5, DTLZ7]:
+        print genetic_algorithm(model(10, 2), differential_evolution(model(10, 2)), True)
