@@ -449,7 +449,7 @@ def genetic_algorithm(model):
 
         if era == 0:
             print "Early Termination -", gen_count + 1, " number of generations"
-            print "Best Energy: ", best_sol, " | Average Energy: ", best_avg_sol
+            # print "Best Energy: ", best_sol, " | Average Energy: ", best_avg_sol
             break
 
         population = next_gen
@@ -476,8 +476,9 @@ def genetic_algorithm(model):
     '''Calulate hyper volume'''
     hv = cal_hv(model, generations, population_size)
     print("Hyper Volume: ", hv)
+    return hv
     # print "Best Energy: ", best_sol, " | Average Energy: ", best_avg_sol, "Length of Population: "
-    return population
+    # return population
     # print avg_energy
 
 def cal_hv(model, generations, population_size):
@@ -515,9 +516,9 @@ def cal_hv(model, generations, population_size):
 if __name__ == '__main__':
 
     era_collection = []
-    decisions = [10]
-    objectives = [2]
-    models = [DTLZ7]
+    decisions = [10, 20, 40]
+    objectives = [2, 4, 6, 8]
+    models = [DTLZ1]
     model_text = ["DTLZ1"]
     # decisions = [10, 20, 40]
     # objectives = [2, 4, 6, 8]
@@ -527,10 +528,14 @@ if __name__ == '__main__':
     for model_type, text in zip(models, model_text):
         for decs in decisions:
             for objs in objectives:
-                model = model_type(decs, objs)
-                era_val = [model.normalize_val(model.eval(val)) for val in genetic_algorithm(model)]
-                era_val.insert(0, text + "_" + str(decs) + "_" + str(objs))
-                era_collection.append(era_val)
+                val = []
+                for _ in xrange(10):
+                    model = model_type(decs, objs)
+                    val.append(genetic_algorithm(model))
+                
+                # era_val = [model.normalize_val(model.eval(val)) for val in genetic_algorithm(model)]
+                # era_val.insert(0, text + "_" + str(decs) + "_" + str(objs))
+                # era_collection.append(era_val)
     # models = [Osyczka, Kursawe, Golinski]
     # model_text = ["OSYCZ", "KURSA", "GOLIN"]
     # for model_type, text in zip(models, model_text):
@@ -539,4 +544,4 @@ if __name__ == '__main__':
     #     era_val.insert(0, text)
     #     era_collection.append(era_val)
     # print era_collection
-    print rdivDemo(era_collection)
+    # print rdivDemo(era_collection)
