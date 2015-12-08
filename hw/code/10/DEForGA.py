@@ -104,7 +104,6 @@ def differential_evolution(model_type):
 
         for i, solution in enumerate(frontier):
             seen = get_frontier_neighbors(i)
-            print seen
             mutation = frontier[seen[0]]
             cur_e = model.eval(solution)
             if cf < random.random():
@@ -120,6 +119,7 @@ def differential_evolution(model_type):
                     cur_e = new_en
 
             if cur_e > e:
+                print solution
                 e = cur_e
                 best_sol = frontier[i]
 
@@ -310,7 +310,7 @@ def genetic_algorithm(model, tuned_params, get_pop_flag=False):  # mutation = 0.
 
 
 def cal_hv(model, generations, population_size):
-    threshold = 100000
+    threshold = 10000
     total_gen = len(generations)
 
     frontier = generations[total_gen - 1]
@@ -341,5 +341,9 @@ def cal_hv(model, generations, population_size):
     return hv
 
 if __name__ == '__main__':
-    for model in [DTLZ1, DTLZ3, DTLZ5, DTLZ7]:
+    for model in [DTLZ7]:
         print genetic_algorithm(model(10, 2), differential_evolution(model(10, 2)), True)
+            #
+            #     for decs in [10, 20, 40]:
+            # for objs in [2, 4, 6, 8]:
+            #     print genetic_algorithm(model(decs, objs), differential_evolution(model(10, 2)), True)
