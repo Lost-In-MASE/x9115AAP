@@ -313,7 +313,7 @@ class DTLZ7(BaseModel):
         return f
 
 def genetic_algorithm(model):
-    population_size = 100
+    population_size = 10 * model.number_vars
     mutate_prob = 0.05
     cross_prob = 0.80
     k_max = 1000
@@ -517,10 +517,10 @@ def cal_hv(model, generations, population_size):
 if __name__ == '__main__':
 
     era_collection = []
-    decisions = [40]
-    objectives = [8]
-    models = [DTLZ5]
-    model_text = ["DTLZ5"]
+    decisions = [10, 20, 40]
+    objectives = [2, 4, 6, 8]
+    models = [DTLZ7]
+    model_text = ["DTLZ7"]
     # decisions = [10, 20, 40]
     # objectives = [2, 4, 6, 8]
     # models = [DTLZ1, DTLZ3, DTLZ5, DTLZ7]
@@ -530,7 +530,7 @@ if __name__ == '__main__':
         for decs in decisions:
             for objs in objectives:
                 val = []
-                for _ in xrange(10):
+                for _ in xrange(5):
                     model = model_type(decs, objs)
                     val.append(genetic_algorithm(model))
                 print "Model = ", model.model_name

@@ -2,6 +2,7 @@ from __future__ import division
 
 import random
 from sk import a12
+from sk import rdivDemo
 
 from GenericExperimentsGA import DTLZ1, DTLZ3, DTLZ5, DTLZ7
 
@@ -52,7 +53,7 @@ class ParameterModel(BaseModel):
 
 def differential_evolution(model_type):
 
-    frontier_size = 10
+    frontier_size = 30
     model = ParameterModel()
     model.model_type = model_type
 
@@ -96,7 +97,7 @@ def differential_evolution(model_type):
     e = model.eval(frontier[0])
     best_sol = frontier[0]
 
-    k_max = 1
+    k_max = 20
     k = 0
     cf = 0.3
 
@@ -135,7 +136,10 @@ def genetic_algorithm(model, tuned_params):
     return genetic_algorithm(model, tuned_params, False)
 
 
-def genetic_algorithm(model, tuned_params, get_pop_flag=False):  # mutation = 0.05, crossover = 0.80, population = 100, get_pop_flag = False):
+def genetic_algorithm(model, tuned_params=None, get_pop_flag=False):
+    if tuned_params is None:
+        print "Using default"
+        tuned_params = [0.5, 0.80, 100]
     population_size = tuned_params[2]  # population
     mutate_prob = tuned_params[0]  # mutation
     cross_prob = tuned_params[1]  # crossover
@@ -310,7 +314,7 @@ def genetic_algorithm(model, tuned_params, get_pop_flag=False):  # mutation = 0.
 
 
 def cal_hv(model, generations, population_size):
-    threshold = 10000
+    threshold = 100000
     total_gen = len(generations)
 
     frontier = generations[total_gen - 1]
@@ -341,9 +345,22 @@ def cal_hv(model, generations, population_size):
     return hv
 
 if __name__ == '__main__':
-    for model in [DTLZ7]:
-        print genetic_algorithm(model(10, 2), differential_evolution(model(10, 2)), True)
-            #
-            #     for decs in [10, 20, 40]:
-            # for objs in [2, 4, 6, 8]:
-            #     print genetic_algorithm(model(decs, objs), differential_evolution(model(10, 2)), True)
+    era_collection = []
+    for model, text in zip([DTLZ1, DTLZ3, DTLZ5, DTLZ7], ["DTLZ1", "DTLZ3", "DTLZ5", "DTLZ7"]):
+        for decs in [10, 20, 40]:
+            for objs in [2, 4, 6, 8]:
+                print "Now performing for " + text + " " + str(decs) + " " + str(objs)
+                cur_model = model(decs, objs)
+                era_val = []
+                era_val.append(genetic_algorithm(cur_model, differential_evolution(cur_model), False))
+                # era_val = [cur_model.normalize_val(cur_model.eval(val)) for val in genetic_algorithm(cur_model, differential_evolution(cur_model), True)]
+                era_val.insert(0, text + "_" + str(decs) + "_" + str(objs) + "_tuned")
+                era_collection.append(era_val)
+                era_val = []
+                era_val.append(genetic_algorithm(cur_model, None, True))
+                # era_val = [cur_model.normalize_val(cur_model.eval(val)) for val in genetic_algorithm(cur_model, None, True)]
+                era_val.insert(0, text + "_" + str(decs) + "_" + str(objs) + "_untuned")
+                era_collection.append(era_val)
+
+    print era_collection
+    print rdivDemo(era_collection)
