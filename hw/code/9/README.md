@@ -65,6 +65,15 @@ How to compare Pareto sets lies at the heart of research in multi-objective opti
 |6|Mean = 0.995050<br/>SD = 7.46e-05|Mean = 0.996299<br/>SD = 0.001378|Mean = 0.997431<br/>SD = 0.000945|
 |8|Mean = 0.995254<br/>SD = 0.000502|Mean = 0.995826<br/>SD = 0.001129|Mean = 0.997483<br/>SD = 0.000549|
 
+**DTLZ7**
+
+|Objectives\Decisions|10|20|40|
+|:---:|---|---|---|
+|2|Mean = 0.913412<br/>SD = 0.038409|Mean = 0.964098<br/>SD = 0.022771|Mean = 0.991252<br/>SD = 0.003453|
+|4|Mean = 0.872975<br/>SD = 0.067761|Mean = 0.932903<br/>SD = 0.019104|Mean = 0.989019<br/>SD = 0.002193|
+|6|Mean = 0.820296<br/>SD = 0.064742|Mean = 0.940756<br/>SD = 0.029038|Mean = 0.988795<br/>SD = 0.002352|
+|8|Mean = 0.786109<br/>SD = 0.143286|Mean = 0.949282<br/>SD = 0.004993|Mean = 0.988528<br/>SD = 0.001776|
+
 
 ## V. THREATS TO VALIDITY
 
