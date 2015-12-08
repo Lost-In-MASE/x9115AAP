@@ -115,3 +115,7 @@ Most optimization algorithms use exploration and exploitation to find a globally
 ### VII. Future Work
 
 If the code ran any faster we could run this over all the models and optimizers we have implemented throughout the course and compare all results to see how well one optimizer for a specific model stacks up against the other options. It was observed a few times that the normalization produced values larger than 1 or less than 0 very early in the exploration phase, this led to premature termination, the one workaround for this was to run the code multiple times and hoping we get enough data before a threshold is breached. There should be a better baseline method that is more fault tolerant or can dynamically change bounds based on how long the optimizer has run.
+
+### VIII. References
+
+* Lecture notes and github repo for Automated Software Engineering by Tim Menzies (http://tiny.cc/mase)
