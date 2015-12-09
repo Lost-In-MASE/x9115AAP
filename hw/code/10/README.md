@@ -1,10 +1,10 @@
-# TUNE GA PARAMATERS BY DE
+# Optimizating a Genetic Algorithm by Tuning its Parameters from Differential Evolution
 Aaditya Sriram (asriram4), Abhishek Ravi (aravi5), Parth Satra (pasatra)
 
 
 ## I. ABSTRACT
 
-Evolutionary Algorithms and other closely related areas such as genetic programming, evolution strategies and genetic algorithms  are subject of increasing amount of research interest. Genetic Algorithms (GA) are evolutionary algorithms which are used to solve search and optimisation problems. These algorithms are modeled after the genetic process of biological organisms where natural populations evolve according to the principles of natural selection and survival of the fittest [1]. This paper presents our implementation of GA, our understanding of the working principles of multi-objective evolutionary algorithms (MOEAs) and discusses results obtained when testing the performance of our algorithm as a MOEA.
+Evolutionary Algorithms and other closely related areas such as genetic programming, evolution strategies and genetic algorithms  are subject of increasing amount of research interest. Genetic Algorithms (GA) are evolutionary algorithms which are used to solve search and optimisation problems. These algorithms are modeled after the genetic process of biological organisms where natural populations evolve according to the principles of natural selection and survival of the fittest [1]. There are several parameters that determine the performance of a GA. Cross over probability, Mutation probability, Population size, Maximum number of Genereations are some of the common parameters that control the efficiency of GA. In this paper we use another evolutionary algorithm, Differential Evolution, to tune the input parameters for GA. This paper also our understanding of the working principles of multi-objective evolutionary algorithms (MOEAs) and discusses results obtained when testing the performance of our algorithm as a MOEA.
 
 
 ## II. INTRODUCTION
