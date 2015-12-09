@@ -13,13 +13,13 @@ GAs use a direct analogy to natural behaviour. They work with a population of �
 
 Two processes that govern the quality of a GA are selection and reproduction processes. Selection refers to the process of selecting highly fit individuals from a population and considering them for reproducing new offsprings. A lot of work has gone over the past few decades in coming up with various strategies for selection. Some of the popular approaches are Tournament Selection, Proportional Roulette Wheel Selection, Rank-based Roulette Wheel Selection [2], Ranking Selection, Proportionate Reduction, and “Genitor” Selection [3]. We have chosen all-pair binary tournament selection as the strategy for selection process. Section III will discuss in greater detail on the selection strategy that is used in the experiments. During the reproductive phase of the GA, the individuals are selected from the population and recombined, producing offsprings that will belong to the next generation. Having selected two parents, their “chromosomes” are recombined using the techniques of Crossover and Mutation to produce the children. Section III provides a brief summary of the reproduction techniques used in our implementation of GA.
 
-Differential Evolution is a metaheuristic that does not guarantee an optimal solution but is fast enough to get acceptable solutions quickly. Differential Evolution starts with a frontier which it generates that contains a set of solutions that satisfy the constraints of the model being used in the optimizer. From this frontier we take each member of the population and choose two other and mutate them together to form a new valid solution, if the energy of this new solution is better than the older solution we replace the old item with the new one on the frontier. 
+There are several parameters that determine the performance of a GA. Cross over probability, Mutation probability, Population size, Maximum number of Genereations are some of the common parameters that control the efficiency of GA. If not configured properly the GA can have problems such as Premature Convergence where the population converges to local optimal value or Slow convergence, where the population fails to converge to a single optimal solution over many generations. Hence these parameters need to be tuned to extract maximum efficiency from GA.
 
-One of the important challenges of testing MOEAs is that the test problems are either too simple or too complicated. Deb, Kalyanmoy, et al. propose scalable test problems for evolutionary algorithms in [4]. We will be testing the performance of our implementation of GA on 20 repeats of DTLZ 1, 3, 5, 7 models proposed by Deb, Kalyanmoy, et al. in [4].
+Differential Evolution (DE) is a metaheuristic that does not guarantee an optimal solution but is fast enough to get acceptable solutions quickly. Differential Evolution starts with a frontier which it generates that contains a set of solutions that satisfy the constraints of the model being used in the optimizer. From this frontier we take each member of the population and choose two other and mutate them together to form a new valid solution, if the energy of this new solution is better than the older solution we replace the old item with the new one on the frontier. We use DE to tune the Crossover probability, Mutation probability and Population size of GA. DE is fast as it takes existing valid solutions and tries to mix and match the best parts of them to form newer solutions. For this reason, Differential Evolution is a better option than Simulated Annealing and Max Walk Sat which are more of a randomized approach to finding better solutions for tuning parameters for maximizing output.
 
-Apart from testing our algorithm on different models, we will be tuning our GA parameters using Differential Evolution to maximize the GA population hyper volume. The parameters that were tuned for performance were mutation probability, crossover probability and the population size.
+One of the important challenges of testing MOEAs is that the test problems are either too simple or too complicated. Deb, Kalyanmoy, et al. propose scalable test problems for evolutionary algorithms in [4]. The parameters of GA are tuned based on its performance on test models of DTLZ 1, 3, 5, 7, proposed by Deb, Kalyanmoy, et al. in [4].
 
-The rest of the paper is organized as follows - Section III discusses the implementation details and some of the design choices made during the course of implementation. Section IV provides a summary of our interpretation of the results obtained when GA was tested against DTLZ 1, 3, 5, 7. Section V talks about the threats to the validity of our implementation while Section VI talks about our learnings from this implementation and our plans to better the algorithm. Section VII is references.
+The rest of the paper is organized as follows - Section III discusses the implementation details and some of the design choices made during the course of implementation. Section IV provides a summary of our interpretation of the results obtained. Section V talks about the threats to the validity of our implementation while Section VI talks about our learnings from this implementation and our plans to better the algorithm. Section VII is references.
 
 
 ## III. THE PROCESS
@@ -38,115 +38,170 @@ After a hundred generations our algorithm begins to monitor the progress of the 
 
 Once the GA terminates, in order to evaluate the efficiency of the algorithm, we compute the hypervolume indicator. The population of the final generation is assumed to be the pareto frontier. We start comparing the candidates in this set with the rest of the population, that belong to previous generation. If the candidates of the final generation dominate the candidates of other generation, they are allowed to stay in the pareto frontier. But if the result is the other way around, then the candidates are replaced. If a pareto frontier individual is unable to dominate another randomly picked individual, then the latter is added to the pareto frontier. This way we build the pareto frontier required to evaluate our implementation. We also clean up the pareto frontier by making sure that there are no candidates in the pareto frontier that are dominated by other members of the frontier.
 
-The hypervolume returned by GA is used to determine if one tuning of the GA parameters works better than another, we employ DE in this tuning process to modify the values of crossover probability, mutation probability and population size as we try to maximize the hyper volume. Once the DE terminates we use the new tuned parameters to generate our GA process, another call is made to GA with the default un tuned parameters. This is done for each combination for every model, that is we have 12 different runs for each model with varying number of decisions and objectives. Once this data is generated, as we did in code 9 and 10 we pass on the final era list of population to type 3 comparator to generate ranks for the runs. In this case higher the hyper volume the better, so we expect runs performing well to be on the right side of the median. 
+In this experiment we use DE with a frontier size of 30 ( 10 times the number of decisions) for the 3 decisions we are tuning (mutation probability, crossover probability and population size), we run the DE algorithm 20 times over the frontier for each of the combinations involving the model, number of objectives and number of decisions. The hypervolume returned by GA is used to determine if one tuning of the GA parameters works better than another, and DE tries to maximise the hypervolume. Once the DE terminates we use the new tuned parameters to generate our GA process, another call is made to GA with the default un tuned parameters. This is done for each combination for every model, that is we have 12 different runs for each model with varying number of decisions and objectives. Once this data is generated, as we did in code 8 and 9 we pass on the final era list of population to type 3 comparator to generate ranks for the runs.
 
 ## IV. RESULTS
 
-The below chart shows the Scott-Knott charts of each of the optimizers containing the name of the optimizer the number of decisions, number of objectives and whether the model is tuned or untuned.
+DE was used to tune the parameters of GA such that the hypervolume reported by GA is maximised. GA was tuned to perform better on each of DTLZ 1,3,5,7 with the combinations of 10, 20, 40 decisions and 2, 4, 6, 8 objectives. GA was also run with default (untuned) parametrs for the same combinations. The table below reports the mean hypervolume observed before and after tuning.
+
+**Hyper-Volumes**
+
+|Model|Decisions|Objectives|Tuned|Un-Tuned|
+|:---:|---|---|---|---|
+|**DTLZ1**|**10**|**2**|**0.9954**|**0.9958**|
+|DTLZ1|10|4|0.9975|0.9952|
+|DTLZ1|10|6|0.9985|0.9968|
+|**DTLZ1**|**10**|**8**|**0.9954**|**0.9967**|
+|DTLZ1|20|2|0.9975|0.9955|
+|DTLZ1|20|4|0.9982|0.9963|
+|DTLZ1|20|6|0.9993|0.9955|
+|DTLZ1|20|8|0.9991|0.9958|
+|DTLZ1|40|2|0.9998|0.9955|
+|DTLZ1|40|4|0.9999|0.9950|
+|DTLZ1|40|6|0.9997|0.9950|
+|DTLZ1|40|8|0.9999|0.9955|
+|DTLZ3|10|2|0.9971|0.9950|
+|DTLZ3|10|4|0.9974|0.9965|
+|DTLZ3|10|6|0.9974|0.9958|
+|DTLZ3|10|8|0.9978|0.9958|
+|DTLZ3|20|2|0.9983|0.9950|
+|DTLZ3|20|4|0.9993|0.9950|
+|DTLZ3|20|6|0.9984|0.9950|
+|DTLZ3|20|8|0.9992|0.9952|
+|**DTLZ3**|**40**|**2**|**0.9942**|**0.9983**|
+|DTLZ3|40|4|0.9998|0.9950|
+|DTLZ3|40|6|0.9999|0.9953|
+|DTLZ3|40|8|0.9998|0.9952|
+|DTLZ5|10|2|0.9975|0.9956|
+|DTLZ5|10|4|0.9979|0.9963|
+|DTLZ5|10|6|0.9977|0.9957|
+|DTLZ5|10|8|0.9983|0.9950|
+|DTLZ5|20|2|0.9988|0.9954|
+|DTLZ5|20|4|0.9985|0.9955|
+|DTLZ5|20|6|0.9987|0.9953|
+|DTLZ5|20|8|0.9990|0.9950|
+|DTLZ5|40|2|0.9998|0.9953|
+|DTLZ5|40|4|0.9995|0.9952|
+|DTLZ5|40|6|0.9999|0.9955|
+|DTLZ5|40|8|0.9993|0.9955|
+|DTLZ7|10|2|0.9964|0.9950|
+|DTLZ7|10|4|0.9930|0.9900|
+|DTLZ7|10|6|0.9892|0.9788|
+|**DTLZ7**|**10**|**8**|**0.9854**|**0.9957**|
+|DTLZ7|20|2|0.9965|0.9789|
+|**DTLZ7**|**20**|**4**|**0.9939**|**0.9963**|
+|DTLZ7|20|6|0.9939|0.9664|
+|DTLZ7|20|8|0.9963|0.9955|
+|DTLZ7|40|2|0.9993|0.9768|
+|DTLZ7|40|4|0.9988|0.9946|
+|DTLZ7|40|6|0.9990|0.9901|
+|DTLZ7|40|8|0.9993|0.9988|
+
+From the table above, we can see that DE is able to tune the parameters such that the hypervolume is maximised. We observe that the default (untuned) GA performed better only on few cases (highlighted above). However, in these cases we observe that the energies of the individuals in the pareto frontier have always been better in tuned GA than in untuned. The below chart shows the Scott-Knott plot of each of the models containing the name of the model, number of decisions, number of objectives and whether the model is tuned or untuned. We see that the median values of population for tuned GA is greater than for untuned GA. The plot gives an idea about the energies of the final pareto frontier obtained. With DE we were able to achieve higher energies for the individuals in the final generation.
 
 
     rank ,         name ,    med   ,  iqr 
     ----------------------------------------------------
-    1  , DTLZ7_40_6_untuned ,    0.09  ,  0.04 (-*             |              ), 0.09,  0.09,  0.12
-    1  , DTLZ7_40_8_untuned ,    0.10  ,  0.04 (-*             |              ), 0.08,  0.10,  0.12
-    2  , DTLZ7_40_4_untuned ,    0.13  ,  0.02 (  *            |              ), 0.12,  0.13,  0.14
-    2  , DTLZ5_20_8_untuned ,    0.13  ,  0.00 (  *            |              ), 0.13,  0.13,  0.13
-    3  , DTLZ3_10_6_untuned ,    0.15  ,  0.00 (   *           |              ), 0.15,  0.15,  0.15
-    4  , DTLZ7_10_6_untuned ,    0.17  ,  0.01 (   *           |              ), 0.16,  0.17,  0.17
-    4  , DTLZ1_10_6_untuned ,    0.17  ,  0.00 (    *          |              ), 0.17,  0.17,  0.17
-    4  , DTLZ7_10_8_untuned ,    0.17  ,  0.03 (   -*          |              ), 0.17,  0.17,  0.19
-    4  , DTLZ7_10_4_untuned ,    0.17  ,  0.03 (   -*          |              ), 0.16,  0.17,  0.19
-    4  , DTLZ3_10_4_untuned ,    0.18  ,  0.00 (    *          |              ), 0.18,  0.18,  0.18
-    5  , DTLZ1_10_8_untuned ,    0.20  ,  0.00 (     *         |              ), 0.20,  0.20,  0.20
-    5  , DTLZ3_10_6_tuned   ,    0.20  ,  0.00 (     *         |              ), 0.20,  0.20,  0.20
-    5  , DTLZ3_10_2_untuned ,    0.20  ,  0.00 (     *         |              ), 0.20,  0.20,  0.20
-    5  , DTLZ7_40_2_untuned ,    0.20  ,  0.03 (    -*         |              ), 0.19,  0.20,  0.22
-    5  , DTLZ3_20_2_untuned ,    0.20  ,  0.00 (     *         |              ), 0.20,  0.20,  0.20
-    5  , DTLZ3_10_4_tuned   ,    0.21  ,  0.00 (     *         |              ), 0.21,  0.21,  0.21
-    5  , DTLZ3_40_2_untuned ,    0.21  ,  0.00 (     *         |              ), 0.21,  0.21,  0.21
-    5  , DTLZ3_10_8_untuned ,    0.21  ,  0.00 (     *         |              ), 0.21,  0.21,  0.21
-    5  , DTLZ3_40_8_untuned ,    0.21  ,  0.00 (     *         |              ), 0.21,  0.21,  0.21
-    5  , DTLZ7_10_4_tuned   ,    0.22  ,  0.02 (     *         |              ), 0.21,  0.22,  0.23
-    5  , DTLZ3_20_4_untuned ,    0.22  ,  0.00 (     *         |              ), 0.22,  0.22,  0.22
-    5  , DTLZ1_10_6_tuned   ,    0.22  ,  0.00 (     *         |              ), 0.22,  0.22,  0.22
-    5  , DTLZ3_20_8_untuned ,    0.22  ,  0.00 (     *         |              ), 0.22,  0.22,  0.22
-    5  , DTLZ7_10_8_tuned   ,    0.23  ,  0.02 (     -*        |              ), 0.21,  0.23,  0.23
-    5  , DTLZ7_10_6_tuned   ,    0.23  ,  0.02 (     -*        |              ), 0.21,  0.23,  0.23
-    5  , DTLZ1_20_2_untuned ,    0.23  ,  0.00 (      *        |              ), 0.23,  0.23,  0.23
-    5  , DTLZ3_40_6_untuned ,    0.23  ,  0.00 (      *        |              ), 0.23,  0.23,  0.23
-    5  , DTLZ3_10_8_tuned   ,    0.23  ,  0.00 (      *        |              ), 0.23,  0.23,  0.23
-    5  , DTLZ1_10_8_tuned   ,    0.23  ,  0.00 (      *        |              ), 0.23,  0.23,  0.23
-    5  , DTLZ7_20_8_untuned ,    0.23  ,  0.02 (     -*        |              ), 0.21,  0.23,  0.23
-    5  , DTLZ3_10_2_tuned   ,    0.23  ,  0.00 (      *        |              ), 0.23,  0.23,  0.23
-    5  , DTLZ7_20_4_untuned ,    0.23  ,  0.09 (     -*--      |              ), 0.22,  0.23,  0.31
-    5  , DTLZ1_10_2_untuned ,    0.23  ,  0.00 (      *        |              ), 0.23,  0.23,  0.23
-    5  , DTLZ1_10_4_untuned ,    0.23  ,  0.00 (      *        |              ), 0.23,  0.23,  0.23
-    5  , DTLZ5_10_2_untuned ,    0.24  ,  0.00 (      *        |              ), 0.24,  0.24,  0.24
-    5  , DTLZ5_10_4_untuned ,    0.24  ,  0.00 (      *        |              ), 0.24,  0.24,  0.24
-    5  , DTLZ1_40_8_untuned ,    0.24  ,  0.00 (      *        |              ), 0.24,  0.24,  0.24
-    5  , DTLZ1_40_4_untuned ,    0.24  ,  0.00 (      *        |              ), 0.24,  0.24,  0.24
-    5  , DTLZ3_20_6_untuned ,    0.25  ,  0.00 (      *        |              ), 0.25,  0.25,  0.25
-    5  , DTLZ1_20_4_untuned ,    0.25  ,  0.00 (      *        |              ), 0.25,  0.25,  0.25
-    5  , DTLZ5_40_6_untuned ,    0.25  ,  0.00 (      *        |              ), 0.25,  0.25,  0.25
-    5  , DTLZ1_20_6_untuned ,    0.25  ,  0.00 (       *       |              ), 0.25,  0.25,  0.25
-    5  , DTLZ1_10_4_tuned   ,    0.25  ,  0.00 (       *       |              ), 0.25,  0.25,  0.25
-    5  , DTLZ1_40_2_untuned ,    0.25  ,  0.00 (       *       |              ), 0.25,  0.25,  0.25
-    5  , DTLZ7_20_6_untuned ,    0.26  ,  0.05 (     --*       |              ), 0.21,  0.26,  0.26
-    5  , DTLZ7_10_2_untuned ,    0.26  ,  0.03 (      -*       |              ), 0.23,  0.26,  0.26
-    5  , DTLZ1_10_2_tuned   ,    0.26  ,  0.00 (       *       |              ), 0.26,  0.26,  0.26
-    5  , DTLZ5_10_4_tuned   ,    0.27  ,  0.00 (       *       |              ), 0.27,  0.27,  0.27
-    5  , DTLZ5_40_8_untuned ,    0.27  ,  0.00 (       *       |              ), 0.27,  0.27,  0.27
-    5  , DTLZ5_20_6_untuned ,    0.27  ,  0.00 (       *       |              ), 0.27,  0.27,  0.27
-    5  , DTLZ7_10_2_tuned   ,    0.27  ,  0.00 (       *       |              ), 0.27,  0.27,  0.27
-    5  , DTLZ1_40_6_untuned ,    0.28  ,  0.00 (       *       |              ), 0.28,  0.28,  0.28
-    5  , DTLZ3_40_4_untuned ,    0.28  ,  0.00 (       *       |              ), 0.28,  0.28,  0.28
-    5  , DTLZ1_20_8_untuned ,    0.28  ,  0.00 (        *      |              ), 0.28,  0.28,  0.28
-    5  , DTLZ5_40_4_untuned ,    0.28  ,  0.00 (        *      |              ), 0.28,  0.28,  0.28
-    5  , DTLZ5_10_2_tuned   ,    0.28  ,  0.00 (        *      |              ), 0.28,  0.28,  0.28
-    5  , DTLZ5_10_6_untuned ,    0.29  ,  0.00 (        *      |              ), 0.29,  0.29,  0.29
-    5  , DTLZ5_40_2_untuned ,    0.30  ,  0.00 (        *      |              ), 0.30,  0.30,  0.30
-    6  , DTLZ7_20_2_untuned ,    0.31  ,  0.06 (         *-    |              ), 0.31,  0.31,  0.37
-    6  , DTLZ5_10_8_untuned ,    0.31  ,  0.00 (         *     |              ), 0.31,  0.31,  0.31
-    7  , DTLZ5_20_4_untuned ,    0.33  ,  0.00 (          *    |              ), 0.33,  0.33,  0.33
-    7  , DTLZ5_10_8_tuned   ,    0.34  ,  0.00 (          *    |              ), 0.34,  0.34,  0.34
-    7  , DTLZ5_10_6_tuned   ,    0.35  ,  0.00 (          *    |              ), 0.35,  0.35,  0.35
-    7  , DTLZ3_20_2_tuned   ,    0.35  ,  0.00 (          *    |              ), 0.35,  0.35,  0.35
-    7  , DTLZ3_20_4_tuned   ,    0.35  ,  0.00 (          *    |              ), 0.35,  0.35,  0.35
-    8  , DTLZ5_20_2_untuned ,    0.38  ,  0.00 (           *   |              ), 0.38,  0.38,  0.38
-    8  , DTLZ1_20_4_tuned   ,    0.38  ,  0.00 (            *  |              ), 0.38,  0.38,  0.38
-    8  , DTLZ1_20_2_tuned   ,    0.39  ,  0.00 (            *  |              ), 0.39,  0.39,  0.39
-    8  , DTLZ3_20_8_tuned   ,    0.39  ,  0.00 (            *  |              ), 0.39,  0.39,  0.39
-    8  , DTLZ3_20_6_tuned   ,    0.40  ,  0.00 (            *  |              ), 0.40,  0.40,  0.40
-    9  , DTLZ1_20_6_tuned   ,    0.41  ,  0.00 (             * |              ), 0.41,  0.41,  0.41
-    10 , DTLZ5_20_8_tuned   ,    0.42  ,  0.00 (             * |              ), 0.42,  0.42,  0.42
-    11 , DTLZ1_20_8_tuned   ,    0.45  ,  0.00 (              *|              ), 0.45,  0.45,  0.45
-    12 , DTLZ7_20_6_tuned   ,    0.46  ,  0.04 (              -*              ), 0.44,  0.46,  0.48
-    13 , DTLZ7_20_4_tuned   ,    0.47  ,  0.04 (              -*              ), 0.44,  0.47,  0.49
-    13 , DTLZ7_20_8_tuned   ,    0.48  ,  0.03 (               *              ), 0.47,  0.48,  0.50
-    14 , DTLZ1_40_8_tuned   ,    0.50  ,  0.00 (               |*             ), 0.50,  0.50,  0.50
-    15 , DTLZ3_40_8_tuned   ,    0.51  ,  0.00 (               |*             ), 0.51,  0.51,  0.51
-    16 , DTLZ3_40_4_tuned   ,    0.52  ,  0.00 (               | *            ), 0.52,  0.52,  0.52
-    16 , DTLZ3_40_6_tuned   ,    0.53  ,  0.00 (               | *            ), 0.53,  0.53,  0.53
-    16 , DTLZ3_40_2_tuned   ,    0.53  ,  0.00 (               | *            ), 0.53,  0.53,  0.53
-    17 , DTLZ7_40_8_tuned   ,    0.55  ,  0.08 (               | -*-          ), 0.53,  0.55,  0.60
-    17 , DTLZ1_40_2_tuned   ,    0.56  ,  0.00 (               |  *           ), 0.56,  0.56,  0.56
-    17 , DTLZ5_20_6_tuned   ,    0.56  ,  0.00 (               |  *           ), 0.56,  0.56,  0.56
-    17 , DTLZ1_40_4_tuned   ,    0.56  ,  0.00 (               |  *           ), 0.56,  0.56,  0.56
-    18 , DTLZ1_40_6_tuned   ,    0.57  ,  0.00 (               |   *          ), 0.57,  0.57,  0.57
-    19 , DTLZ5_20_4_tuned   ,    0.59  ,  0.00 (               |    *         ), 0.59,  0.59,  0.59
-    20 , DTLZ5_20_2_tuned   ,    0.61  ,  0.00 (               |    *         ), 0.61,  0.61,  0.61
-    20 , DTLZ7_40_6_tuned   ,    0.61  ,  0.07 (               |   -*-        ), 0.57,  0.61,  0.65
-    21 , DTLZ7_20_2_tuned   ,    0.62  ,  0.03 (               |    -*        ), 0.60,  0.62,  0.63
-    22 , DTLZ7_40_4_tuned   ,    0.70  ,  0.07 (               |      --*     ), 0.66,  0.70,  0.74
-    23 , DTLZ5_40_6_tuned   ,    0.74  ,  0.00 (               |         *    ), 0.74,  0.74,  0.74
-    23 , DTLZ5_40_8_tuned   ,    0.79  ,  0.00 (               |           *  ), 0.79,  0.79,  0.79
-    24 , DTLZ5_40_4_tuned   ,    0.83  ,  0.00 (               |             *), 0.83,  0.83,  0.83
-    24 , DTLZ7_40_2_tuned   ,    0.83  ,  0.05 (               |           --*), 0.80,  0.83,  0.85
-    25 , DTLZ5_40_2_tuned   ,    0.85  ,  0.00 (               |             *), 0.85,  0.85,  0.85
+    1 , DTLZ7_40_6_untuned ,    1.09  ,  0.04 (-*             |              ), 1.09,  1.09,  1.12
+    1 , DTLZ7_40_8_untuned ,    1.10  ,  0.04 (-*             |              ), 1.08,  1.10,  1.12
+    2 , DTLZ7_40_4_untuned ,    1.13  ,  0.02 (  *            |              ), 1.12,  1.13,  1.14
+    2 , DTLZ5_20_8_untuned ,    1.13  ,  0.00 (  *            |              ), 1.13,  1.13,  1.13
+    3 , DTLZ3_10_6_untuned ,    1.15  ,  0.00 (   *           |              ), 1.15,  1.15,  1.15
+    4 , DTLZ7_10_6_untuned ,    1.17  ,  0.01 (   *           |              ), 1.16,  1.17,  1.17
+    4 , DTLZ1_10_6_untuned ,    1.17  ,  0.00 (    *          |              ), 1.17,  1.17,  1.17
+    4 , DTLZ7_10_8_untuned ,    1.17  ,  0.03 (   -*          |              ), 1.17,  1.17,  1.19
+    4 , DTLZ7_10_4_untuned ,    1.17  ,  0.03 (   -*          |              ), 1.16,  1.17,  1.19
+    4 , DTLZ3_10_4_untuned ,    1.18  ,  0.00 (    *          |              ), 1.18,  1.18,  1.18
+    5 , DTLZ1_10_8_untuned ,    1.20  ,  0.00 (     *         |              ), 1.20,  1.20,  1.20
+    5 , DTLZ3_10_6_tuned ,      1.20  ,  0.00 (     *         |              ), 1.20,  1.20,  1.20
+    5 , DTLZ3_10_2_untuned ,    1.20  ,  0.00 (     *         |              ), 1.20,  1.20,  1.20
+    5 , DTLZ7_40_2_untuned ,    1.20  ,  0.03 (    -*         |              ), 1.19,  1.20,  1.22
+    5 , DTLZ3_20_2_untuned ,    1.20  ,  0.00 (     *         |              ), 1.20,  1.20,  1.20
+    5 , DTLZ3_10_4_tuned ,      1.21  ,  0.00 (     *         |              ), 1.21,  1.21,  1.21
+    5 , DTLZ3_40_2_untuned ,    1.21  ,  0.00 (     *         |              ), 1.21,  1.21,  1.21
+    5 , DTLZ3_10_8_untuned ,    1.21  ,  0.00 (     *         |              ), 1.21,  1.21,  1.21
+    5 , DTLZ3_40_8_untuned ,    1.21  ,  0.00 (     *         |              ), 1.21,  1.21,  1.21
+    5 , DTLZ7_10_4_tuned ,      1.22  ,  0.02 (     *         |              ), 1.21,  1.22,  1.23
+    5 , DTLZ3_20_4_untuned ,    1.22  ,  0.00 (     *         |              ), 1.22,  1.22,  1.22
+    5 , DTLZ1_10_6_tuned ,      1.22  ,  0.00 (     *         |              ), 1.22,  1.22,  1.22
+    5 , DTLZ3_20_8_untuned ,    1.22  ,  0.00 (     *         |              ), 1.22,  1.22,  1.22
+    5 , DTLZ7_10_8_tuned ,      1.23  ,  0.02 (     -*        |              ), 1.21,  1.23,  1.23
+    5 , DTLZ7_10_6_tuned ,      1.23  ,  0.02 (     -*        |              ), 1.21,  1.23,  1.23
+    5 , DTLZ1_20_2_untuned ,    1.23  ,  0.00 (      *        |              ), 1.23,  1.23,  1.23
+    5 , DTLZ3_40_6_untuned ,    1.23  ,  0.00 (      *        |              ), 1.23,  1.23,  1.23
+    5 , DTLZ3_10_8_tuned ,      1.23  ,  0.00 (      *        |              ), 1.23,  1.23,  1.23
+    5 , DTLZ1_10_8_tuned ,      1.23  ,  0.00 (      *        |              ), 1.23,  1.23,  1.23
+    5 , DTLZ7_20_8_untuned ,    1.23  ,  0.02 (     -*        |              ), 1.21,  1.23,  1.23
+    5 , DTLZ3_10_2_tuned ,      1.23  ,  0.00 (      *        |              ), 1.23,  1.23,  1.23
+    5 , DTLZ7_20_4_untuned ,    1.23  ,  0.09 (     -*--      |              ), 1.22,  1.23,  1.31
+    5 , DTLZ1_10_2_untuned ,    1.23  ,  0.00 (      *        |              ), 1.23,  1.23,  1.23
+    5 , DTLZ1_10_4_untuned ,    1.23  ,  0.00 (      *        |              ), 1.23,  1.23,  1.23
+    5 , DTLZ5_10_2_untuned ,    1.24  ,  0.00 (      *        |              ), 1.24,  1.24,  1.24
+    5 , DTLZ5_10_4_untuned ,    1.24  ,  0.00 (      *        |              ), 1.24,  1.24,  1.24
+    5 , DTLZ1_40_8_untuned ,    1.24  ,  0.00 (      *        |              ), 1.24,  1.24,  1.24
+    5 , DTLZ1_40_4_untuned ,    1.24  ,  0.00 (      *        |              ), 1.24,  1.24,  1.24
+    5 , DTLZ3_20_6_untuned ,    1.25  ,  0.00 (      *        |              ), 1.25,  1.25,  1.25
+    5 , DTLZ1_20_4_untuned ,    1.25  ,  0.00 (      *        |              ), 1.25,  1.25,  1.25
+    5 , DTLZ5_40_6_untuned ,    1.25  ,  0.00 (      *        |              ), 1.25,  1.25,  1.25
+    5 , DTLZ1_20_6_untuned ,    1.25  ,  0.00 (       *       |              ), 1.25,  1.25,  1.25
+    5 , DTLZ1_10_4_tuned ,      1.25  ,  0.00 (       *       |              ), 1.25,  1.25,  1.25
+    5 , DTLZ1_40_2_untuned ,    1.25  ,  0.00 (       *       |              ), 1.25,  1.25,  1.25
+    5 , DTLZ7_20_6_untuned ,    1.26  ,  0.05 (     --*       |              ), 1.21,  1.26,  1.26
+    5 , DTLZ7_10_2_untuned ,    1.26  ,  0.03 (      -*       |              ), 1.23,  1.26,  1.26
+    5 , DTLZ1_10_2_tuned ,      1.26  ,  0.00 (       *       |              ), 1.26,  1.26,  1.26
+    5 , DTLZ5_10_4_tuned ,      1.27  ,  0.00 (       *       |              ), 1.27,  1.27,  1.27
+    5 , DTLZ5_40_8_untuned ,    1.27  ,  0.00 (       *       |              ), 1.27,  1.27,  1.27
+    5 , DTLZ5_20_6_untuned ,    1.27  ,  0.00 (       *       |              ), 1.27,  1.27,  1.27
+    5 , DTLZ7_10_2_tuned ,      1.27  ,  0.00 (       *       |              ), 1.27,  1.27,  1.27
+    5 , DTLZ1_40_6_untuned ,    1.28  ,  0.00 (       *       |              ), 1.28,  1.28,  1.28
+    5 , DTLZ3_40_4_untuned ,    1.28  ,  0.00 (       *       |              ), 1.28,  1.28,  1.28
+    5 , DTLZ1_20_8_untuned ,    1.28  ,  0.00 (        *      |              ), 1.28,  1.28,  1.28
+    5 , DTLZ5_40_4_untuned ,    1.28  ,  0.00 (        *      |              ), 1.28,  1.28,  1.28
+    5 , DTLZ5_10_2_tuned ,      1.28  ,  0.00 (        *      |              ), 1.28,  1.28,  1.28
+    5 , DTLZ5_10_6_untuned ,    1.29  ,  0.00 (        *      |              ), 1.29,  1.29,  1.29
+    5 , DTLZ5_40_2_untuned ,    1.30  ,  0.00 (        *      |              ), 1.30,  1.30,  1.30
+    6 , DTLZ7_20_2_untuned ,    1.31  ,  0.06 (         *-    |              ), 1.31,  1.31,  1.37
+    6 , DTLZ5_10_8_untuned ,    1.31  ,  0.00 (         *     |              ), 1.31,  1.31,  1.31
+    7 , DTLZ5_20_4_untuned ,    1.33  ,  0.00 (          *    |              ), 1.33,  1.33,  1.33
+    7 , DTLZ5_10_8_tuned ,      1.34  ,  0.00 (          *    |              ), 1.34,  1.34,  1.34
+    7 , DTLZ5_10_6_tuned ,      1.35  ,  0.00 (          *    |              ), 1.35,  1.35,  1.35
+    7 , DTLZ3_20_2_tuned ,      1.35  ,  0.00 (          *    |              ), 1.35,  1.35,  1.35
+    7 , DTLZ3_20_4_tuned ,      1.35  ,  0.00 (          *    |              ), 1.35,  1.35,  1.35
+    8 , DTLZ5_20_2_untuned ,    1.38  ,  0.00 (           *   |              ), 1.38,  1.38,  1.38
+    8 , DTLZ1_20_4_tuned ,      1.38  ,  0.00 (            *  |              ), 1.38,  1.38,  1.38
+    8 , DTLZ1_20_2_tuned ,      1.39  ,  0.00 (            *  |              ), 1.39,  1.39,  1.39
+    8 , DTLZ3_20_8_tuned ,      1.39  ,  0.00 (            *  |              ), 1.39,  1.39,  1.39
+    8 , DTLZ3_20_6_tuned ,      1.40  ,  0.00 (            *  |              ), 1.40,  1.40,  1.40
+    9 , DTLZ1_20_6_tuned ,      1.41  ,  0.00 (             * |              ), 1.41,  1.41,  1.41
+   10 , DTLZ5_20_8_tuned ,      1.42  ,  0.00 (             * |              ), 1.42,  1.42,  1.42
+   11 , DTLZ1_20_8_tuned ,      1.45  ,  0.00 (              *|              ), 1.45,  1.45,  1.45
+   12 , DTLZ7_20_6_tuned ,      1.46  ,  0.04 (              -*              ), 1.44,  1.46,  1.48
+   13 , DTLZ7_20_4_tuned ,      1.47  ,  0.04 (              -*              ), 1.44,  1.47,  1.49
+   13 , DTLZ7_20_8_tuned ,      1.48  ,  0.03 (               *              ), 1.47,  1.48,  1.50
+   14 , DTLZ1_40_8_tuned ,      1.50  ,  0.00 (               |*             ), 1.50,  1.50,  1.50
+   15 , DTLZ3_40_8_tuned ,      1.51  ,  0.00 (               |*             ), 1.51,  1.51,  1.51
+   16 , DTLZ3_40_4_tuned ,      1.52  ,  0.00 (               | *            ), 1.52,  1.52,  1.52
+   16 , DTLZ3_40_6_tuned ,      1.53  ,  0.00 (               | *            ), 1.53,  1.53,  1.53
+   16 , DTLZ3_40_2_tuned ,      1.53  ,  0.00 (               | *            ), 1.53,  1.53,  1.53
+   17 , DTLZ7_40_8_tuned ,      1.55  ,  0.08 (               | -*-          ), 1.53,  1.55,  1.60
+   17 , DTLZ1_40_2_tuned ,      1.56  ,  0.00 (               |  *           ), 1.56,  1.56,  1.56
+   17 , DTLZ5_20_6_tuned ,      1.56  ,  0.00 (               |  *           ), 1.56,  1.56,  1.56
+   17 , DTLZ1_40_4_tuned ,      1.56  ,  0.00 (               |  *           ), 1.56,  1.56,  1.56
+   18 , DTLZ1_40_6_tuned ,      1.57  ,  0.00 (               |   *          ), 1.57,  1.57,  1.57
+   19 , DTLZ5_20_4_tuned ,      1.59  ,  0.00 (               |    *         ), 1.59,  1.59,  1.59
+   20 , DTLZ5_20_2_tuned ,      1.61  ,  0.00 (               |    *         ), 1.61,  1.61,  1.61
+   20 , DTLZ7_40_6_tuned ,      1.61  ,  0.07 (               |   -*-        ), 1.57,  1.61,  1.65
+   21 , DTLZ7_20_2_tuned ,      1.62  ,  0.03 (               |    -*        ), 1.60,  1.62,  1.63
+   22 , DTLZ7_40_4_tuned ,      1.70  ,  0.07 (               |      --*     ), 1.66,  1.70,  1.74
+   23 , DTLZ5_40_6_tuned ,      1.74  ,  0.00 (               |         *    ), 1.74,  1.74,  1.74
+   23 , DTLZ5_40_8_tuned ,      1.79  ,  0.00 (               |           *  ), 1.79,  1.79,  1.79
+   24 , DTLZ5_40_4_tuned ,      1.83  ,  0.00 (               |             *), 1.83,  1.83,  1.83
+   24 , DTLZ7_40_2_tuned ,      1.83  ,  0.05 (               |           --*), 1.80,  1.83,  1.85
+   25 , DTLZ5_40_2_tuned ,      1.85  ,  0.00 (               |             *), 1.85,  1.85,  1.85 
 
 ## V. THREATS TO VALIDITY
 
-Most optimisation algorithms use exploration and exploitation to find a globally optimal solution. Exploration refers to a technique used to investigate new and unknown areas in the search space, and exploitation refers to a technique that makes use of previously visited points to find better points. A good search algorithm must find a tradeoff between the two. A purely random search is good at exploration, where as a purely hillclimbing method is good at exploitation/ The combination of the two techniques is required to achieve a global optimal solution but it is very difficult to strike the best balance between the two. We have sometimes seen the problem of “slow convergence” on some models as well as the problem of “early convergence” on some other models as well. We found that by changing the mutation probability we could control the convergence rate. In our algorithm, the mutation rate is a constant throughout the run of the program and the rate is independent of the kind of distribution and how well the search is progressing.
+The calculation of hypervolume requires construction of pareto frontier. As mentioned in the section III, the pareto frontier after running GA is built by taking individuals of the final generation and comparing with individuals from other generations. The pareto frontier is also cleaned to ensure that none of the elements in the frontier are dominated by the rest of the individuals of the frontier. During this process, the individuals are compared using "Type 1" comparator. This seems to be the bottleneck and affects the run time immensely. It takes close to 12 hours to run the entire experiment.
 
 We use “boolean domination”, or commonly known as bdom,  when comparing the individuals of a population. It is possible that sometimes a generation can contain individuals that do not dominate any other individual. In such a scenario it is hard to select fittest individuals in the population.
 
@@ -155,11 +210,12 @@ Aggregation methods combine the objectives into a scalar function that is used f
 
 ## VI. CONCLUSION & FUTURE WORK
 
-Implementing the Genetic Algorithm has given us deep insights into general properties and characteristics Multi-objective evolutionary algorithms. Through this activity we have been introduced to various research surrounding this topic. We have also become aware of the common challenges faced during the implementation and debugging phases and have been able to learn about the ways to overcome these challenges. Our algorithm is a humble attempt to implement the popular MOEA, Genetic Algorithm. There are quite a few improvements that we plan to do on top of our current work. Some of them are discussed below.
+Implementing the Genetic Algorithm and Differential Evolution has given us deep insights into general properties and characteristics Multi-objective evolutionary algorithms. Through this activity we have been introduced to various research surrounding this topic. We have also become aware of the common challenges faced during the implementation and debugging phases and have been able to learn about the ways to overcome these challenges. Our algorithm is a humble attempt to implement the popular MOEA, Genetic Algorithm and use DE to tune its input parameters to extract . There are quite a few improvements that we plan to do on top of our current work. Some of them are discussed below.
 
-We mentioned about the problems of slow convergence and early convergence in the previous section. [1][2][5] papers suggest that mutation probability must depend on an attribute called “Selection Pressure”. The selection pressure is determined by how much the search has been progressed. For example, in the early stages of GA, the pressure to find the fittest individuals is not very high, hence we can afford to mutate more in order to explore the search space. But if we have spent enough time exploring and haven't really gotten anywhere, then the pressure is high to find fittest candidates. We will thus refrain from mutation and exploration. This is something that we plan to add to our algorithm.
+As a part of future work, we plan to focus on improving the efficiency and run-time of Genetic Algorithm. The number of generations is also a parameter that can affect the performance of GA and we plan to tune this parameter from DE as well. 
 
 Since boolean domination has its own drawbacks (as discussed previously), we plan to integrate continuous domination as a part of the select procedure. We also to improve the aggregation method by trying out different strategies such as weighted-sum approach and target vector optimization[5]. There also a lot of improvement to be done in improving the time taken for the selection procedure by applying some heuristics to the process.
+
 
 ## VII. REFERENCES
 * [1] Beasley, David, R. R. Martin, and D. R. Bull. "An overview of genetic algorithms: Part 1. Fundamentals." University computing 15 (1993): 58-58.
