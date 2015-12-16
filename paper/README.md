@@ -1,4 +1,4 @@
-# DETECTION OF DUPLICATE BUG REPORT - A STUDY
+# DETECTION OF DUPLICATE BUG REPORT
 
 Aaditya Sriram (asriram4), Abhishek Ravi (aravi5), Parth Satra (pasatra)
 
