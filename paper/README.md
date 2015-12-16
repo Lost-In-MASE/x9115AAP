@@ -62,11 +62,11 @@ There have been several studies on retrieving similar bug reports. However, the 
 
 ![Bucket](https://github.com/Lost-In-MASE/x9115AAP/blob/master/paper/images/bucket.png)
 
-Support Vector Machine (SVM) was the approach followed by Sun et al. to building a discriminative model or classifier based on a set of labeled vectors. In SVM, given a set of vectors, some belonging to a positive class and others belonging to a negative class. SVM tries to build a hyperplane that separates vectors belonging to the positive class from those of the negative class with the largest margin. All the reports in the repository are organized into a bucket structure. The bucket structure is a hash-map-like data structure. Each bucket contains a master report as the key and all the duplicates of the master as its value. Therefore, each bucket stands for a distinct defect, while all the reports in a bucket correspond to the same defect. Figure 2 shows the structure of the bucket diagrammatically. Figure 3 discriminative shows the overall framework of the approach. In general, there are three main steps in the system - preprocessing, training a discriminative model and retrieving duplicate bug reports. The first step, preprocessing, follows a standard natural language processing style of tokenization, stemming and stop-words removal. The second step, training a discriminative model, trains SVM classifier to answer the question “How likely are two bug reports duplicates of each other?”. The third step, retrieving duplicate bug reports, makes use of this classifier to retrieve relevant bug reports from the repository.
+Support Vector Machine (SVM) was the approach followed by Sun et al. to building a discriminative model or classifier based on a set of labeled vectors. In SVM, given a set of vectors, some belonging to a positive class and others belonging to a negative class. SVM tries to build a hyperplane that separates vectors belonging to the positive class from those of the negative class with the largest margin. All the reports in the repository are organized into a bucket structure. The bucket structure is a hash-map-like data structure. Each bucket contains a master report as the key and all the duplicates of the master as its value. Therefore, each bucket stands for a distinct defect, while all the reports in a bucket correspond to the same defect. Figure above shows the structure of the bucket diagrammatically. Figure below shows the overall framework of the approach. In general, there are three main steps in the system - preprocessing, training a discriminative model and retrieving duplicate bug reports. The first step, preprocessing, follows a standard natural language processing style of tokenization, stemming and stop-words removal. The second step, training a discriminative model, trains SVM classifier to answer the question “How likely are two bug reports duplicates of each other?”. The third step, retrieving duplicate bug reports, makes use of this classifier to retrieve relevant bug reports from the repository.
 
 ![SVM](https://github.com/Lost-In-MASE/x9115AAP/blob/master/paper/images/svm.png)
 
-Figure 4 shows the experiment results of the seven runs on the three datasets. In the figure, the horizontal axis is the top N list size, and the vertical axis is the recall rate; J stands for [12], R stands for [13] and W is [6]. Suffix -1 or -2 represents weighing summaries 1 or 2. O corresponds to approach followed by [11]. From the three sub figures, we can easily come to the first conclusion that the technique [11] brings a lot of improvement. They were able to achieve 17–31% relative improvement in OpenOffice dataset, 22–26% in Firefox dataset and 35–43% in Eclipse dataset. They were able to conclude that manually empirically weighing summaries for traditional IR techniques can help improve limited performance as the six curves near the bottom of each sub figure are very close to one another.
+Figure below shows the experiment results of the seven runs on the three datasets. In the figure, the horizontal axis is the top N list size, and the vertical axis is the recall rate; J stands for [12], R stands for [13] and W is [6]. Suffix -1 or -2 represents weighing summaries 1 or 2. O corresponds to approach followed by [11]. From the three sub figures, we can easily come to the first conclusion that the technique [11] brings a lot of improvement. They were able to achieve 17–31% relative improvement in OpenOffice dataset, 22–26% in Firefox dataset and 35–43% in Eclipse dataset. They were able to conclude that manually empirically weighing summaries for traditional IR techniques can help improve limited performance as the six curves near the bottom of each sub figure are very close to one another.
 
 ![SVMResults](https://github.com/Lost-In-MASE/x9115AAP/blob/master/paper/images/svm_results.png)
 
@@ -79,7 +79,7 @@ Sun et al. came up with another paper[14], an year after their previous paper[11
 2) The improvised on the similarity process by not only considering the textual content of the bug reports but also other categorical information such as priority, product version and so on.
 3) They analysed the applicability of duplicate bug report detection techniques on a total of more than 350,000 bug reports across bug repositories of various large open source programs including OpenOffice, Mozilla and Eclipse.
 4) They improved the accuracy of state-of-the-art automated duplicate bug detection techniques [15] by 10-27% in recall rate@k (1 ≤ k ≤ 20) and 17-23% in mean average precision.
-Figure below shows the workflow of the approach followed by Sun et al. in [14].
+Figure below shows the results of the approach followed by Sun et al. in [14].
 
 
 ![BM25F](https://github.com/Lost-In-MASE/x9115AAP/blob/master/paper/images/bm25f.png)
@@ -151,38 +151,37 @@ In our opinion, the duplicate bug detection system has evolved tremendously. Bei
 
 
 ## 7. REFERENCES
-[1] A. E. Hassan, “The road ahead for mining software repositories,” in Proc. Front. Softw. Maintenance, Sep. 2008, pp. 48–57.
-[2] R. S. Pressman, Software Engineering: A Practitioner’s Approach, 7th ed. New York, NY, USA: McGraw-Hill, 2010.
-[3] S. Breu, R. Premraj, J. Sillito, and T. Zimmermann, “Information needs in bug reports: Improving cooperation between developers and users,” in Proc. ACM Conf. Comput. Supported Cooperative Work, Feb. 2010, pp. 301–310.
-[4] J. Sutherland. Business objects in corporate information systems. In ACM Computing Surveys, 2006. 
-[5] Nicolas Bettenburg, Rahul Premraj, Thomas Zimmermann and Sunghun Kim; “Duplicate Bug Reports Considered Harmful ... Really?” in Software Maintenance, 2008. ICSM 2008
-[6] Xiaoyin Wang, Lu Zhang, Tao Xie John Anvik, Jiasu Sun; "An Approach to Detecting Duplicate Bug Reports using Natural Language and Execution Information" in Software Engineering, ICSE 2008. ACM/IEEE 30th International Conference.
-[7] J. Anvik and G. C. Murphy, “Reducing the effort of bug report triage: Recommenders for development-oriented decisions,” ACM Trans. Soft. Eng. Methodol., vol. 20, no. 3, article 10, Aug. 2011.
-[8] J. Xuan, H. Jiang, Z. Ren, and W. Zou, “Developer prioritization in bug repositories,” in Proc. 34th Int. Conf. Softw. Eng., 2012, pp. 25–35
-[9] Xuan, J., Jiang, H., Hu, Y., Ren, Z., Zou, W., Luo, Z., & Wu, X. (2015). Towards Effective Bug Triage with Software Data Reduction Techniques. Knowledge and Data Engineering, IEEE Transactions on, 27(1), 264-280.
-[10] J. Anvik, L. Hiew, and G. C. Murphy. Coping with an open bug repository. In eclipse ’05: Proceedings of the 2005 OOPSLA workshop on Eclipse technology exchange, pages 35–39, 2005.
-[11] C. Sun, D. Lo, X. Wang, J. Jiang, and S.-C. Khoo, “A discriminative model approach for accurate duplicate bug report retrieval,” in ICSE, 2010
-[12] N. Jalbert and W. Weimer. Automated Duplicate Detection for Bug Tracking Systems. In proceedings of the International Conference on Dependable Systems and Networks, 2008.
-[13] P. Runeson, M. Alexandersson, and O. Nyholm. Detection of Duplicate Defect Reports Using Natural Language Processing. In proceedings of the International Conference on Software Engineering, 2007.
-[14] C. Sun, D. Lo, S.-C. Khoo, and J. Jiang, “Towards more accurate retrieval of duplicate bug reports,” in Proceedings of the IEEE/ACM International Conference on Automated Software Engineering, 2011.
-[15] A. Sureka and P. Jalote, “Detecting duplicate bug report using character n-gram-based features,” in Proceedings of the 2010 Asia Pacific Software Engineering Conference, 2010, pp. 366–374.
-[16]  A. Hindle, N. Ernst, M. W. Godfrey, R. C. Holt, and J. Mylopoulos, “Whats in a name? on the automated topic naming of software maintenance activities,” submission: http://softwareprocess.es/whats-in-a-name, vol. 125, pp. 150–155, 2010.
-[17] https://en.wikipedia.org/wiki/Data_mining
-[18] V. Guana, F. Rocha, A. Hindle, and E. Stroulia, “Do the stars align? multidimensional analysis of android’s layered architecture,” in Mining Software Repositories (MSR), 2012 9th IEEE Working Conference on. IEEE, 2012, pp. 124–127.
-[19] A. Hindle, N. Ernst, M. Godfrey, and J. Mylopoulos, “Automated topic naming to support cross-project analysis of software maintenance activities,” in Proceedings of the 8th Working Conference on Mining Software Repositories. ACM, 2011, pp. 163–172.
-[20] D. Han, C. Zhang, X. Fan, A. Hindle, K. Wong, and E. Stroulia, “Understanding android fragmentation with topic analysis of vendor- specific bugs.”
-[21] Anahita Alipour , Abram Hindle , Eleni Stroulia, A contextual approach towards more accurate duplicate bug report detection, Proceedings of the 10th Working Conference on Mining Software Repositories, May 18-19, 2013, San Francisco, CA, USA
-[22] Aggarwal, Karan, et al. "Detecting duplicate bug reports with software engineering domain knowledge." Software Analysis, Evolution and Reengineering (SANER), 2015 IEEE 22nd International Conference on. IEEE, 2015.
-[23] http://www.aclweb.org/anthology/S15-2045
-[24] R. S. Pressman and W. S. Jawadekar, “Software engineering,” New York 1992, 1987.
-[25] M. L. Murphy, The Busy Coder’s Guide to Advanced Android Development. CommonsWare, LLC, 2009.
-[26] D. Binkley and D. Lawrie, “Information retrieval applications in software maintenance and evolution,” Encyclopedia of Software Engineer- ing, 2009.
-[27] S. Dumais, G. Furnas, T. Landauer, S. Deerwester, S. Deerwester et al., “Latent semantic indexing,” in Proceedings of the Text Retrieval Conference, 1995.
-[28] B. Ganter, R. Wille, and R. Wille, Formal concept analysis. Springer Berlin, 1999.
-[29] A. Marcus, A. Sergeyev, V. Rajlich, and J. I. Maletic, “An information retrieval approach to concept location in source code,” in Reverse Engineering, 2004. Proceedings. 11th Working Conference on. IEEE, 2004, pp. 214–223.
-[30] D. Poshyvanyk and A. Marcus, “Combining formal concept analysis with information retrieval for concept location in source code,” in Program Comprehension, 2007. ICPC’07. 15th IEEE International Conference on. IEEE, 2007, pp. 37–48.
-[31] D. Poshyvanyk, A. Marcus, R. Ferenc, and T. Gyimo ́thy, “Using information retrieval based coupling measures for impact analysis,” Empirical Software Engineering, vol. 14, no. 1, pp. 5–32, 2009.
-[32] D. Blei, A. Ng, and M. Jordan, “Latent dirichlet allocation,” the Journal of machine Learning research, vol. 3, pp. 993–1022, 2003.
-
+* [1] A. E. Hassan, “The road ahead for mining software repositories,” in Proc. Front. Softw. Maintenance, Sep. 2008, pp. 48–57.
+* [2] R. S. Pressman, Software Engineering: A Practitioner’s Approach, 7th ed. New York, NY, USA: McGraw-Hill, 2010.
+* [3] S. Breu, R. Premraj, J. Sillito, and T. Zimmermann, “Information needs in bug reports: Improving cooperation between developers and users,” in Proc. ACM Conf. Comput. Supported Cooperative Work, Feb. 2010, pp. 301–310.
+* [4] J. Sutherland. Business objects in corporate information systems. In ACM Computing Surveys, 2006. 
+* [5] Nicolas Bettenburg, Rahul Premraj, Thomas Zimmermann and Sunghun Kim; “Duplicate Bug Reports Considered Harmful ... Really?” in Software Maintenance, 2008. ICSM 2008
+* [6] Xiaoyin Wang, Lu Zhang, Tao Xie John Anvik, Jiasu Sun; "An Approach to Detecting Duplicate Bug Reports using Natural Language and Execution Information" in Software Engineering, ICSE 2008. ACM/IEEE 30th International Conference.
+* [7] J. Anvik and G. C. Murphy, “Reducing the effort of bug report triage: Recommenders for development-oriented decisions,” ACM Trans. Soft. Eng. Methodol., vol. 20, no. 3, article 10, Aug. 2011.
+* [8] J. Xuan, H. Jiang, Z. Ren, and W. Zou, “Developer prioritization in bug repositories,” in Proc. 34th Int. Conf. Softw. Eng., 2012, pp. 25–35
+* [9] Xuan, J., Jiang, H., Hu, Y., Ren, Z., Zou, W., Luo, Z., & Wu, X. (2015). Towards Effective Bug Triage with Software Data Reduction Techniques. Knowledge and Data Engineering, IEEE Transactions on, 27(1), 264-280.
+* [10] J. Anvik, L. Hiew, and G. C. Murphy. Coping with an open bug repository. In eclipse ’05: Proceedings of the 2005 OOPSLA workshop on Eclipse technology exchange, pages 35–39, 2005.
+* [11] C. Sun, D. Lo, X. Wang, J. Jiang, and S.-C. Khoo, “A discriminative model approach for accurate duplicate bug report retrieval,” in ICSE, 2010
+* [12] N. Jalbert and W. Weimer. Automated Duplicate Detection for Bug Tracking Systems. In proceedings of the International Conference on Dependable Systems and Networks, 2008.
+* [13] P. Runeson, M. Alexandersson, and O. Nyholm. Detection of Duplicate Defect Reports Using Natural Language Processing. In proceedings of the International Conference on Software Engineering, 2007.
+* [14] C. Sun, D. Lo, S.-C. Khoo, and J. Jiang, “Towards more accurate retrieval of duplicate bug reports,” in Proceedings of the IEEE/ACM International Conference on Automated Software Engineering, 2011.
+* [15] A. Sureka and P. Jalote, “Detecting duplicate bug report using character n-gram-based features,” in Proceedings of the 2010 Asia Pacific Software Engineering Conference, 2010, pp. 366–374.
+* [16]  A. Hindle, N. Ernst, M. W. Godfrey, R. C. Holt, and J. Mylopoulos, “Whats in a name? on the automated topic naming of software maintenance activities,” submission: http://softwareprocess.es/whats-in-a-name, vol. 125, pp. 150–155, 2010.
+* [17] https://en.wikipedia.org/wiki/Data_mining
+* [18] V. Guana, F. Rocha, A. Hindle, and E. Stroulia, “Do the stars align? multidimensional analysis of android’s layered architecture,” in Mining Software Repositories (MSR), 2012 9th IEEE Working Conference on. IEEE, 2012, pp. 124–127.
+* [19] A. Hindle, N. Ernst, M. Godfrey, and J. Mylopoulos, “Automated topic naming to support cross-project analysis of software maintenance activities,” in Proceedings of the 8th Working Conference on Mining Software Repositories. ACM, 2011, pp. 163–172.
+* [20] D. Han, C. Zhang, X. Fan, A. Hindle, K. Wong, and E. Stroulia, “Understanding android fragmentation with topic analysis of vendor- specific bugs.”
+* [21] Anahita Alipour , Abram Hindle , Eleni Stroulia, A contextual approach towards more accurate duplicate bug report detection, Proceedings of the 10th Working Conference on Mining Software Repositories, May 18-19, 2013, San Francisco, CA, USA
+* [22] Aggarwal, Karan, et al. "Detecting duplicate bug reports with software engineering domain knowledge." Software Analysis, Evolution and Reengineering (SANER), 2015 IEEE 22nd International Conference on. IEEE, 2015.
+* [23] http://www.aclweb.org/anthology/S15-2045
+* [24] R. S. Pressman and W. S. Jawadekar, “Software engineering,” New York 1992, 1987.
+* [25] M. L. Murphy, The Busy Coder’s Guide to Advanced Android Development. CommonsWare, LLC, 2009.
+* [26] D. Binkley and D. Lawrie, “Information retrieval applications in software maintenance and evolution,” Encyclopedia of Software Engineer- ing, 2009.
+* [27] S. Dumais, G. Furnas, T. Landauer, S. Deerwester, S. Deerwester et al., “Latent semantic indexing,” in Proceedings of the Text Retrieval Conference, 1995.
+* [28] B. Ganter, R. Wille, and R. Wille, Formal concept analysis. Springer Berlin, 1999.
+* [29] A. Marcus, A. Sergeyev, V. Rajlich, and J. I. Maletic, “An information retrieval approach to concept location in source code,” in Reverse Engineering, 2004. Proceedings. 11th Working Conference on. IEEE, 2004, pp. 214–223.
+* [30] D. Poshyvanyk and A. Marcus, “Combining formal concept analysis with information retrieval for concept location in source code,” in Program Comprehension, 2007. ICPC’07. 15th IEEE International Conference on. IEEE, 2007, pp. 37–48.
+* [31] D. Poshyvanyk, A. Marcus, R. Ferenc, and T. Gyimo ́thy, “Using information retrieval based coupling measures for impact analysis,” Empirical Software Engineering, vol. 14, no. 1, pp. 5–32, 2009.
+* [32] D. Blei, A. Ng, and M. Jordan, “Latent dirichlet allocation,” the Journal of machine Learning research, vol. 3, pp. 993–1022, 2003.
 
 				
